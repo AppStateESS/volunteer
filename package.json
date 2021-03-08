@@ -1,0 +1,53 @@
+{
+  "name": "volunteer",
+  "version": "0.0.1",
+  "description": "Tracks volunteer hours",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "rm -rf ./javascript/build && webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AppStateESS/volunteer.git"
+  },
+  "keywords": [
+    "volunteer",
+    "timeclock",
+    "tracker"
+  ],
+  "author": "Matthew McNaney <mcnaneym@appstate.edu>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AppStateESS/volunteer/issues"
+  },
+  "homepage": "https://github.com/AppStateESS/volunteer#readme",
+  "devDependencies": {
+    "@babel/core": "^7.13.8",
+    "@babel/plugin-transform-runtime": "^7.13.9",
+    "@babel/preset-env": "^7.13.9",
+    "@babel/preset-react": "^7.12.13",
+    "@babel/runtime": "^7.13.9",
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "assets-webpack-plugin": "^7.0.0",
+    "axios": "^0.21.1",
+    "babel-loader": "^8.2.2",
+    "browser-sync": "^2.26.14",
+    "browser-sync-webpack-plugin": "^2.3.0",
+    "css-loader": "^5.1.1",
+    "es6-promise": "^4.2.8",
+    "moment": "^2.29.1",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.1",
+    "react-datepicker": "^3.6.0",
+    "react-dom": "^17.0.1",
+    "regenerator-runtime": "^0.13.7",
+    "style-loader": "^2.0.0",
+    "terser": "^5.6.0",
+    "terser-webpack-plugin": "^5.1.1",
+    "webpack": "^5.24.4",
+    "webpack-cli": "^4.5.0"
+  }
+}
