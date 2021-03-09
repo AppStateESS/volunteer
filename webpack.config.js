@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 const setup = require('./exports.js')
 const TerserPlugin = require('terser-webpack-plugin')
-
+/* global module */
 module.exports = (env, argv) => {
   const inProduction = argv.mode === 'production'
   const inDevelopment = argv.mode === 'development'
@@ -14,11 +14,11 @@ module.exports = (env, argv) => {
     watchOptions: {ignored: /node_modules/},
     optimization: {
       splitChunks: {
-        minChunks: 2,
+        minChunks: 1,
         cacheGroups: {
           defaultVendors: {
             test: /[\\/]node_modules[\\/]/,
-            minChunks: 2,
+            minChunks: 1,
             name: 'vendor',
             enforce: true,
             chunks: 'all',

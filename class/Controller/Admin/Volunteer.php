@@ -14,9 +14,4 @@ use Canopy\Request;
 class Volunteer extends SubController
 {
 
-    protected function listHtml(Request $request)
-    {
-        return VolunteerView::scriptView('Sponsor');
-    }
-
 }

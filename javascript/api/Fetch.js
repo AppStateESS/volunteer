@@ -9,7 +9,7 @@ const getList = async (url, options) => {
         'X-Requested-With': 'XMLHttpRequest',
       },
     })
-    return response.data
+    return response
   } catch (error) {
     return false
   }
