@@ -78,7 +78,7 @@ class Controller extends \phpws2\Http\Controller
         } catch (\volunteer\Exception\PrivilegeMissing $e) {
             \Current_User::requireLogin();
         } catch (\Exception $e) {
-            if (TRIPTRACK_SYSTEM_SETTINGS['friendlyErrors']) {
+            if (VOLUNTEER_SYSTEM_SETTINGS['friendlyErrors']) {
                 \phpws2\Error::log($e);
                 $controller = new \volunteer\Controller\FriendlyErrorController($this->getModule());
                 return $controller->get($request);

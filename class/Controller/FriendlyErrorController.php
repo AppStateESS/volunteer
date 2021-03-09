@@ -12,7 +12,7 @@
 
 namespace volunteer\Controller;
 
-define('TRIPTRACK_FRIENDLY_MESSAGE', 'Server error. Could not complete action');
+define('VOLUNTEER_FRIENDLY_MESSAGE', 'Server error. Could not complete action');
 
 class FriendlyErrorController extends \phpws2\Http\Controller
 {
@@ -20,7 +20,7 @@ class FriendlyErrorController extends \phpws2\Http\Controller
     public function execute(\Canopy\Request $request)
     {
         if ($request->isAjax()) {
-            throw new \Exception(TRIPTRACK_FRIENDLY_MESSAGE);
+            throw new \Exception(VOLUNTEER_FRIENDLY_MESSAGE);
         }
         return parent::execute($request);
     }
@@ -30,7 +30,7 @@ class FriendlyErrorController extends \phpws2\Http\Controller
         $vars = \volunteer\Factory\SettingsFactory::getContact();
         $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('volunteer', 'error.html');
-        $template->add('message', TRIPTRACK_FRIENDLY_MESSAGE);
+        $template->add('message', VOLUNTEER_FRIENDLY_MESSAGE);
         $view = new \phpws2\View\HtmlView($template->get());
         $response = new \Canopy\Response($view);
         return $response;

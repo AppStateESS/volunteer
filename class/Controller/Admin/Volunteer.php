@@ -8,6 +8,7 @@
 namespace volunteer\Controller\Admin;
 
 use volunteer\Controller\SubController;
+use volunteer\View\VolunteerView;
 use Canopy\Request;
 
 class Volunteer extends SubController
@@ -15,7 +16,7 @@ class Volunteer extends SubController
 
     protected function listHtml(Request $request)
     {
-        return 'hi';
+        return VolunteerView::scriptView('Sponsor');
     }
 
 }
