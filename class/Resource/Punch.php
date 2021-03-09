@@ -7,7 +7,7 @@
 
 namespace volunteer\Resource;
 
-class Punch
+class Punch extends AbstractResource
 {
 
     protected $volunteerId;
@@ -15,5 +15,6 @@ class Punch
     protected $eventId;
     protected $timeIn;
     protected $timeOut;
+    protected $table = 'vol_punch';
 
 }

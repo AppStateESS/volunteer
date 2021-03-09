@@ -7,11 +7,12 @@
 
 namespace volunteer\Resource;
 
-class Event
+class Event extends AbstractResource
 {
 
     protected $sponsorId;
     protected $title;
     protected $date;
+    protected $table = 'vol_event';
 
 }

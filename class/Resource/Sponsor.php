@@ -8,7 +8,10 @@
 
 namespace volunteer\Resource;
 
-class Sponsor
+class Sponsor extends AbstractResource
 {
+
+    protected $name;
+    protected $table = 'vol_sponsor';
 
 }
