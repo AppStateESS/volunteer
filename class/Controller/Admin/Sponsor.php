@@ -26,4 +26,9 @@ class Sponsor extends SubController
         return SponsorFactory::list($options);
     }
 
+    protected function post(Request $request)
+    {
+        return ['success' => true, 'id' => SponsorFactory::post($request)];
+    }
+
 }

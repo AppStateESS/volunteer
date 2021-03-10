@@ -7,7 +7,7 @@
 $link[] = array(
     'label' => 'Volunteer Tracker',
     'restricted' => TRUE,
-    'url' => 'volunteer/Admin/Volunteer/',
+    'url' => 'volunteer/Admin/Sponsor/',
     'description' => 'Volunteer Tracker', 'Tracks student volunteer hours.',
     'image' => 'volunteer.png',
     'tab' => 'content');

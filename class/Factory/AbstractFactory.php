@@ -45,7 +45,8 @@ abstract class AbstractFactory extends \phpws2\ResourceFactory
 
     public static function save(\phpws2\Resource $resource)
     {
-        return self::saveResource($resource);
+        self::saveResource($resource);
+        return $resource->id;
     }
 
     protected static function addSearch(string $searchPhrase, array $columns,

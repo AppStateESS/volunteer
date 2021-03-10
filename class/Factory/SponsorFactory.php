@@ -7,16 +7,17 @@
 
 namespace volunteer\Factory;
 
-use volunteer\Resource\Volunteer;
+use volunteer\Resource\Sponsor;
 use phpws2\Database;
+use Canopy\Request;
 
 class SponsorFactory extends AbstractFactory
 {
 
     public static function build(int $id = 0)
     {
-        $volunteer = new Volunteer;
-        return $id > 0 ? self::load($volunteer, $id) : $volunteer;
+        $sponsor = new Sponsor;
+        return $id > 0 ? self::load($sponsor, $id) : $sponsor;
     }
 
     public static function list(array $options = [])
@@ -25,6 +26,13 @@ class SponsorFactory extends AbstractFactory
         $tbl = $db->addTable('vol_sponsor');
         self::applyOptions($tbl, $options);
         return $db->select();
+    }
+
+    public static function post(Request $request)
+    {
+        $sponsor = self::build();
+        $sponsor->name = $request->pullPostString('name');
+        return self::save($sponsor);
     }
 
 }

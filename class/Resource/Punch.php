@@ -17,4 +17,14 @@ class Punch extends AbstractResource
     protected $timeOut;
     protected $table = 'vol_punch';
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->volunteerId = new \phpws2\Variable\IntegerVar(0, 'volunteerId');
+        $this->sponsorId = new \phpws2\Variable\IntegerVar(0, 'sponsorId');
+        $this->eventId = new \phpws2\Variable\IntegerVar(0, 'eventId');
+        $this->timeIn = new \phpws2\Variable\IntegerVar(0, 'timeIn');
+        $this->timeOut = new \phpws2\Variable\IntegerVar(0, 'timeOut');
+    }
+
 }

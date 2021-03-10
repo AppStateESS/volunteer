@@ -19,3 +19,7 @@ define('VOLUNTEER_SYSTEM_SETTINGS',
 ]);
 
 define('VOLUNTEER_BANNER_API', '');
+
+define('VOL_SHIB_DOMAIN', ''); // @university.edu
+define('VOL_SHIB_USERNAME_TAG', ''); // name of SERVER variable containing the username
+define('VOL_SHIB_LOGOUT_TAG', ''); // name of SERVER variable containing the url to log out

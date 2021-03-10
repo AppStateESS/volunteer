@@ -42,4 +42,20 @@ const getItem = async (role, itemName, id) => {
   }
 }
 
-export {getList, sendDelete, getItem}
+const saveSponsor = async (sponsor) => {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: 'volunteer/Admin/Sponsor',
+      data: sponsor,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    })
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
+export {getList, sendDelete, getItem, saveSponsor}
