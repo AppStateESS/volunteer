@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import {getList} from '../api/Fetch'
 import Grid from './Grid'
 import Form from './Form'
-import Modal from '../api/Modal'
+import Overlay from '@essappstate/canopy-react-overlay'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
 
@@ -16,6 +16,7 @@ const Sponsor = () => {
   const [loading, setLoading] = useState(true)
   const [listing, setListing] = useState([])
   const [sponsor, setSponsor] = useState(getDefault())
+  const [showModal, setShowModal] = useState(false)
   useEffect(() => {
     loadList()
   }, [])
@@ -25,19 +26,27 @@ const Sponsor = () => {
     const Promise = getList('volunteer/Admin/Sponsor/')
     Promise.then((response) => {
       setLoading(false)
-      //console.log(response.data)
+      setListing(response.data)
     }).catch((error) => {
       console.log(error)
     })
   }
 
+  const edit = (key) => {
+    setSponsor(Object.assign({}, listing[key]))
+    setShowModal(true)
+  }
+
   const reset = () => {
     const defaultSponsor = getDefault()
     setSponsor(defaultSponsor)
+    setShowModal(false)
   }
 
   const success = () => {
+    console.log('success')
     reset()
+    loadList()
   }
 
   const failure = () => {
@@ -63,7 +72,7 @@ const Sponsor = () => {
   } else {
     content = (
       <div>
-        <Grid listing={listing} />
+        <Grid listing={listing} edit={edit} />
       </div>
     )
   }
@@ -72,16 +81,10 @@ const Sponsor = () => {
   return (
     <div>
       <h2>Sponsors</h2>
-      <Modal
-        modalId="volModal"
-        content={modalForm}
-        title={modalTitle}
-        onClose={reset}
-      />
-      <button
-        className="btn btn-primary"
-        data-toggle="modal"
-        data-target="#volModal">
+      <Overlay show={showModal} close={reset} title={modalTitle} width="80%">
+        {modalForm}
+      </Overlay>
+      <button className="btn btn-primary" onClick={setShowModal}>
         Add sponsor
       </button>
       <hr />
