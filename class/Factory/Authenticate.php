@@ -13,4 +13,14 @@ namespace volunteer\Factory;
 class Authenticate
 {
 
+    public static function isLoggedIn()
+    {
+        return isset($_SERVER[VOL_SHIB_USERNAME_TAG]);
+    }
+
+    public static function getLoginUsername()
+    {
+        return str_ireplace(VOL_SHIB_DOMAIN, '', $_SERVER[VOL_SHIB_USERNAME_TAG]);
+    }
+
 }
