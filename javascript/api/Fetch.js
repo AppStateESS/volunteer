@@ -43,10 +43,18 @@ const getItem = async (role, itemName, id) => {
 }
 
 const saveSponsor = async (sponsor) => {
+  let url = 'volunteer/Admin/Sponsor'
+  let method = 'post'
+
+  if (sponsor.id > 0) {
+    method = 'put'
+    url = url + '/' + sponsor.id
+  }
+
   try {
     const response = await axios({
-      method: 'post',
-      url: 'volunteer/Admin/Sponsor',
+      method,
+      url,
       data: sponsor,
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
