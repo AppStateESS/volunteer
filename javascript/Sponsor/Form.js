@@ -12,7 +12,7 @@ const Form = ({sponsor, success, failure}) => {
   const save = () => {
     const promise = saveSponsor({id: sponsor.id, name})
     promise.then((response) => {
-      if (response.success) {
+      if (response.data.success) {
         success()
       } else {
         failure()
@@ -21,29 +21,35 @@ const Form = ({sponsor, success, failure}) => {
   }
 
   return (
-    <div className="row">
-      <div className="col-9">
-        <input
-          name="name"
-          value={name}
-          placeholder="Sponsor name"
-          className="form-control"
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div>
-      <div className="col-3">
-        <button
-          data-dismiss="modal"
-          className="btn btn-success"
-          disabled={name.length === 0}
-          onClick={save}>
-          Save
-        </button>
+    <div className="container">
+      <div className="row">
+        <div className="col-9">
+          <input
+            name="name"
+            value={name}
+            placeholder="Sponsor name"
+            className="form-control"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="col-3">
+          <button
+            data-dismiss="modal"
+            className="btn btn-success"
+            disabled={name.length === 0}
+            onClick={save}>
+            Save
+          </button>
+        </div>
       </div>
     </div>
   )
 }
 
-Form.propTypes = {}
+Form.propTypes = {
+  sponsor: PropTypes.object,
+  success: PropTypes.func,
+  failure: PropTypes.func,
+}
 
 export default Form
