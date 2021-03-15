@@ -31,4 +31,9 @@ class Sponsor extends SubController
         return ['success' => true, 'id' => SponsorFactory::post($request)];
     }
 
+    protected function put(Request $request)
+    {
+        return ['success' => true, 'id' => SponsorFactory::put($request)];
+    }
+
 }
