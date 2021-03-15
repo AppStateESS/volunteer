@@ -18,6 +18,7 @@ use Canopy\Server;
 use Canopy\SettingDefaults;
 use volunteer\Controller\Controller;
 use volunteer\Factory\MemberFactory;
+use volunteer\Factory\Authenticate;
 
 $defineFile = PHPWS_SOURCE_DIR . 'mod/volunteer/config/defines.php';
 if (is_file($defineFile)) {
@@ -65,18 +66,17 @@ class Module extends \Canopy\Module implements SettingDefaults
 
     public function getSettingDefaults()
     {
-        $settings = array(
-        );
+        $settings = [];
         return $settings;
     }
 
     public function runTime(Request $request)
     {
         if (\phpws\PHPWS_Core::atHome()) {
-            if (\Current_User::isLogged()) {
-                \Layout::add('Volunteer log in button', 'volunteer', 'volunteer-create');
-            } else {
+            if (Authenticate::isLoggedIn()) {
                 \Layout::add('Clock in out button', 'volunteer', 'volunteer-create');
+            } else {
+                \Layout::add('Volunteer log in button', 'volunteer', 'volunteer-create');
             }
         }
     }
