@@ -24,6 +24,10 @@ class SponsorFactory extends AbstractFactory
     {
         $db = Database::getDB();
         $tbl = $db->addTable('vol_sponsor');
+        if (empty($options['orderBy'])) {
+            $options['orderBy'] = 'name';
+            $options['dir'] = 1;
+        }
         self::applyOptions($tbl, $options);
         return $db->select();
     }
@@ -32,6 +36,13 @@ class SponsorFactory extends AbstractFactory
     {
         $sponsor = self::build();
         $sponsor->name = $request->pullPostString('name');
+        return self::save($sponsor);
+    }
+
+    public static function put(Request $request)
+    {
+        $sponsor = self::build($request->pullPutInteger('id'));
+        $sponsor->name = $request->pullPutString('name');
         return self::save($sponsor);
     }
 
