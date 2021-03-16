@@ -28,7 +28,7 @@ class SponsorFactory extends AbstractFactory
             $options['orderBy'] = 'name';
             $options['dir'] = 1;
         }
-        self::applyOptions($tbl, $options);
+        self::applyOptions($db, $tbl, $options);
         return $db->select();
     }
 
