@@ -14,6 +14,7 @@ namespace volunteer\Factory;
 
 use volunteer\Exception\ResourceNotFound;
 use Canopy\Request;
+use phpws2\Database\DB;
 use phpws2\Database\Table;
 
 /**
@@ -49,8 +50,7 @@ abstract class AbstractFactory extends \phpws2\ResourceFactory
         return $resource->id;
     }
 
-    protected static function addSearch(string $searchPhrase, array $columns,
-            \phpws2\Database\DB $db, \phpws2\Database\Table $tbl)
+    protected static function addSearch(string $searchPhrase, array $columns, DB $db, Table $tbl)
     {
         foreach ($columns as $c) {
             $cond = $db->createConditional($tbl->getField($c), '%' . $searchPhrase . '%', 'like');
@@ -63,7 +63,7 @@ abstract class AbstractFactory extends \phpws2\ResourceFactory
         $db->addConditional($prevCond);
     }
 
-    protected static function applyOptions(Table $tbl, array $options)
+    protected static function applyOptions(DB $db, Table $tbl, array $options)
     {
         if (!empty($options['orderBy'])) {
             $orderBy = $options['orderBy'];
@@ -73,6 +73,10 @@ abstract class AbstractFactory extends \phpws2\ResourceFactory
                 $direction = 'asc';
             }
             $tbl->addOrderBy($orderBy, $direction);
+        }
+
+        if (!empty($options['search'])) {
+            self::addSearch($options['search'], ['name'], $db, $tbl);
         }
     }
 
