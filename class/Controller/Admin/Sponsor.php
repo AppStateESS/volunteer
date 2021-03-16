@@ -23,6 +23,11 @@ class Sponsor extends SubController
     protected function listJson(Request $request)
     {
         $options = [];
+        $search = $request->pullGetString('search', true);
+        if ($search) {
+            $options['search'] = $search;
+        }
+
         return SponsorFactory::list($options);
     }
 
