@@ -1,5 +1,5 @@
 'use strict'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import ReactDOM from 'react-dom'
 import {getList} from '../api/Fetch'
 import Grid from './Grid'
@@ -13,17 +13,32 @@ const getDefault = () => {
 }
 
 const Sponsor = () => {
+  const track = useRef(null)
   const [loading, setLoading] = useState(true)
   const [listing, setListing] = useState([])
   const [sponsor, setSponsor] = useState(getDefault())
   const [showModal, setShowModal] = useState(false)
+  const [search, setSearch] = useState('')
+
   useEffect(() => {
     loadList()
   }, [])
 
+  useEffect(() => {
+    clearTimeout(track.current)
+    if (search.length > 3) {
+      track.current = setTimeout(() => {
+        loadList()
+      }, 1000)
+      return () => clearTimeout(track.current)
+    } else if (search.length == 0) {
+      loadList()
+    }
+  }, [search])
+
   const loadList = () => {
     setLoading(true)
-    const Promise = getList('volunteer/Admin/Sponsor/')
+    const Promise = getList('volunteer/Admin/Sponsor/', {search})
     Promise.then((response) => {
       setLoading(false)
       setListing(response.data)
@@ -51,6 +66,15 @@ const Sponsor = () => {
 
   const failure = () => {
     reset()
+  }
+
+  const sendSearch = () => {
+    clearTimeout(track.current)
+    loadList()
+  }
+
+  const clearSearch = () => {
+    setSearch('')
   }
 
   const modalTitle = sponsor.id === 0 ? 'Add sponsor' : 'Update sponsor'
@@ -84,9 +108,36 @@ const Sponsor = () => {
       <Overlay show={showModal} close={reset} title={modalTitle} width="80%">
         {modalForm}
       </Overlay>
-      <button className="btn btn-primary" onClick={setShowModal}>
-        Add sponsor
-      </button>
+      <div className="row">
+        <div className="col-3">
+          <button className="btn btn-primary" onClick={setShowModal}>
+            Add sponsor
+          </button>
+        </div>
+        <div className="col-9">
+          <div className="input-group mb-3">
+            <input
+              name="search"
+              className="form-control"
+              placeholder="Search sponsors"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <button
+              className="btn btn-outline-success"
+              type="button"
+              onClick={sendSearch}>
+              Search
+            </button>
+            <button
+              className="btn btn-outline-danger"
+              type="button"
+              onClick={clearSearch}>
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
       <hr />
       {content}
     </div>
