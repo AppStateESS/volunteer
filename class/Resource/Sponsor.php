@@ -17,7 +17,7 @@ class Sponsor extends AbstractResource
     public function __construct()
     {
         parent::__construct();
-        $this->name = new \phpws2\Variable\TextOnly(null, 'name');
+        $this->name = new \phpws2\Variable\TextOnly(null, 'name', 50);
     }
 
 }

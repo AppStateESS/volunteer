@@ -19,7 +19,7 @@ class Event extends AbstractResource
     {
         parent::__construct();
         $this->sponsorId = new \phpws2\Variable\IntegerVar(0, 'sponsorId');
-        $this->title = new \phpws2\Variable\TextOnly(null, 'title');
+        $this->title = new \phpws2\Variable\TextOnly(null, 'title', 255);
         $this->date = new \phpws2\Variable\DateTime(0, 'date');
     }
 
