@@ -27,4 +27,14 @@ class Punch extends AbstractResource
         $this->timeOut = new \phpws2\Variable\IntegerVar(0, 'timeOut');
     }
 
+    public function in()
+    {
+        $this->timeIn->set(time());
+    }
+
+    public function out()
+    {
+        $this->timeOut->set(time());
+    }
+
 }
