@@ -27,6 +27,12 @@ const Form = ({sponsor, success, failure}) => {
           <input
             name="name"
             value={name}
+            ref={nameInput}
+            onKeyDown={(e) => {
+              if (e.keyCode === 13) {
+                save()
+              }
+            }}
             placeholder="Sponsor name"
             className="form-control"
             onChange={(e) => setName(e.target.value)}
@@ -34,11 +40,13 @@ const Form = ({sponsor, success, failure}) => {
         </div>
         <div className="col-3">
           <button
-            data-dismiss="modal"
-            className="btn btn-success"
+            className="btn btn-success mr-2"
             disabled={name.length === 0}
             onClick={save}>
             Save
+          </button>
+          <button className="btn btn-danger" onClick={reset}>
+            Cancel
           </button>
         </div>
       </div>
@@ -50,6 +58,8 @@ Form.propTypes = {
   sponsor: PropTypes.object,
   success: PropTypes.func,
   failure: PropTypes.func,
+  nameInput: PropTypes.object,
+  reset: PropTypes.func,
 }
 
 export default Form
