@@ -14,6 +14,7 @@ namespace volunteer\Controller;
 
 use Canopy\Request;
 use phpws2\Database;
+use \volunteer\Factory\VolunteerFactory;
 
 class Controller extends \phpws2\Http\Controller
 {
