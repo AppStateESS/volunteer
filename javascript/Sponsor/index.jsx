@@ -14,6 +14,7 @@ const getDefault = () => {
 
 const Sponsor = () => {
   const track = useRef(null)
+  const nameInput = useRef(null)
   const [loading, setLoading] = useState(true)
   const [listing, setListing] = useState([])
   const [sponsor, setSponsor] = useState(getDefault())
@@ -23,6 +24,10 @@ const Sponsor = () => {
   useEffect(() => {
     loadList()
   }, [])
+
+  useEffect(() => {
+    nameInput.current.focus()
+  }, [showModal])
 
   useEffect(() => {
     clearTimeout(track.current)
@@ -100,7 +105,11 @@ const Sponsor = () => {
       </div>
     )
   }
-  const modalForm = <Form {...{sponsor, success, failure}} />
+  const modalForm = <Form {...{sponsor, success, failure, nameInput, reset}} />
+  const modalShow = () => {
+    nameInput.current.focus()
+    setShowModal(true)
+  }
 
   return (
     <div>
@@ -110,7 +119,7 @@ const Sponsor = () => {
       </Overlay>
       <div className="row">
         <div className="col-3">
-          <button className="btn btn-primary" onClick={setShowModal}>
+          <button className="btn btn-primary" onClick={modalShow}>
             Add sponsor
           </button>
         </div>
