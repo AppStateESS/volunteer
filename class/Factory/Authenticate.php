@@ -23,4 +23,9 @@ class Authenticate
         return str_ireplace(VOL_SHIB_DOMAIN, '', $_SERVER[VOL_SHIB_USERNAME_TAG]);
     }
 
+    public static function sendToLogin()
+    {
+        \Canopy\Server::forward(PHPWS_HOME_HTTP . '/secure');
+    }
+
 }
