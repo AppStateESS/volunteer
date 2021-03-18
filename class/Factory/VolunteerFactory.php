@@ -18,13 +18,15 @@ class VolunteerFactory extends AbstractFactory
 
     }
 
-    public static function loadCurrent()
+    public static function loadCurrent($createIfNotFound = true)
     {
         $volunteer = self::loadByUsername(Authenticate::getLoginUsername());
         if ($volunteer) {
             return $volunteer;
-        } else {
+        } elseif ($createIfNotFound) {
             return self::createVolunteer(Authenticate::getLoginUsername());
+        } else {
+            Authenticate::sendToLogin();
         }
     }
 
