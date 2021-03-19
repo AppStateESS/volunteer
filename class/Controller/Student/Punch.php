@@ -24,9 +24,13 @@ class Punch extends SubController
         return PunchView::afterPunchIn();
     }
 
-    protected function outPut(Request $request)
+    protected function outPost(Request $request)
     {
-        PunchFactory::out(VolunteerFactory::loadCurrent(), $request->pullPutInteger($punchId));
+        try {
+            PunchFactory::out(VolunteerFactory::loadCurrent(), $request->pullPostInteger('punchId'));
+        } catch (\volunteer\Exception\PreviouslyPunched $ex) {
+            return PunchView::previouslyPunched();
+        }
         return PunchView::afterPunchOut();
     }
 
