@@ -7,7 +7,7 @@
 
 namespace volunteer\Exception;
 
-class PreviouslyPunched extends Exception
+class PreviouslyPunched extends \Exception
 {
 
     public function __construct()
