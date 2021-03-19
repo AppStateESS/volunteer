@@ -40,8 +40,6 @@ class PunchView extends AbstractView
         $sponsor = SponsorFactory::build($punch->sponsorId);
         $vars['sponsor'] = $sponsor->getStringVars();
         $vars['totalTime'] = self::getTotalTime($punch->timeIn);
-        var_dump($vars);
-        exit;
         $template = new Template($vars);
         $template->setModuleTemplate('volunteer', 'PunchOut.html');
         return $template->get();
@@ -58,19 +56,35 @@ class PunchView extends AbstractView
     {
         $totalSeconds = time() - $timeIn;
         $totalHours = floor($totalSeconds / 3600);
-        $totalMinutes = $totalSeconds % 3600;
+        $totalMinutes = $totalSeconds % 60;
         $totalTime = [];
         if ($totalHours > 0) {
             $totalTime[] = $totalHours . ' hour' . ($totalHours > 1 ? 's' : '') . ' and ';
         }
         $totalTime[] = $totalMinutes . ' minute' . ( ($totalMinutes > 1 || $totalMinutes == 0) ? 's' : '');
+        return implode(' ', $totalTime);
     }
 
     public static function afterPunchIn(int $punchId)
     {
+        $punch = PunchFactory::build($punchId);
+        $sponsor = SponsorFactory::build($punch->sponsorId);
+        $template = new Template(['logoutUrl' => \volunteer\Factory\Authenticate::logoutUrl(), 'sponsorName' => $sponsor->name]);
+        $template->setModuleTemplate('volunteer', 'AfterPunchIn.html');
+        return $template->get();
+    }
 
-        $template = new Template();
-        $template->addModuleTemplate('volunteer', 'AfterPunchIn.html');
+    public static function afterPunchOut()
+    {
+        $template = new Template(['logoutUrl' => \volunteer\Factory\Authenticate::logoutUrl()]);
+        $template->setModuleTemplate('volunteer', 'AfterPunchOut.html');
+        return $template->get();
+    }
+
+    public static function previouslyPunched()
+    {
+        $template = new Template;
+        $template->setModuleTemplate('volunteer', 'PreviouslyPunched.html');
         return $template->get();
     }
 
