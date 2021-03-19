@@ -28,4 +28,9 @@ class Authenticate
         \Canopy\Server::forward(PHPWS_HOME_HTTP . '/secure');
     }
 
+    public static function logoutUrl()
+    {
+        return $_SERVER[VOL_SHIB_LOGOUT_TAG];
+    }
+
 }
