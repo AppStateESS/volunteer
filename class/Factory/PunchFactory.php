@@ -15,6 +15,12 @@ use \volunteer\Exception\PreviouslyPunched;
 class PunchFactory extends AbstractFactory
 {
 
+    public static function build(int $id = 0)
+    {
+        $punch = new Punch;
+        return $id > 0 ? self::load($punch, $id) : $punch;
+    }
+
     /**
      * Grabs an incomplete punch for the current volunteer.
      * @param Volunteer $volunteer
@@ -50,14 +56,14 @@ class PunchFactory extends AbstractFactory
         return self::save($punch);
     }
 
-    public static function out(int $id)
+    public static function out(Volunteer $volunteer, int $id)
     {
         $punch = new Punch;
         self::load($punch, $id);
         /**
          * Already punched out
          */
-        if ($punch->out > 0) {
+        if ($punch->timeOut > 0) {
             throw new PreviouslyPunched;
         }
         $punch->out();
