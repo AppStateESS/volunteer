@@ -1,3 +1,6 @@
-<h2>Punch out from: <?=$sponsor['name']?></h2>
+<h2>Complete session with <?=$sponsor['name']?>.</h2>
 <p>Hello, <?=$volunteer['preferredName'] ?? $volunteer['firstName']?>. You have been clocked in for <?=$totalTime?>.</p>
-<a href="./volunteer/Student/" class="btn btn-lg btn-block btn-primary"><i class="fas fa-clock"></i> Complete session</a>
+<form method="post" action="./volunteer/Student/Punch/out">
+  <input type="hidden" name="punchId" value="<?=$punch['id']?>"/>
+  <button type="submit" href="./volunteer/Student/" class="btn btn-lg btn-block btn-primary"><i class="fas fa-clock"></i> Complete session</button>
+</form>
