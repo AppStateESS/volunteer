@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {saveSponsor} from '../api/Fetch'
 
-const Form = ({sponsor, success, failure}) => {
+const Form = ({sponsor, success, failure, nameInput, reset}) => {
   const [name, setName] = useState(sponsor.name)
   useEffect(() => {
     setName(sponsor.name)
