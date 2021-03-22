@@ -129,6 +129,11 @@ const Sponsor = () => {
               name="search"
               className="form-control"
               placeholder="Search sponsors"
+              onKeyDown={(e) => {
+                if (e.keyCode === 13) {
+                  loadList()
+                }
+              }}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
