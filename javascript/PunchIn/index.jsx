@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import {getList} from '../api/Fetch'
+import Select from 'react-select'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner, faClock} from '@fortawesome/free-solid-svg-icons'
 
@@ -29,24 +30,16 @@ const PunchIn = () => {
       </div>
     )
   } else {
+    const options = sponsors.map((value) => {
+      return {
+        value: value.id,
+        label: value.name,
+      }
+    })
     sponsorList = (
       <div>
-        <select
-          className="form-control"
-          name="sponsorId"
-          onChange={(e) => setSponsorId(e.target.value)}
-          value={sponsorId}>
-          <option value="0">
-            -- Person, business, or organization sponsoring --
-          </option>
-          {sponsors.map((value) => {
-            return (
-              <option key={`row-${value.id}`} value={value.id}>
-                {value.name}
-              </option>
-            )
-          })}
-        </select>
+        <Select options={options} onChange={({value}) => setSponsorId(value)} />
+        <input type="hidden" name="sponsorId" value={sponsorId} />
       </div>
     )
   }
@@ -55,20 +48,32 @@ const PunchIn = () => {
     loadSponsors()
   }, [])
   return (
-    <div>
-      <h2>Punch in</h2>
-      <form method="post" action="./volunteer/Student/Punch/In">
-        {sponsorList}
-        <p className="small">If your sponsor is not shown, contact us.</p>
-        <button
-          type="submit"
-          className="btn btn-lg btn-success btn-block mt-3"
-          disabled={loading || sponsorId === 0}>
-          {' '}
-          <FontAwesomeIcon icon={faClock} />
-          &nbsp;Punch in
-        </button>
-      </form>
+    <div className="container">
+      <div className="row d-flex justify-content-center">
+        <div className="col-md-8 col-sm-10">
+          <div className="card">
+            <div className="card-header">
+              <h2 className="m-0">Check in</h2>
+            </div>
+            <div className="card-body">
+              <form method="post" action="./volunteer/Student/Punch/In">
+                {sponsorList}
+                <p className="small text-center">
+                  If your sponsor is not shown, contact us.
+                </p>
+                <button
+                  type="submit"
+                  className="btn btn-lg btn-success btn-block mt-3 py-3"
+                  disabled={loading || sponsorId === 0}>
+                  {' '}
+                  <FontAwesomeIcon icon={faClock} />
+                  &nbsp;Check in
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
