@@ -56,7 +56,7 @@ class PunchView extends AbstractView
     {
         $totalSeconds = time() - $timeIn;
         $totalHours = floor($totalSeconds / 3600);
-        $totalMinutes = $totalSeconds % 60;
+        $totalMinutes = floor(($totalSeconds % 3600) / 60);
         $totalTime = [];
         if ($totalHours > 0) {
             $totalTime[] = $totalHours . ' hour' . ($totalHours > 1 ? 's' : '') . ' and ';
