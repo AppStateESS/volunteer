@@ -52,7 +52,7 @@ const PunchIn = () => {
       <div className="row d-flex justify-content-center">
         <div className="col-md-8 col-sm-10">
           <div className="card">
-            <div className="card-header">
+            <div className="card-header bg-primary text-white">
               <h2 className="m-0">Check in</h2>
             </div>
             <div className="card-body">
