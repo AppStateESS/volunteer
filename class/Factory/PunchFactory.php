@@ -70,4 +70,29 @@ class PunchFactory extends AbstractFactory
         return self::save($punch);
     }
 
+    public static function list(array $options = [])
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_punch');
+
+        if (!empty($options['includeVolunteer'])) {
+            $tbl2 = $db->addTable('vol_volunteer');
+            $cond = $db->createConditional($tbl->getField('volunteerId'), $tbl2->getField('id'), '=');
+            $tbl2->addField('userName');
+            $tbl2->addField('firstName');
+            $tbl2->addField('lastName');
+            $tbl2->addField('preferredName');
+            $tbl2->addField('bannerId');
+            $db->joinResources($tbl, $tbl2, $cond);
+        }
+        $options['orderBy'] = 'timeIn';
+        $options['dir'] = 'desc';
+        parent::applyOptions($db, $tbl, $options);
+
+        if (!empty($options['sponsorId'])) {
+            $tbl->addFieldConditional('sponsorId', $options['sponsorId']);
+        }
+        return $db->select();
+    }
+
 }
