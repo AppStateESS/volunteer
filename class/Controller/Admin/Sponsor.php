@@ -41,4 +41,10 @@ class Sponsor extends SubController
         return ['success' => true, 'id' => SponsorFactory::put($request)];
     }
 
+    protected function reportHtml(Request $request)
+    {
+        $sponsor = SponsorFactory::build($this->id);
+        return SponsorView::scriptView('Report', ['sponsor' => $sponsor->getStringVars()]);
+    }
+
 }
