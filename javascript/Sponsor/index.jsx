@@ -21,6 +21,15 @@ const Sponsor = () => {
   const [showModal, setShowModal] = useState(false)
   const [search, setSearch] = useState('')
 
+  const loadList = () => {
+    setLoading(true)
+    const Promise = getList('volunteer/Admin/Sponsor/', {search})
+    Promise.then((response) => {
+      setLoading(false)
+      setListing(response.data)
+    })
+  }
+
   useEffect(() => {
     loadList()
   }, [])
@@ -41,17 +50,6 @@ const Sponsor = () => {
     }
   }, [search])
 
-  const loadList = () => {
-    setLoading(true)
-    const Promise = getList('volunteer/Admin/Sponsor/', {search})
-    Promise.then((response) => {
-      setLoading(false)
-      setListing(response.data)
-    }).catch((error) => {
-      console.log(error)
-    })
-  }
-
   const edit = (key) => {
     setSponsor(Object.assign({}, listing[key]))
     setShowModal(true)
@@ -64,7 +62,6 @@ const Sponsor = () => {
   }
 
   const success = () => {
-    console.log('success')
     reset()
     loadList()
   }
