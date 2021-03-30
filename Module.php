@@ -20,6 +20,7 @@ use volunteer\Controller\Controller;
 use volunteer\Factory\MemberFactory;
 use volunteer\Factory\Authenticate;
 use volunteer\View\PunchView;
+use volunteer\View\AdminView;
 
 $defineFile = PHPWS_SOURCE_DIR . 'mod/volunteer/config/defines.php';
 if (is_file($defineFile)) {
@@ -74,6 +75,9 @@ class Module extends \Canopy\Module implements SettingDefaults
     public function runTime(Request $request)
     {
         if (\phpws\PHPWS_Core::atHome()) {
+            if (\Current_User::allow('volunteer')) {
+                AdminView::showMenu();
+            }
             if (Authenticate::isLoggedIn()) {
                 \Layout::add(PunchView::punchButton(), 'volunteer', 'volunteer-create');
             } else {
