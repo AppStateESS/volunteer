@@ -81,25 +81,10 @@ class Module extends \Canopy\Module implements SettingDefaults
             if (Authenticate::isLoggedIn()) {
                 \Layout::add(PunchView::punchButton(), 'volunteer', 'volunteer-create');
             } else {
-                $content = <<<EOF
-<a href="./secure" class="btn btn-primary btn-block">Log in</a>
-EOF;
+                $content = View\VolunteerView::logInPrompt();
                 \Layout::add($content, 'volunteer', 'volunteer-create');
             }
         }
-    }
-
-    public static function loadAdminBar()
-    {
-        $auth = \Current_User::getAuthorization();
-
-        $vars['is_deity'] = \Current_User::isDeity();
-        $vars['logout_uri'] = $auth->logout_link;
-        $vars['username'] = \Current_User::getDisplayName();
-        $template = new \phpws2\Template($vars);
-        $template->setModuleTemplate('volunteer', 'navbar.html');
-        $content = $template->get();
-        \Layout::plug($content, 'NAV_LINKS');
     }
 
     public function getController(Request $request)
