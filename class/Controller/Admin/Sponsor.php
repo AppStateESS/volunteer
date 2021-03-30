@@ -9,6 +9,7 @@ namespace volunteer\Controller\Admin;
 
 use volunteer\Controller\SubController;
 use volunteer\View\SponsorView;
+use volunteer\View\AdminView;
 use volunteer\Factory\SponsorFactory;
 use Canopy\Request;
 
@@ -17,18 +18,13 @@ class Sponsor extends SubController
 
     protected function listHtml(Request $request)
     {
+        AdminView::showMenu('sponsor');
         return SponsorView::scriptView('Sponsor');
     }
 
     protected function listJson(Request $request)
     {
-        $options = [];
-        $search = $request->pullGetString('search', true);
-        if ($search) {
-            $options['search'] = $search;
-        }
-
-        return SponsorFactory::list($options);
+        return SponsorFactory::list(SponsorFactory::listingOptions($request));
     }
 
     protected function post(Request $request)
@@ -43,6 +39,7 @@ class Sponsor extends SubController
 
     protected function reportHtml(Request $request)
     {
+        AdminView::showMenu();
         $sponsor = SponsorFactory::build($this->id);
         return SponsorView::scriptView('Report', ['sponsor' => $sponsor->getStringVars()]);
     }
