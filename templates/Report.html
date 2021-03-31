@@ -1,0 +1,28 @@
+<h2 class="mb-1"><?=$name?></h2>
+<?=$empty ?? ''?>
+<p class="text-right"><a href="volunteer/Admin/Volunteer/">Back to volunteer list</a></p>
+<hr/>
+<?php if (!empty($rows)):?>
+<?php foreach ($rows as $r):?>
+<div class="mb-3">
+  <div class="border-bottom"><h3><?=$r['sponsor']?></h3></div>
+  <table class="table">
+    <tbody>
+      <tr>
+        <th>Day</th>
+        <th>Arrived</th>
+        <th>Left</th>
+        <th>Total time</th>
+      </tr>
+<?php foreach ($r['punches'] as $punch):?>
+<tr>
+  <td class="w-25"><?=strftime('%b. %e, %Y', $punch['timeIn'])?></td>
+  <td class="w-25"><?=strftime('%l:%M  %P', $punch['timeIn'])?></td>
+  <td class="w-25"><?=$punch['timeOut'] ? strftime('%l:%M  %P', $punch['timeOut']) : 'N/A'?></td>
+  <td class="w-25"><?=$punch['totalTime']?></td>
+  </tr>
+<?php endforeach; ?>
+    </tbody>
+  </table>
+</div>
+<?php endforeach;endif;?>
