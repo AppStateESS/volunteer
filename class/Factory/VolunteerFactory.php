@@ -13,9 +13,10 @@ use volunteer\Resource\Volunteer;
 class VolunteerFactory extends AbstractFactory
 {
 
-    public static function currentUserIsStudent()
+    public static function build(int $id = 0)
     {
-
+        $volunteer = new Volunteer;
+        return $id > 0 ? self::load($volunteer, $id) : $volunteer;
     }
 
     public static function loadCurrent($createIfNotFound = true)
@@ -61,6 +62,14 @@ class VolunteerFactory extends AbstractFactory
         } else {
             throw new \volunteer\Exception\StudentNotFound;
         }
+    }
+
+    public static function list($options = [])
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_volunteer');
+        parent::applyOptions($db, $tbl, $options);
+        return $db->select();
     }
 
 }
