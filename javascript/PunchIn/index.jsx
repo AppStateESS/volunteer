@@ -6,7 +6,9 @@ import Select from 'react-select'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner, faClock} from '@fortawesome/free-solid-svg-icons'
 
-const PunchIn = () => {
+/* global volunteerName */
+
+const PunchIn = ({volunteerName}) => {
   const [sponsors, setSponsors] = useState([])
   const [loading, setLoading] = useState(true)
   const [sponsorId, setSponsorId] = useState(0)
@@ -20,13 +22,20 @@ const PunchIn = () => {
       console.log(error)
     })
   }
-
+  let title = 'Check in'
   let sponsorList
   if (loading) {
     sponsorList = (
       <div className="lead text-center">
         <FontAwesomeIcon icon={faSpinner} spin />
         &nbsp;Loading sponsors...
+      </div>
+    )
+  } else if (sponsors.length == 0) {
+    title = 'Sorry'
+    sponsorList = (
+      <div className="alert alert-danger">
+        No sponsors available. Please create sponsors in administration.
       </div>
     )
   } else {
@@ -53,9 +62,12 @@ const PunchIn = () => {
         <div className="col-md-8 col-sm-10">
           <div className="card">
             <div className="card-header bg-primary text-white">
-              <h2 className="m-0">Check in</h2>
+              <h2 className="m-0">{title}</h2>
             </div>
             <div className="card-body">
+              <p>
+                Hello {volunteerName}, please choose your sponsor and check in.
+              </p>
               <form method="post" action="./volunteer/Student/Punch/In">
                 {sponsorList}
                 <p className="small text-center">
@@ -64,7 +76,7 @@ const PunchIn = () => {
                 <button
                   type="submit"
                   className="btn btn-lg btn-success btn-block mt-3 py-3"
-                  disabled={loading || sponsorId === 0}>
+                  disabled={loading || sponsorId === 0 || sponsors.length == 0}>
                   {' '}
                   <FontAwesomeIcon icon={faClock} />
                   &nbsp;Check in
@@ -78,4 +90,7 @@ const PunchIn = () => {
   )
 }
 
-ReactDOM.render(<PunchIn />, document.getElementById('PunchIn'))
+ReactDOM.render(
+  <PunchIn volunteerName={volunteerName} />,
+  document.getElementById('PunchIn')
+)
