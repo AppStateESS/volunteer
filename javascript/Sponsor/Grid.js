@@ -42,6 +42,6 @@ const Grid = ({listing, edit}) => {
   )
 }
 
-Grid.propTypes = {listing: PropTypes.array}
+Grid.propTypes = {listing: PropTypes.array, edit: PropTypes.func}
 
 export default Grid
