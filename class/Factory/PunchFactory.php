@@ -85,6 +85,10 @@ class PunchFactory extends AbstractFactory
             $tbl2->addField('bannerId');
             $db->joinResources($tbl, $tbl2, $cond);
         }
+
+        if (!empty($options['volunteerId'])) {
+            $tbl->addFieldConditional('volunteerId', $options['volunteerId']);
+        }
         $options['orderBy'] = 'timeIn';
         $options['dir'] = 'desc';
         parent::applyOptions($db, $tbl, $options);
@@ -93,6 +97,19 @@ class PunchFactory extends AbstractFactory
             $tbl->addFieldConditional('sponsorId', $options['sponsorId']);
         }
         return $db->select();
+    }
+
+    public static function getTotalTime($timeIn, $timeOut)
+    {
+        $totalSeconds = $timeOut - $timeIn;
+        $totalHours = floor($totalSeconds / 3600);
+        $totalMinutes = floor(($totalSeconds % 3600) / 60);
+        $totalTime = [];
+        if ($totalHours > 0) {
+            $totalTime[] = $totalHours . ' hour' . ($totalHours > 1 ? 's' : '') . ' and ';
+        }
+        $totalTime[] = $totalMinutes . ' minute' . ( ($totalMinutes > 1 || $totalMinutes == 0) ? 's' : '');
+        return implode(' ', $totalTime);
     }
 
 }
