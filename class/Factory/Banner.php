@@ -14,6 +14,7 @@ class Banner
     {
         $url = VOLUNTEER_BANNER_API;
         $pluggedUrl = str_replace('{id}', $username, $url);
+
         $curl = curl_init();
         curl_setopt_array($curl,
                 array(CURLOPT_RETURNTRANSFER => 1, CURLOPT_URL => $pluggedUrl, CURLOPT_FAILONERROR => 1, CURLOPT_TIMEOUT => VOLUNTEER_TIMEOUT, CURLOPT_SSL_VERIFYHOST => 0, CURLOPT_SSL_VERIFYPEER => 0));
@@ -49,7 +50,8 @@ class Banner
             return ['success' => false, 'error' => $error, 'errNo' => $errNo, 'endProcess' => $endProcess];
         } else {
             $student = json_decode($result);
-            if (empty($student->ID)) {
+
+            if (empty($student->bannerID)) {
                 return ['success' => false, 'error' => 'Result incomplete.', 'errNo' => 0];
             } else {
                 return ['success' => true, 'student' => $student, 'cache' => false];
