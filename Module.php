@@ -21,6 +21,7 @@ use volunteer\Factory\MemberFactory;
 use volunteer\Factory\Authenticate;
 use volunteer\View\PunchView;
 use volunteer\View\AdminView;
+use volunteer\Exception\StudentNotFound;
 
 $defineFile = PHPWS_SOURCE_DIR . 'mod/volunteer/config/defines.php';
 if (is_file($defineFile)) {
@@ -78,11 +79,20 @@ class Module extends \Canopy\Module implements SettingDefaults
             if (\Current_User::allow('volunteer')) {
                 AdminView::showMenu();
             }
-            if (Authenticate::isLoggedIn()) {
-                \Layout::add(PunchView::punchButton(), 'volunteer', 'volunteer-create');
-            } else {
-                $content = View\VolunteerView::logInPrompt();
-                \Layout::add($content, 'volunteer', 'volunteer-create');
+            try {
+                if (Authenticate::isLoggedIn()) {
+                    \Layout::add(PunchView::punchButton(), 'volunteer', 'volunteer-create');
+                } else {
+                    $content = View\VolunteerView::logInPrompt();
+                    \Layout::add($content, 'volunteer', 'volunteer-create');
+                }
+            } catch (StudentNotFound $e) {
+                if (VOLUNTEER_SYSTEM_SETTINGS['friendlyErrors']) {
+                    $content = View\VolunteerView::StudentNotFound();
+                    \Layout::add($content, 'volunteer', 'volunteer-create');
+                } else {
+                    throw $e;
+                }
             }
         }
     }
