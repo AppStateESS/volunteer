@@ -76,7 +76,8 @@ abstract class AbstractFactory extends \phpws2\ResourceFactory
         }
 
         if (!empty($options['search'])) {
-            self::addSearch($options['search'], ['name'], $db, $tbl);
+            self::addSearch($options['search'], ['firstName', 'lastName', 'preferredName'], $db,
+                    $tbl);
         }
     }
 
