@@ -34,7 +34,7 @@ class SponsorFactory extends AbstractFactory
         self::applyOptions($db, $tbl, $options);
         $result = $db->select();
         if (empty($result)) {
-            return;
+            return [];
         }
         if (!empty($options['sortById'])) {
             foreach ($result as $row) {
