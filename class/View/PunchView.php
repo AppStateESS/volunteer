@@ -11,6 +11,7 @@ use volunteer\Factory\PunchFactory;
 use volunteer\Factory\VolunteerFactory;
 use volunteer\Factory\SponsorFactory;
 use volunteer\Resource\Punch;
+use volunteer\Resource\Volunteer;
 use phpws2\Template;
 
 class PunchView extends AbstractView
@@ -21,15 +22,15 @@ class PunchView extends AbstractView
         $currentVolunteer = VolunteerFactory::loadCurrent();
         $punch = PunchFactory::currentPunch($currentVolunteer);
         if ($punch === false) {
-            return self::punchIn();
+            return self::punchIn($currentVolunteer);
         } else {
             return self::punchOut($punch);
         }
     }
 
-    private static function punchIn()
+    private static function punchIn(Volunteer $volunteer)
     {
-        return self::scriptView('PunchIn');
+        return self::scriptView('PunchIn', ['volunteerName' => $volunteer->getPreferred()]);
     }
 
     private static function punchOut(Punch $punch)
