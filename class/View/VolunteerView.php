@@ -58,4 +58,11 @@ class VolunteerView extends AbstractView
         return $template->get();
     }
 
+    public static function StudentNotFound()
+    {
+        $template = new \phpws2\Template();
+        $template->setModuleTemplate('volunteer', 'StudentNotFound.html');
+        return $template->get();
+    }
+
 }
