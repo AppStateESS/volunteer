@@ -6,4 +6,5 @@ exports.entry = {
   Sponsor: exports.APP_DIR + '/Sponsor/index.jsx',
   PunchIn: exports.APP_DIR + '/PunchIn/index.jsx',
   Report: exports.APP_DIR + '/Report/index.jsx',
+  Volunteer: exports.APP_DIR + '/Volunteer/index.jsx',
 }
