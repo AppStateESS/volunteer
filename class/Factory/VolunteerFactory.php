@@ -49,18 +49,19 @@ class VolunteerFactory extends AbstractFactory
     protected static function createVolunteer(string $username)
     {
         $result = Banner::pullByUsername($username);
+
         if ($result['success']) {
             $student = $result['student'];
             $volunteer = new Volunteer;
             $volunteer->userName = $username;
             $volunteer->firstName = $student->firstName;
             $volunteer->lastName = $student->lastName;
-            $volunteer->preferredName = $student->preferredName;
-            $volunteer->bannerId = (string) $student->ID;
+            $volunteer->preferredName = $student->preferredName ?? null;
+            $volunteer->bannerId = (string) $student->bannerID;
             self::saveResource($volunteer);
             return $volunteer;
         } else {
-            throw new \volunteer\Exception\StudentNotFound;
+            throw new \volunteer\Exception\StudentNotFound($username);
         }
     }
 
