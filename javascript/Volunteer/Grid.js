@@ -9,7 +9,7 @@ const Grid = ({listing, domain}) => {
   const rows = listing.map((value, key) => {
     return (
       <tr key={`row-${value.id}`}>
-        <td style={{width: '10%'}}>
+        <td style={{width: '15%'}}>
           <a
             className="btn btn-outline-dark btn-sm"
             href={`./volunteer/Admin/Volunteer/${value.id}/report`}>
