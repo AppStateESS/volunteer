@@ -6,7 +6,8 @@
           <h2 class="m-0">Check out of <?=$sponsor['name']?>.</h2>
         </div>
         <div class="card-body">
-          <p>Hello, <?=$volunteer['preferredName'] ?? $volunteer['firstName']?>. You have been clocked in for
+          <p>Hello <?= empty($volunteer['preferredName']) ? $volunteer['firstName'] : $volunteer['preferredName']?>.
+            You have been clocked in for
             <?=$totalTime?>.</p>
           <form method="post" action="./volunteer/Student/Punch/out">
             <input type="hidden" name="punchId" value="<?=$punch['id']?>" />
