@@ -28,4 +28,13 @@ class Volunteer extends AbstractResource
         $this->lastName = new \phpws2\Variable\Alphanumeric(null, 'lastName', 40);
     }
 
+    public function getFullName()
+    {
+        if ($this->preferredName->isEmpty()) {
+            return "{$this->firstName} {$this->lastName}";
+        } else {
+            return "{$this->preferredName} {$this->lastName}";
+        }
+    }
+
 }
