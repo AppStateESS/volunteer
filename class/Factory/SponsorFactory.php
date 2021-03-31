@@ -28,8 +28,22 @@ class SponsorFactory extends AbstractFactory
             $options['orderBy'] = 'name';
             $options['dir'] = 1;
         }
+        if (!empty($options['idList'])) {
+            $tbl->addFieldConditional('id', $options['idList'], 'in');
+        }
         self::applyOptions($db, $tbl, $options);
-        return $db->select();
+        $result = $db->select();
+        if (empty($result)) {
+            return;
+        }
+        if (!empty($options['sortById'])) {
+            foreach ($result as $row) {
+                $sorted[$row['id']] = $row;
+            }
+            return $sorted;
+        } else {
+            return $result;
+        }
     }
 
     public static function post(Request $request)
