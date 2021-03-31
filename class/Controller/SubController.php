@@ -131,8 +131,7 @@ abstract class SubController
             $this->loadRequestId($request);
         }
 
-        if ($request->isAjax() && in_array($method,
-                        ['post', 'put', 'patch', 'delete'])) {
+        if ($request->isAjax() && in_array($method, ['post', 'put', 'patch', 'delete'])) {
             $data = $request->getJsonData();
             $funcName = 'set' . ucwords($method) . 'Vars';
             $request->$funcName((array) $data);
