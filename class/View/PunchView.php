@@ -39,7 +39,7 @@ class PunchView extends AbstractView
         $vars['punch'] = $punch->getStringVars();
         $sponsor = SponsorFactory::build($punch->sponsorId);
         $vars['sponsor'] = $sponsor->getStringVars();
-        $vars['totalTime'] = self::getTotalTime($punch->timeIn);
+        $vars['totalTime'] = PunchFactory::getTotalTime($punch->timeIn, time());
         $template = new Template($vars);
         $template->setModuleTemplate('volunteer', 'PunchOut.html');
         return $template->get();
@@ -50,19 +50,6 @@ class PunchView extends AbstractView
         $template = new Template();
         $template->setModuleTemplate('volunteer', 'NoSponsors.html');
         return $template->get();
-    }
-
-    private static function getTotalTime($timeIn)
-    {
-        $totalSeconds = time() - $timeIn;
-        $totalHours = floor($totalSeconds / 3600);
-        $totalMinutes = floor(($totalSeconds % 3600) / 60);
-        $totalTime = [];
-        if ($totalHours > 0) {
-            $totalTime[] = $totalHours . ' hour' . ($totalHours > 1 ? 's' : '') . ' and ';
-        }
-        $totalTime[] = $totalMinutes . ' minute' . ( ($totalMinutes > 1 || $totalMinutes == 0) ? 's' : '');
-        return implode(' ', $totalTime);
     }
 
     public static function afterPunchIn(int $punchId)
