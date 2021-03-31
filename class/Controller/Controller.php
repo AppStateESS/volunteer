@@ -34,7 +34,7 @@ class Controller extends \phpws2\Http\Controller
         $userId = \Current_User::getId();
         if (\Current_User::allow('volunteer')) {
             $this->role = new \volunteer\Role\Admin($userId);
-        } elseif (VolunteerFactory::currentUserIsStudent()) {
+        } elseif (\volunteer\Factory\Authenticate::isLoggedIn()) {
             $this->role = new \volunteer\Role\Student();
         } else {
             $this->role = new \volunteer\Role\User;
