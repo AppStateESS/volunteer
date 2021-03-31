@@ -22,10 +22,10 @@ class Volunteer extends AbstractResource
         parent::__construct();
         $this->userName = new \phpws2\Variable\StringVar(null, 'userName', 50);
         $this->bannerId = new \phpws2\Variable\NumberString(null, 'bannerId', 20);
-        $this->firstName = new \phpws2\Variable\Alphanumeric(null, 'firstName', 40);
-        $this->preferredName = new \phpws2\Variable\Alphanumeric(null, 'preferredName', 40);
+        $this->firstName = new \phpws2\Variable\TextOnly(null, 'firstName', 40);
+        $this->preferredName = new \phpws2\Variable\TextOnly(null, 'preferredName', 40);
         $this->preferredName->allowNull(true);
-        $this->lastName = new \phpws2\Variable\Alphanumeric(null, 'lastName', 40);
+        $this->lastName = new \phpws2\Variable\TextOnly(null, 'lastName', 40);
     }
 
     public function getFullName()
@@ -35,6 +35,11 @@ class Volunteer extends AbstractResource
         } else {
             return "{$this->preferredName} {$this->lastName}";
         }
+    }
+
+    public function getPreferred()
+    {
+        return $this->preferredName->isEmpty() ? $this->firstName->get() : $this->preferredName->get();
     }
 
 }
