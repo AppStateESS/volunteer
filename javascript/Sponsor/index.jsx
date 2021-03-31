@@ -21,18 +21,16 @@ const Sponsor = () => {
   const [showModal, setShowModal] = useState(false)
   const [search, setSearch] = useState('')
 
-  const loadList = () => {
+  const loadList = (search = '') => {
     setLoading(true)
     const Promise = getList('volunteer/Admin/Sponsor/', {search})
     Promise.then((response) => {
       setLoading(false)
       setListing(response.data)
+    }).catch((error) => {
+      console.log(error)
     })
   }
-
-  useEffect(() => {
-    loadList()
-  }, [])
 
   useEffect(() => {
     nameInput.current.focus()
@@ -42,7 +40,7 @@ const Sponsor = () => {
     clearTimeout(track.current)
     if (search.length > 3) {
       track.current = setTimeout(() => {
-        loadList()
+        loadList(search)
       }, 1000)
       return () => clearTimeout(track.current)
     } else if (search.length == 0) {
@@ -72,7 +70,7 @@ const Sponsor = () => {
 
   const sendSearch = () => {
     clearTimeout(track.current)
-    loadList()
+    loadList(search)
   }
 
   const clearSearch = () => {
@@ -128,7 +126,7 @@ const Sponsor = () => {
               placeholder="Search sponsors"
               onKeyDown={(e) => {
                 if (e.keyCode === 13) {
-                  loadList()
+                  loadList(search)
                 }
               }}
               value={search}
