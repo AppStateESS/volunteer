@@ -2,7 +2,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import dayjs from 'dayjs'
-import {relativeTime} from 'dayjs/plugin/relativeTime'
 
 const totalTime = (punch) => {
   const inTime = punch.timeIn * 1000
@@ -20,7 +19,7 @@ const totalTime = (punch) => {
 }
 
 const Grid = ({listing}) => {
-  const rows = listing.map((value, key) => {
+  const rows = listing.map((value) => {
     return (
       <tr key={`row-${value.id}`}>
         <td>
