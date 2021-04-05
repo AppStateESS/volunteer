@@ -27,7 +27,7 @@ class FriendlyErrorController extends \phpws2\Http\Controller
 
     public function get(\Canopy\Request $request)
     {
-        $vars = \volunteer\Factory\SettingsFactory::getContact();
+        $vars['siteContactEmail'] = VOL_CONTACT_EMAIL;
         $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('volunteer', 'error.html');
         $template->add('message', VOLUNTEER_FRIENDLY_MESSAGE);
