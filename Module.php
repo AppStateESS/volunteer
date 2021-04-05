@@ -87,7 +87,7 @@ class Module extends \Canopy\Module implements SettingDefaults
                     \Layout::add($content, 'volunteer', 'volunteer-create');
                 }
             } catch (StudentNotFound $e) {
-                if (VOLUNTEER_SYSTEM_SETTINGS['friendlyErrors']) {
+                if (VOLUNTEER_SYSTEM_SETTINGS['friendlyErrors'] && !$request->isAjax()) {
                     $content = View\VolunteerView::StudentNotFound();
                     \Layout::add($content, 'volunteer', 'volunteer-create');
                 } else {
