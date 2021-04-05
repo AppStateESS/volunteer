@@ -21,34 +21,8 @@ class VolunteerView extends AbstractView
 
     public static function report(Volunteer $volunteer)
     {
-        $punches = PunchFactory::list(['volunteerId' => $volunteer->id]);
-        $vars['name'] = $volunteer->getFullName();
-        if (!empty($punches)) {
-            $vars['rows'] = self::sortPunches($punches);
-        }
-        $template = new \phpws2\Template($vars);
-        $template->setModuleTemplate('volunteer', 'Report.html');
-        return $template->get();
-    }
-
-    private static function sortPunches(array $punches)
-    {
-        $rows = [];
-        foreach ($punches as $punch) {
-            if ($punch['timeOut']) {
-                $punch['totalTime'] = PunchFactory::getTotalTime($punch['timeIn'], $punch['timeOut']);
-            } else {
-                $punch['totalTime'] = 'N/A';
-            }
-            $rows[$punch['sponsorId']]['punches'][] = $punch;
-        }
-        $sponsorIds = array_keys($rows);
-
-        $sponsorList = SponsorFactory::list(['idList' => $sponsorIds, 'sortById' => true]);
-        foreach ($sponsorList as $id => $sponsor) {
-            $rows[$id]['sponsor'] = $sponsor['name'];
-        }
-        return $rows;
+        $vars['volunteer'] = $volunteer->getStringVars();
+        return self::scriptView('VolunteerReport', $vars);
     }
 
     public static function logInPrompt()
