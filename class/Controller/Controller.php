@@ -79,8 +79,8 @@ class Controller extends \phpws2\Http\Controller
         } catch (\volunteer\Exception\PrivilegeMissing $e) {
             \Current_User::requireLogin();
         } catch (\Exception $e) {
-            if (VOLUNTEER_SYSTEM_SETTINGS['friendlyErrors']) {
-                \phpws2\Error::log($e);
+            \phpws2\Error::log($e);
+            if (VOLUNTEER_SYSTEM_SETTINGS['friendlyErrors'] && !$request->isAjax()) {
                 $controller = new \volunteer\Controller\FriendlyErrorController($this->getModule());
                 return $controller->get($request);
             } else {
