@@ -10,7 +10,8 @@ namespace volunteer\Factory;
 use phpws2\Database;
 use volunteer\Resource\Volunteer;
 use volunteer\Resource\Punch;
-use \volunteer\Exception\PreviouslyPunched;
+use volunteer\Exception\PreviouslyPunched;
+use volunteer\Factory\SponsorFactory;
 
 class PunchFactory extends AbstractFactory
 {
@@ -41,6 +42,26 @@ class PunchFactory extends AbstractFactory
             $punch->setVars($result);
             return $punch;
         }
+    }
+
+    private static function sortPunches(array $punches)
+    {
+        $rows = [];
+        foreach ($punches as $punch) {
+            if ($punch['timeOut']) {
+                $punch['totalTime'] = self::getTotalTime($punch['timeIn'], $punch['timeOut']);
+            } else {
+                $punch['totalTime'] = 'N/A';
+            }
+            $rows[$punch['sponsorId']]['punches'][] = $punch;
+        }
+        $sponsorIds = array_keys($rows);
+
+        $sponsorList = SponsorFactory::list(['idList' => $sponsorIds, 'sortById' => true]);
+        foreach ($sponsorList as $id => $sponsor) {
+            $rows[$id]['sponsor'] = $sponsor['name'];
+        }
+        return array_values($rows);
     }
 
     public static function in(Volunteer $volunteer, int $sponsorId)
@@ -96,7 +117,11 @@ class PunchFactory extends AbstractFactory
         if (!empty($options['sponsorId'])) {
             $tbl->addFieldConditional('sponsorId', $options['sponsorId']);
         }
-        return $db->select();
+        $result = $db->select();
+        if (!empty($result) && !empty($options['sortBySponsor'])) {
+            return self::sortPunches($result);
+        }
+        return $result;
     }
 
     public static function getTotalTime($timeIn, $timeOut)
