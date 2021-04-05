@@ -1,16 +1,22 @@
 import React from 'react'
 
-const FullName = (volunteer) => {
+const FullName = (volunteer, useAbbr = true) => {
   if (volunteer.preferredName) {
-    return (
-      <span>
-        <abbr
-          style={{textDecoration: 'underline'}}
-          title={`${volunteer.firstName} (${volunteer.preferredName}) ${volunteer.lastName}`}>
-          {volunteer.preferredName} {volunteer.lastName}
-        </abbr>
-      </span>
-    )
+    if (useAbbr) {
+      return (
+        <span>
+          <abbr
+            style={{textDecoration: 'underline'}}
+            title={`${volunteer.firstName} (${volunteer.preferredName}) ${volunteer.lastName}`}>
+            {volunteer.preferredName} {volunteer.lastName}
+          </abbr>
+        </span>
+      )
+    } else {
+      return (
+        <span>{`${volunteer.firstName} (${volunteer.preferredName}) ${volunteer.lastName}`}</span>
+      )
+    }
   } else {
     return (
       <span>
