@@ -27,7 +27,13 @@ class Punch extends SubController
     protected function outPost(Request $request)
     {
         try {
-            PunchFactory::out(VolunteerFactory::loadCurrent(), $request->pullPostInteger('punchId'));
+            $punch = PunchFactory::build($request->pullPostInteger('punchId'));
+
+            $volunteer = VolunteerFactory::loadCurrent();
+            if ($punch->volunteerId !== $volunteer->id) {
+                throw new \Exception('Volunteer does not match punch');
+            }
+            PunchFactory::out($punch);
         } catch (\volunteer\Exception\PreviouslyPunched $ex) {
             return PunchView::previouslyPunched();
         }
