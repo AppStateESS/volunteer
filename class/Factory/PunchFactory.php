@@ -16,6 +16,11 @@ use volunteer\Factory\SponsorFactory;
 class PunchFactory extends AbstractFactory
 {
 
+    /**
+     *
+     * @param int $id
+     * @return Punch
+     */
     public static function build(int $id = 0)
     {
         $punch = new Punch;
@@ -51,7 +56,7 @@ class PunchFactory extends AbstractFactory
             if ($punch['timeOut']) {
                 $punch['totalTime'] = self::getTotalTime($punch['timeIn'], $punch['timeOut']);
             } else {
-                $punch['totalTime'] = 'N/A';
+                $punch['totalTime'] = '(' . self::getTotalTime($punch['timeIn'], time()) . ')';
             }
             $rows[$punch['sponsorId']]['punches'][] = $punch;
         }
@@ -77,10 +82,8 @@ class PunchFactory extends AbstractFactory
         return self::save($punch);
     }
 
-    public static function out(Volunteer $volunteer, int $id)
+    public static function out(Punch $punch)
     {
-        $punch = new Punch;
-        self::load($punch, $id);
         /**
          * Already punched out
          */
