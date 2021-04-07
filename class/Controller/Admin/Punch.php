@@ -19,16 +19,16 @@ class Punch extends SubController
         return PunchFactory::list(['sponsorId' => $request->pullGetInteger('sponsorId'), 'includeVolunteer' => true]);
     }
 
-    protected function punchOutHtml(Request $request)
-    {
-        $volunteer = \volunteer\Factory\VolunteerFactory::build($request->pullGetInteger('volunteerId'));
-
-        PunchFactory::out($volunteer, $this->id);
-    }
-
     protected function reportJson(Request $request)
     {
         return PunchFactory::list(['volunteerId' => $request->pullGetInteger('volunteerId'), 'sortBySponsor' => true]);
+    }
+
+    protected function punchOutPut(Request $request)
+    {
+        $punch = PunchFactory::build($this->id);
+        PunchFactory::out($punch);
+        return ['success' => true];
     }
 
 }
