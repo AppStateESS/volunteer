@@ -15,6 +15,23 @@ const getList = async (url, options) => {
   }
 }
 
+const ajaxPunchOut = async (punchId) => {
+  try {
+    const response = await axios.put(
+      `volunteer/Admin/Punch/${punchId}/punchOut`,
+      {},
+      {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      }
+    )
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
 const sendDelete = async (url) => {
   try {
     const response = await axios.delete(url, {
@@ -66,4 +83,4 @@ const saveSponsor = async (sponsor) => {
   }
 }
 
-export {getList, sendDelete, getItem, saveSponsor}
+export {getList, sendDelete, getItem, saveSponsor, ajaxPunchOut}
