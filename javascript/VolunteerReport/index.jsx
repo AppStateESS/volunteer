@@ -21,7 +21,6 @@ const VolunteerReport = ({volunteer}) => {
     Promise.then((response) => {
       setLoading(false)
       setListing(response.data)
-      console.log(response.data)
     }).catch((error) => {
       console.log(error)
     })
@@ -46,7 +45,7 @@ const VolunteerReport = ({volunteer}) => {
   } else {
     content = (
       <div>
-        <Grid listing={listing} />
+        <Grid {...{listing, load}} />
       </div>
     )
   }
@@ -60,6 +59,7 @@ const VolunteerReport = ({volunteer}) => {
     <div>
       <h2 className="mb-0">{FullName(volunteer, false)}</h2>
       {note}
+      <hr />
       {content}
     </div>
   )
