@@ -24,6 +24,9 @@ const Grid = ({listing, edit}) => {
           </a>
         </td>
         <td>{value.name}</td>
+        <td>
+          <a href={`./volunteer/${value.searchName}`}>{value.searchName}</a>
+        </td>
       </tr>
     )
   })
@@ -34,6 +37,7 @@ const Grid = ({listing, edit}) => {
           <tr>
             <th>&nbsp;</th>
             <th>Name</th>
+            <th>Link</th>
           </tr>
           {rows}
         </tbody>
