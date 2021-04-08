@@ -27,6 +27,7 @@ const Form = ({sponsor, success, failure, nameInput, reset}) => {
           <input
             name="name"
             value={name}
+            maxsize="50"
             ref={nameInput}
             onKeyDown={(e) => {
               if (e.keyCode === 13) {
