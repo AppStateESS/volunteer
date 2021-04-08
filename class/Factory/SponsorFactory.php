@@ -60,4 +60,20 @@ class SponsorFactory extends AbstractFactory
         return self::save($sponsor);
     }
 
+    public static function pullByName(string $name)
+    {
+        $searchName = strtolower($name);
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_sponsor');
+        $tbl->addFieldConditional('searchName', $searchName);
+        $vars = $db->selectOneRow();
+        if (empty($vars)) {
+            return false;
+        } else {
+            $sponsor = self::build();
+            $sponsor->setVars($vars);
+            return $sponsor;
+        }
+    }
+
 }
