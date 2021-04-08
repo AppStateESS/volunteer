@@ -17,20 +17,21 @@ use phpws2\Template;
 class PunchView extends AbstractView
 {
 
-    public static function punchButton()
+    public static function punchButton(array $sponsor = null)
     {
         $currentVolunteer = VolunteerFactory::loadCurrent();
         $punch = PunchFactory::currentPunch($currentVolunteer);
         if ($punch === false) {
-            return self::punchIn($currentVolunteer);
+            return self::punchIn($currentVolunteer, $sponsor);
         } else {
             return self::punchOut($punch);
         }
     }
 
-    private static function punchIn(Volunteer $volunteer)
+    private static function punchIn(Volunteer $volunteer, array $sponsor = null)
     {
-        return self::scriptView('PunchIn', ['volunteerName' => $volunteer->getPreferred()]);
+        return self::scriptView('PunchIn',
+                        ['volunteerName' => $volunteer->getPreferred(), 'defaultSponsor' => $sponsor]);
     }
 
     private static function punchOut(Punch $punch)
