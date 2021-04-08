@@ -45,4 +45,10 @@ class Punch extends SubController
         return PunchView::afterPunchIn($this->id);
     }
 
+    protected function punchInHtml(Request $request)
+    {
+        $sponsor = $GLOBALS['currentSponsor'] ?? null;
+        return PunchView::punchButton($sponsor);
+    }
+
 }
