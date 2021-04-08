@@ -41,20 +41,20 @@ const Punch = ({punch, load}) => {
 Punch.propTypes = {punch: PropTypes.object, load: PropTypes.func}
 
 const Grid = ({listing, load}) => {
-  const rows = listing.map((value) => {
+  const rows = listing.map((value, key) => {
     const punches = value.punches.map((value) => {
-      return <Punch key={`row-${value.id}`} punch={value} load={load} />
+      return <Punch key={`punch-${value.id}`} punch={value} load={load} />
     })
     return (
-      <div key={`row-${value.id}`}>
+      <div key={`sponsor-group-${key}`}>
         <h3>{value.sponsor}</h3>
         <table className="table table-striped">
           <tbody>
             <tr>
-              <th>Day</th>
-              <th>Arrived</th>
-              <th>Left</th>
-              <th>Total time</th>
+              <th className="w-25">Day</th>
+              <th className="w-25">Arrived</th>
+              <th className="w-25">Left</th>
+              <th className="w-25">Total time</th>
             </tr>
             {punches}
           </tbody>
