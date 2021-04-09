@@ -2,7 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faEdit} from '@fortawesome/free-solid-svg-icons'
+import {faEdit, faList} from '@fortawesome/free-solid-svg-icons'
 
 const Grid = ({listing, edit}) => {
   const rows = listing.map((value, key) => {
@@ -20,7 +20,8 @@ const Grid = ({listing, edit}) => {
           <a
             className="btn btn-outline-dark btn-sm"
             href={`volunteer/Admin/Sponsor/${value.id}/report`}>
-            Reports
+            <FontAwesomeIcon icon={faList} />
+            &nbsp;Reports
           </a>
         </td>
         <td>{value.name}</td>
