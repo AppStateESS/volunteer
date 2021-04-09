@@ -69,7 +69,7 @@ class VolunteerFactory extends AbstractFactory
     {
         $db = Database::getDB();
         $tbl = $db->addTable('vol_volunteer');
-        parent::applyOptions($db, $tbl, $options);
+        parent::applyOptions($db, $tbl, $options, ['firstName', 'lastName', 'preferredName']);
         return $db->select();
     }
 
