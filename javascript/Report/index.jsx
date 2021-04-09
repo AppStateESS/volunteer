@@ -30,6 +30,8 @@ const Report = ({sponsor}) => {
         &nbsp;Loading...
       </div>
     )
+  } else if (punchList.length === 0) {
+    content = <p>No sessions recorded with this sponsor.</p>
   } else {
     content = <Grid listing={punchList} />
   }
