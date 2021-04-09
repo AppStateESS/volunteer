@@ -7,7 +7,7 @@ import Card from '../api/Card'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner, faClock} from '@fortawesome/free-solid-svg-icons'
 
-const PickSponsor = ({volunteerName}) => {
+const PickSponsor = ({volunteerName, contactEmail}) => {
   const [sponsors, setSponsors] = useState([])
   const [loading, setLoading] = useState(true)
   const [sponsorId, setSponsorId] = useState(0)
@@ -61,7 +61,8 @@ const PickSponsor = ({volunteerName}) => {
     <form method="post" action="./volunteer/Student/Punch/In">
       {sponsorList}
       <p className="small text-center">
-        If your sponsor is not shown, contact us.
+        If your sponsor is not shown,{' '}
+        <a href={`mailto:${contactEmail}`}>contact us</a>.
       </p>
       <button
         type="submit"
@@ -77,6 +78,9 @@ const PickSponsor = ({volunteerName}) => {
   return <Card {...{title, subtitle, content}} />
 }
 
-PickSponsor.propTypes = {volunteerName: PropTypes.string}
+PickSponsor.propTypes = {
+  volunteerName: PropTypes.string,
+  contactEmail: PropTypes.string,
+}
 
 export default PickSponsor
