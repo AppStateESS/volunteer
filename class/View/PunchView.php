@@ -31,7 +31,7 @@ class PunchView extends AbstractView
     private static function punchIn(Volunteer $volunteer, array $sponsor = null)
     {
         return self::scriptView('PunchIn',
-                        ['volunteerName' => $volunteer->getPreferred(), 'defaultSponsor' => $sponsor]);
+                        ['volunteerName' => $volunteer->getPreferred(), 'defaultSponsor' => $sponsor, 'contactEmail' => VOL_CONTACT_EMAIL]);
     }
 
     private static function punchOut(Punch $punch)
