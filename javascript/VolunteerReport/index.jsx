@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import Grid from './Grid'
 import {getList} from '../api/Fetch'
-import {FullName} from '../api/Name'
+import FullName from '../api/Name'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
 
@@ -57,7 +57,9 @@ const VolunteerReport = ({volunteer}) => {
 
   return (
     <div>
-      <h2 className="mb-0">{FullName(volunteer, false)}</h2>
+      <h2 className="mb-0">
+        <FullName volunteer={volunteer} useAbbr={false} />
+      </h2>
       {note}
       <hr />
       {content}

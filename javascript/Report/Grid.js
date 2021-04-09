@@ -2,6 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import dayjs from 'dayjs'
+import FullName from '../api/Name'
 
 const totalTime = (punch) => {
   const inTime = punch.timeIn * 1000
@@ -23,7 +24,9 @@ const Grid = ({listing}) => {
     return (
       <tr key={`row-${value.id}`}>
         <td>
-          {value.firstName} {value.lastName}
+          <a href={`./volunteer/Admin/Volunteer/${value.volunteerId}/report`}>
+            <FullName volunteer={value} useAbbr={false} />
+          </a>
         </td>
         <td>{dayjs(value.timeIn * 1000).format('MMM D, YY')}</td>
         <td>{dayjs(value.timeIn * 1000).format('h:mm A')}</td>

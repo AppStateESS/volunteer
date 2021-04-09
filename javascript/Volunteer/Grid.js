@@ -1,12 +1,12 @@
 'use strict'
-import React, {useState} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import {FullName} from '../api/Name'
+import FullName from '../api/Name'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faList} from '@fortawesome/free-solid-svg-icons'
 
 const Grid = ({listing, domain}) => {
-  const rows = listing.map((value, key) => {
+  const rows = listing.map((value) => {
     return (
       <tr key={`row-${value.id}`}>
         <td style={{width: '15%'}}>
@@ -17,7 +17,9 @@ const Grid = ({listing, domain}) => {
             &nbsp;Report
           </a>
         </td>
-        <td>{FullName(value)}</td>
+        <td>
+          <FullName volunteer={value} useAbbr={false} />
+        </td>
         <td>
           <a href={`mailto:${value.userName}${domain}`}>{value.userName}</a>
         </td>
@@ -42,6 +44,6 @@ const Grid = ({listing, domain}) => {
   )
 }
 
-Grid.propTypes = {}
+Grid.propTypes = {listing: PropTypes.array, domain: PropTypes.string}
 
 export default Grid
