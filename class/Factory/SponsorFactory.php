@@ -31,7 +31,7 @@ class SponsorFactory extends AbstractFactory
         if (!empty($options['idList'])) {
             $tbl->addFieldConditional('id', $options['idList'], 'in');
         }
-        self::applyOptions($db, $tbl, $options);
+        self::applyOptions($db, $tbl, $options, ['name']);
         $result = $db->select();
         if (empty($result)) {
             return [];
