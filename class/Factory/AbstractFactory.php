@@ -63,7 +63,8 @@ abstract class AbstractFactory extends \phpws2\ResourceFactory
         $db->addConditional($prevCond);
     }
 
-    protected static function applyOptions(DB $db, Table $tbl, array $options)
+    protected static function applyOptions(DB $db, Table $tbl, array $options = [],
+            array $searchColumns = [])
     {
         if (!empty($options['orderBy'])) {
             $orderBy = $options['orderBy'];
@@ -76,8 +77,7 @@ abstract class AbstractFactory extends \phpws2\ResourceFactory
         }
 
         if (!empty($options['search'])) {
-            self::addSearch($options['search'], ['firstName', 'lastName', 'preferredName'], $db,
-                    $tbl);
+            self::addSearch($options['search'], $searchColumns, $db, $tbl);
         }
     }
 
