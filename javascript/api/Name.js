@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FullName = (volunteer, useAbbr = true) => {
+const FullName = ({volunteer, useAbbr = true}) => {
   if (volunteer.preferredName) {
     if (useAbbr) {
       return (
@@ -26,4 +26,6 @@ const FullName = (volunteer, useAbbr = true) => {
   }
 }
 
-export {FullName}
+export default React.memo(FullName, (p, n) => {
+  p.id == n.id
+})
