@@ -1,0 +1,30 @@
+sudo: false
+matrix:
+  include:
+    - language: php
+      php:
+        - 7
+      script:
+        - '.travis-build/phplint .'
+    - language: node.js
+      node_js: 10.20.1
+before_install:
+  - npm i -g npm@v6.14.8
+install:
+  - npm install
+after_success:
+  - npm run build
+  - rm -rf node_modules
+  - tar -czf volunteer.tar.gz *
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: kMU7yfbGfxfdixuVOLktPZcTyirXpLwVlX0hiUzdrwFFQ6RFmtEbnyoQrjo8oX/OALIHQdx2wl4oiSGZEDYlNbrwpP2nBfLFOq8IsJad2AhziQoxgOr4kCxo3OIh1KJzPV9bit0S0uV4kjpCJSlAdnnGjGTYNVumMFaDw93u9QuF7SwUZbroAcvHTTlDfhrA2OdHlT69bS0MkQk6Ik2OdQ5WeRKIYzQqSp5FXofdbczLe2ymKoUDG9dTvb/iWBBPIivrp71wl3aLiFusfrnnK7JvrhHIRXij4Glto/zKMWXDfiGd2cmVlXf5StrLxdBIfSfz+7Jv1FhmQ/XleSRWQQCWihWNqirMfScf43/gYxMqWVYX+blV8nlBkGzAMliHNvCQQj0vJ35swV/JhtzNFga4y+TTYt5bjR1iES3P+vxfgoO0ps1WVKpzO3iQ5zQWYaGRfsQic100Sz7RvrCNn96Ju58iTaLO9o2H976a5FONn+pzZlk5KLlG4sIFRrF+O9CuDIRedi6We/xPxQZDtvwpp00n5ztsOkmXfrM4rx+lj+lLoP0yfBKg5bLi6O4uTotX2a2uomopBJp3YvSDFxvs6ME2FmnxA3IuXU0miYWOGvCWq6Gn5dUSzcLIdU7wrcgRFicwfn4oUY8p8LioKpqNKjsBII2DVSBjxNT2A3M=
+  file: volunteer.tar.gz
+  overwrite: true
+  on:
+    repo: AppStateESS/volunteer
+    branch: master
+    tags: true
