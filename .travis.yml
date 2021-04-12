@@ -18,10 +18,10 @@ after_success:
 deploy:
   provider: releases
   skip_cleanup: true
-  file: conference.tar.gz
+  file: volunteer.tar.gz
   overwrite: true
   on:
-    repo: AppStateESS/conference
+    repo: AppStateESS/volunteer
     branch: master
     tags: true
 env:
