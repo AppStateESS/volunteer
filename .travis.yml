@@ -1,4 +1,3 @@
-sudo: false
 matrix:
   include:
     - language: php
@@ -16,15 +15,15 @@ after_success:
   - npm run build
   - rm -rf node_modules
   - tar -czf volunteer.tar.gz *
-
 deploy:
   provider: releases
   skip_cleanup: true
-  api_key:
-    secure: kMU7yfbGfxfdixuVOLktPZcTyirXpLwVlX0hiUzdrwFFQ6RFmtEbnyoQrjo8oX/OALIHQdx2wl4oiSGZEDYlNbrwpP2nBfLFOq8IsJad2AhziQoxgOr4kCxo3OIh1KJzPV9bit0S0uV4kjpCJSlAdnnGjGTYNVumMFaDw93u9QuF7SwUZbroAcvHTTlDfhrA2OdHlT69bS0MkQk6Ik2OdQ5WeRKIYzQqSp5FXofdbczLe2ymKoUDG9dTvb/iWBBPIivrp71wl3aLiFusfrnnK7JvrhHIRXij4Glto/zKMWXDfiGd2cmVlXf5StrLxdBIfSfz+7Jv1FhmQ/XleSRWQQCWihWNqirMfScf43/gYxMqWVYX+blV8nlBkGzAMliHNvCQQj0vJ35swV/JhtzNFga4y+TTYt5bjR1iES3P+vxfgoO0ps1WVKpzO3iQ5zQWYaGRfsQic100Sz7RvrCNn96Ju58iTaLO9o2H976a5FONn+pzZlk5KLlG4sIFRrF+O9CuDIRedi6We/xPxQZDtvwpp00n5ztsOkmXfrM4rx+lj+lLoP0yfBKg5bLi6O4uTotX2a2uomopBJp3YvSDFxvs6ME2FmnxA3IuXU0miYWOGvCWq6Gn5dUSzcLIdU7wrcgRFicwfn4oUY8p8LioKpqNKjsBII2DVSBjxNT2A3M=
-  file: volunteer.tar.gz
+  file: conference.tar.gz
   overwrite: true
   on:
-    repo: AppStateESS/volunteer
+    repo: AppStateESS/conference
     branch: master
     tags: true
+env:
+  global:
+    secure: uTNUHiRw2+qZYmD7dxSEuOCjH6rX+pBGmQdUZWaPcp24DgIfTXH/HGPalQieDMYZzYy/DhymiWOqUhlOZ6aEauG3EYcMW0RsfKNYaEJrEZWAI8+G9q7OixIYKGmNwyHFvni1+spPxl1waGaoQ3UF2vL/11TIBwGxTUmZ8ucpK2yxTIbP3fLBwdiUxyV8uYpfHcOc6q6vjm5pDT/8cZ2vP8IXwBnRirefk15Kf8Y+bgaYMkafWzc3lgVgAYYVKkYFYVOdbEJdtFfyOR26Z7kuySTw2W4bPKf4ypR5w/BTGh/eTRdiWX4LOqYKpvRXI0+MSFSzT+h7M0kCZi1tYjjngZPOI/kpth2zCWoMMIGKojmhr2bjy/ObAKJDC1XQ0JVwEOqJCptU+ubK+HddAwrgBd2FdHFn6aDPI5nfJMJY7gLa0oZ7ua75qfTxfXeOBaiVfBzM0bZyiyqZAIj+H3wTA7onhpH1EOXxZNBEqhGLZ1eZrN99+MKqksyHo9RzBRKL8dKF8S7xL54JnsWf2aj05wfUq9Q1H1ZQU+tovFSPQfotOzfuZcLGVPOaQyfMX7EYwlKoyldm5lyCbXeAnUnjFNVLoiodMIb1BuNX2L6cBY3l/Vl3df+lHp1/bjX4Ai30tyLZeABHXashQeOk+PqYcOrbyTEnnt7z/aqzeCqlaYU=
