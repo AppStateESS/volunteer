@@ -59,6 +59,24 @@ const getItem = async (role, itemName, id) => {
   }
 }
 
+const sendKiosk = async (sponsorId, kioskMode) => {
+  const url = `volunteer/Admin/Sponsor/${sponsorId}/kiosk`
+  try {
+    const response = await axios.patch(
+      url,
+      {kioskMode},
+      {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      }
+    )
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
 const saveSponsor = async (sponsor) => {
   let url = 'volunteer/Admin/Sponsor'
   let method = 'post'
@@ -83,4 +101,4 @@ const saveSponsor = async (sponsor) => {
   }
 }
 
-export {getList, sendDelete, getItem, saveSponsor, ajaxPunchOut}
+export {getList, sendDelete, getItem, saveSponsor, ajaxPunchOut, sendKiosk}
