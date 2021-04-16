@@ -32,6 +32,9 @@ class SponsorFactory extends AbstractFactory
             $tbl->addFieldConditional('id', $options['idList'], 'in');
         }
         self::applyOptions($db, $tbl, $options, ['name']);
+        if (!empty($options['noKiosk'])) {
+            $tbl->addFieldConditional('kioskMode', 0);
+        }
         $result = $db->select();
         if (empty($result)) {
             return [];
