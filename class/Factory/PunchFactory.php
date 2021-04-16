@@ -16,6 +16,12 @@ use volunteer\Factory\SponsorFactory;
 class PunchFactory extends AbstractFactory
 {
 
+    public static function approve(Punch $punch)
+    {
+        $punch->approve = true;
+        self::save($punch);
+    }
+
     /**
      *
      * @param int $id
@@ -91,6 +97,9 @@ class PunchFactory extends AbstractFactory
             throw new PreviouslyPunched;
         }
         $punch->out();
+        if (!SettingsFactory::get('approvalRequired')) {
+            $punch->approved = true;
+        }
         return self::save($punch);
     }
 
