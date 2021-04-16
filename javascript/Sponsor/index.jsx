@@ -1,7 +1,7 @@
 'use strict'
 import React, {useState, useEffect, useRef} from 'react'
 import ReactDOM from 'react-dom'
-import {getList} from '../api/Fetch'
+import {getList, sendKiosk} from '../api/Fetch'
 import Grid from './Grid'
 import Form from './Form'
 import Overlay from '@essappstate/canopy-react-overlay'
@@ -21,6 +21,14 @@ const Sponsor = () => {
   const [showModal, setShowModal] = useState(false)
   const [search, setSearch] = useState('')
 
+  const updateKiosk = (key) => {
+    const listCopy = [...listing]
+    const sponsor = listCopy[key]
+    sponsor.kioskMode = 1 - sponsor.kioskMode
+    sendKiosk(sponsor.id, sponsor.kioskMode)
+    listCopy[key] = sponsor
+    setListing(listCopy)
+  }
   const loadList = (search = '') => {
     setLoading(true)
     const Promise = getList('volunteer/Admin/Sponsor/', {search})
@@ -96,7 +104,7 @@ const Sponsor = () => {
   } else {
     content = (
       <div>
-        <Grid listing={listing} edit={edit} />
+        <Grid listing={listing} edit={edit} sendKiosk={updateKiosk} />
       </div>
     )
   }
