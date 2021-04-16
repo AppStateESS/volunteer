@@ -17,7 +17,7 @@ class Sponsor extends SubController
 
     protected function listJson(Request $request)
     {
-        return SponsorFactory::list();
+        return SponsorFactory::list(['noKiosk' => true]);
     }
 
 }
