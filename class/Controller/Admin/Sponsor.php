@@ -44,4 +44,12 @@ class Sponsor extends SubController
         return SponsorView::scriptView('Report', ['sponsor' => $sponsor->getStringVars()]);
     }
 
+    protected function kioskPatch(Request $request)
+    {
+        $sponsor = SponsorFactory::build($this->id);
+        $sponsor->kioskMode = $request->pullPatchBoolean('kioskMode');
+        SponsorFactory::save($sponsor);
+        return ['success' => true];
+    }
+
 }
