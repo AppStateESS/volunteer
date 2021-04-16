@@ -13,6 +13,14 @@ const sendPunchOut = (punchId, load) => {
   })
 }
 
+const Approved = React.memo(({approved}) => {
+  return approved ? (
+    <div className="badge badge-success">Approved</div>
+  ) : (
+    <div className="badge badge-danger">Not approved</div>
+  )
+})
+
 const punchOut = (punch, load) => {
   if (punch.timeOut > 0) {
     return dayjs(punch.timeOut * 1000).format('h:mm A')
@@ -34,6 +42,9 @@ const Punch = ({punch, load}) => {
       <td>{dayjs(punch.timeIn * 1000).format('h:mm A')}</td>
       <td>{punchOut(punch, load)}</td>
       <td>{punch.totalTime}</td>
+      <td>
+        <Approved approved={punch.approved} />
+      </td>
     </tr>
   )
 }
@@ -51,10 +62,11 @@ const Grid = ({listing, load}) => {
         <table className="table table-striped">
           <tbody>
             <tr>
-              <th className="w-25">Day</th>
-              <th className="w-25">Arrived</th>
-              <th className="w-25">Left</th>
-              <th className="w-25">Total time</th>
+              <th style={{width: '20%'}}>Day</th>
+              <th style={{width: '20%'}}>Arrived</th>
+              <th style={{width: '20%'}}>Left</th>
+              <th style={{width: '20%'}}>Total time</th>
+              <th style={{width: '20%'}}>Status</th>
             </tr>
             {punches}
           </tbody>
