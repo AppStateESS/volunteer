@@ -1,7 +1,7 @@
 'use strict'
 import React, {useState, useEffect, useRef} from 'react'
 import ReactDOM from 'react-dom'
-import {getList, sendKiosk} from '../api/Fetch'
+import {getList, sendKiosk, sponsorPreApproved} from '../api/Fetch'
 import Grid from './Grid'
 import Form from './Form'
 import Overlay from '@essappstate/canopy-react-overlay'
@@ -29,6 +29,16 @@ const Sponsor = () => {
     listCopy[key] = sponsor
     setListing(listCopy)
   }
+
+  const sendPreApproved = (key) => {
+    const listCopy = [...listing]
+    const sponsor = listCopy[key]
+    sponsor.preApproved = 1 - sponsor.preApproved
+    sponsorPreApproved(sponsor.id, sponsor.preApproved)
+    listCopy[key] = sponsor
+    setListing(listCopy)
+  }
+
   const loadList = (search = '') => {
     setLoading(true)
     const Promise = getList('volunteer/Admin/Sponsor/', {search})
@@ -104,7 +114,12 @@ const Sponsor = () => {
   } else {
     content = (
       <div>
-        <Grid listing={listing} edit={edit} sendKiosk={updateKiosk} />
+        <Grid
+          listing={listing}
+          edit={edit}
+          sendKiosk={updateKiosk}
+          sendPreApproved={sendPreApproved}
+        />
       </div>
     )
   }

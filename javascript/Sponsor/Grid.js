@@ -2,7 +2,7 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 
-const OptionSelect = ({edit, sponsor, key, sendKiosk}) => {
+const OptionSelect = ({edit, sponsor, key, sendKiosk, sendPreApproved}) => {
   const [selected, setSelected] = useState('na')
 
   const adminOption = (e) => {
@@ -17,16 +17,25 @@ const OptionSelect = ({edit, sponsor, key, sendKiosk}) => {
       case 'kiosk':
         sendKiosk(key)
         break
+
+      case 'preapproved':
+        sendPreApproved(key)
+        break
     }
     setSelected('na')
   }
   const kioskLabel = sponsor.kioskMode ? 'Disable kiosk' : 'Enable kiosk'
+  const approveLabel =
+    sponsor.preApproved == 1 ? 'Do not pre-approve' : 'Pre-approve punches'
   return (
     <select onChange={adminOption} value={selected}>
-      <option value="na">&nbsp;</option>
+      <option disabled={true} value="na">
+        - Actions -
+      </option>
       <option value="edit">Edit</option>
       <option value="report">Report</option>
       <option value="kiosk">{kioskLabel}</option>
+      <option value="preapproved">{approveLabel}</option>
     </select>
   )
 }
@@ -36,9 +45,10 @@ OptionSelect.propTypes = {
   edit: PropTypes.func,
   key: PropTypes.number,
   sendKiosk: PropTypes.func,
+  sendPreApproved: PropTypes.func,
 }
 
-const Grid = ({listing, edit, sendKiosk}) => {
+const Grid = ({listing, edit, sendKiosk, sendPreApproved}) => {
   const rows = listing.map((value, key) => {
     return (
       <tr key={`row-${value.id}`}>
@@ -49,6 +59,7 @@ const Grid = ({listing, edit, sendKiosk}) => {
               sendKiosk(key)
             }}
             sponsor={value}
+            sendPreApproved={() => sendPreApproved(key)}
           />
         </td>
         <td>{value.name}</td>
@@ -56,6 +67,7 @@ const Grid = ({listing, edit, sendKiosk}) => {
           <a href={`./volunteer/${value.searchName}`}>{value.searchName}</a>
         </td>
         <td>{value.kioskMode ? <span>Yes</span> : <span>No</span>}</td>
+        <td>{value.preApproved ? <span>Yes</span> : <span>No</span>}</td>
       </tr>
     )
   })
@@ -68,6 +80,7 @@ const Grid = ({listing, edit, sendKiosk}) => {
             <th>Name</th>
             <th>Link</th>
             <th>Kiosk mode</th>
+            <th>Pre-Approve punch</th>
           </tr>
           {rows}
         </tbody>
