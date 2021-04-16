@@ -56,15 +56,20 @@ class TableCreate
         $km->add();
     }
 
-    public function addApprovedColumn()
+    public function addApprovedColumnToPunch()
     {
         $db = Database::getDB();
-        $sponsor = $db->addTable('vol_punch');
-        $app = $sponsor->addDataType('approved', 'smallint');
+        $punch = $db->addTable('vol_punch');
+        $app = $punch->addDataType('approved', 'smallint');
         $app->add();
-        {
+    }
 
-        }
+    public function addPreApprovedColumnToSponsor()
+    {
+        $db = Database::getDB();
+        $sponsor = $db->addTable('vol_sponsor');
+        $app = $sponsor->addDataType('preApproved', 'smallint');
+        $app->add();
     }
 
 }
