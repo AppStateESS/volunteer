@@ -55,8 +55,9 @@ const PickSponsor = ({volunteerName, contactEmail}) => {
     loadSponsors()
   }, [])
   const subtitle = (
-    <p>Hello {volunteerName}, please choose your sponsor and check in.</p>
+    <span>Hello {volunteerName}, please choose your sponsor and check in.</span>
   )
+
   const content = (
     <form method="post" action="./volunteer/Student/Punch/In">
       {sponsorList}
