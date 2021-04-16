@@ -31,4 +31,11 @@ class Punch extends SubController
         return ['success' => true];
     }
 
+    protected function approvePatch(Request $request)
+    {
+        $punch = PunchFactory::build($this->id);
+        PunchFactory::approve($punch);
+        return ['success' => true];
+    }
+
 }
