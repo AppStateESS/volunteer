@@ -34,6 +34,7 @@ const Grid = ({listing}) => {
           {value.timeOut ? dayjs(value.timeOut * 1000).format('h:mm A') : 'N/A'}
         </td>
         <td>{totalTime(value)}</td>
+        <td>{value.approved ? 'Yes' : 'No'}</td>
       </tr>
     )
   })
@@ -47,6 +48,7 @@ const Grid = ({listing}) => {
             <th>Clock in</th>
             <th>Clock out</th>
             <th>Total time</th>
+            <th>Status</th>
           </tr>
           {rows}
         </tbody>
