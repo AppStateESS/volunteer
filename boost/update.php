@@ -39,12 +39,13 @@ class VolunteerDataUpdate
             case $this->compare('1.1.0'):
                 $tableCreate->createKioskTable();
                 $tableCreate->createKioskColumn();
-                $tableCreate->addApprovedColumn();
+                $tableCreate->addApprovedColumnToPunch();
+                $tableCreate->addPreApprovedColumnToSponsor();
                 $this->content[] = '<pre>';
                 $this->content[] = '1.1.0';
                 $this->content[] = '-----------------------------';
                 $this->content[] = 'Added kiosk mode';
-                $this->content[] = 'Focus sent to input after clicking Clear.';
+                $this->content[] = 'Added punch preapproved option for sponsors';
                 $this->content[] = '</pre>';
         }
         return $this->content;
