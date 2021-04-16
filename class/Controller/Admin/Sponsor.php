@@ -52,4 +52,12 @@ class Sponsor extends SubController
         return ['success' => true];
     }
 
+    protected function preApprovedPatch(Request $request)
+    {
+        $sponsor = SponsorFactory::build($this->id);
+        $sponsor->preApproved = $request->pullPatchBoolean('preApproved');
+        SponsorFactory::save($sponsor);
+        return ['success' => true];
+    }
+
 }
