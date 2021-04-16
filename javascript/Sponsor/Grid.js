@@ -1,33 +1,61 @@
 'use strict'
-import React from 'react'
+import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faEdit, faList} from '@fortawesome/free-solid-svg-icons'
 
-const Grid = ({listing, edit}) => {
+const OptionSelect = ({edit, sponsor, key, sendKiosk}) => {
+  const [selected, setSelected] = useState('na')
+
+  const adminOption = (e) => {
+    const {value} = e.target
+    switch (value) {
+      case 'edit':
+        edit(key)
+        break
+      case 'report':
+        location.href = `volunteer/Admin/Sponsor/${sponsor.id}/report`
+        break
+      case 'kiosk':
+        sendKiosk(key)
+        break
+    }
+    setSelected('na')
+  }
+  const kioskLabel = sponsor.kioskMode ? 'Disable kiosk' : 'Enable kiosk'
+  return (
+    <select onChange={adminOption} value={selected}>
+      <option value="na">&nbsp;</option>
+      <option value="edit">Edit</option>
+      <option value="report">Report</option>
+      <option value="kiosk">{kioskLabel}</option>
+    </select>
+  )
+}
+
+OptionSelect.propTypes = {
+  sponsor: PropTypes.object,
+  edit: PropTypes.func,
+  key: PropTypes.number,
+  sendKiosk: PropTypes.func,
+}
+
+const Grid = ({listing, edit, sendKiosk}) => {
   const rows = listing.map((value, key) => {
     return (
       <tr key={`row-${value.id}`}>
         <td style={{width: '20%'}}>
-          <button
-            className="btn btn-success btn-sm mr-2"
-            onClick={() => {
-              edit(key)
-            }}>
-            <FontAwesomeIcon icon={faEdit} />
-            &nbsp; Edit
-          </button>
-          <a
-            className="btn btn-outline-dark btn-sm"
-            href={`volunteer/Admin/Sponsor/${value.id}/report`}>
-            <FontAwesomeIcon icon={faList} />
-            &nbsp;Reports
-          </a>
+          <OptionSelect
+            edit={edit}
+            sendKiosk={() => {
+              sendKiosk(key)
+            }}
+            sponsor={value}
+          />
         </td>
         <td>{value.name}</td>
         <td>
           <a href={`./volunteer/${value.searchName}`}>{value.searchName}</a>
         </td>
+        <td>{value.kioskMode ? <span>Yes</span> : <span>No</span>}</td>
       </tr>
     )
   })
@@ -39,6 +67,7 @@ const Grid = ({listing, edit}) => {
             <th>&nbsp;</th>
             <th>Name</th>
             <th>Link</th>
+            <th>Kiosk mode</th>
           </tr>
           {rows}
         </tbody>
@@ -47,6 +76,10 @@ const Grid = ({listing, edit}) => {
   )
 }
 
-Grid.propTypes = {listing: PropTypes.array, edit: PropTypes.func}
+Grid.propTypes = {
+  listing: PropTypes.array,
+  edit: PropTypes.func,
+  sendKiosk: PropTypes.func,
+}
 
 export default Grid
