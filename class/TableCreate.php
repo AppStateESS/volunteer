@@ -56,4 +56,15 @@ class TableCreate
         $km->add();
     }
 
+    public function addApprovedColumn()
+    {
+        $db = Database::getDB();
+        $sponsor = $db->addTable('vol_punch');
+        $app = $sponsor->addDataType('approved', 'smallint');
+        $app->add();
+        {
+
+        }
+    }
+
 }
