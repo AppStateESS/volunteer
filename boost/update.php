@@ -39,6 +39,7 @@ class VolunteerDataUpdate
             case $this->compare('1.1.0'):
                 $tableCreate->createKioskTable();
                 $tableCreate->createKioskColumn();
+                $tableCreate->addApprovedColumn();
                 $this->content[] = '<pre>';
                 $this->content[] = '1.1.0';
                 $this->content[] = '-----------------------------';
