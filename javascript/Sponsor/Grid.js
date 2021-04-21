@@ -28,9 +28,9 @@ const OptionSelect = ({edit, sponsor, key, sendKiosk, sendPreApproved}) => {
   const approveLabel =
     sponsor.preApproved == 1 ? 'Do not pre-approve' : 'Pre-approve punches'
   return (
-    <select onChange={adminOption} value={selected}>
+    <select onChange={adminOption} value={selected} className="btn btn-sm">
       <option disabled={true} value="na">
-        - Actions -
+        - Commands -
       </option>
       <option value="edit">Edit</option>
       <option value="report">Report</option>
@@ -54,7 +54,7 @@ const Grid = ({listing, edit, sendKiosk, sendPreApproved}) => {
       <tr key={`row-${value.id}`}>
         <td style={{width: '20%'}}>
           <OptionSelect
-            edit={edit}
+            edit={() => edit(key)}
             sendKiosk={() => {
               sendKiosk(key)
             }}
