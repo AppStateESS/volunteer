@@ -20,4 +20,12 @@ class Settings extends SubController
         return SettingsView::form();
     }
 
+    protected static function post(Request $request)
+    {
+        $settingName = $request->pullPostString('name');
+        $settingValue = $request->pullPostString('value');
+        SettingsFactory::save($settingName, $settingValue);
+        return ['success' => true];
+    }
+
 }
