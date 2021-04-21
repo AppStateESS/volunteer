@@ -12,7 +12,7 @@ const Card = ({title, subtitle, content}) => {
               <h2 className="m-0">{title}</h2>
             </div>
             <div className="card-body">
-              <p className="lead">{subtitle}</p>
+              <div className="lead">{subtitle}</div>
               {content}
             </div>
           </div>
@@ -23,7 +23,7 @@ const Card = ({title, subtitle, content}) => {
 }
 
 Card.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   subtitle: PropTypes.PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 }
