@@ -119,6 +119,28 @@ const saveSponsor = async (sponsor) => {
   }
 }
 
+const sendApproves = async (approvals) => {
+  console.log(approvals)
+}
+
+const updateSetting = async (name, value) => {
+  const url = 'volunteer/Admin/Settings'
+  try {
+    const response = await axios.post(
+      url,
+      {name, value},
+      {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      }
+    )
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
 export {
   getList,
   sendDelete,
@@ -127,4 +149,6 @@ export {
   ajaxPunchOut,
   sendKiosk,
   sponsorPreApproved,
+  updateSetting,
+  sendApproves,
 }
