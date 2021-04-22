@@ -9,6 +9,8 @@ namespace volunteer\Controller\Admin;
 
 use volunteer\Controller\SubController;
 use volunteer\Factory\PunchFactory;
+use volunteer\View\PunchView;
+use volunteer\View\AdminView;
 use Canopy\Request;
 
 class Punch extends SubController
@@ -45,6 +47,21 @@ class Punch extends SubController
             PunchFactory::massApprove($approvals);
         }
         return ['success' => true];
+    }
+
+    protected function unapprovedHtml()
+    {
+        AdminView::showMenu('sponsor', 'unapproved');
+        return PunchView::unapproved();
+    }
+
+    protected function unapprovedJson()
+    {
+        $options['unapprovedOnly'] = true;
+        $options['includeVolunteer'] = true;
+        $options['includeSponsor'] = true;
+
+        return PunchFactory::list($options);
     }
 
 }

@@ -7,6 +7,7 @@ exports.entry = {
   PunchIn: exports.APP_DIR + '/PunchIn/index.jsx',
   Report: exports.APP_DIR + '/Report/index.jsx',
   Kiosk: exports.APP_DIR + '/Kiosk/index.jsx',
+  Unapproved: exports.APP_DIR + '/Unapproved/index.jsx',
   Settings: exports.APP_DIR + '/Settings/index.jsx',
   Volunteer: exports.APP_DIR + '/Volunteer/index.jsx',
   VolunteerReport: exports.APP_DIR + '/VolunteerReport/index.jsx',

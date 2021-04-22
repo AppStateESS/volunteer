@@ -77,4 +77,9 @@ class PunchView extends AbstractView
         return $template->get();
     }
 
+    public static function unapproved()
+    {
+        return self::scriptView('Unapproved');
+    }
+
 }
