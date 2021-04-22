@@ -1,6 +1,7 @@
 'use strict'
 import React, {useState, useEffect} from 'react'
 import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
 import {getList} from '../api/Fetch'
 import Grid from './Grid'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -42,5 +43,7 @@ const Report = ({sponsor}) => {
     </div>
   )
 }
+
+Report.propTypes = {sponsor: PropTypes.object}
 
 ReactDOM.render(<Report sponsor={sponsor} />, document.getElementById('Report'))
