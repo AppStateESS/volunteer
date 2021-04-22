@@ -17,6 +17,7 @@ class AdminView
         $sponsorActive = null;
         $volunteerActive = null;
         $settingsActive = null;
+        $unapprovedActive = null;
         switch ($active) {
             case 'settings':
                 $settingsActive = 'active';
@@ -24,11 +25,14 @@ class AdminView
             case 'sponsor':
                 $sponsorActive = 'active';
                 break;
+            case 'unapproved':
+                $unapprovedActive = 'active';
+                break;
             case 'volunteer':
                 $volunteerActive = 'active';
                 break;
         }
-        $activeTpl = ['sponsorActive' => $sponsorActive, 'volunteerActive' => $volunteerActive, 'settingsActive' => $settingsActive];
+        $activeTpl = ['sponsorActive' => $sponsorActive, 'volunteerActive' => $volunteerActive, 'settingsActive' => $settingsActive, 'unapprovedActive' => $unapprovedActive];
         $template = new \phpws2\Template($activeTpl);
         $template->setModuleTemplate('volunteer', 'Menu.html');
         return $template->get();
