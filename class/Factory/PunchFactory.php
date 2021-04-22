@@ -149,4 +149,13 @@ class PunchFactory extends AbstractFactory
         return implode(' ', $totalTime);
     }
 
+    public static function massApprove(array $approvals)
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_punch');
+        $tbl->addFieldConditional('id', $approvals, 'in');
+        $tbl->addValue('approved', 1);
+        return $db->update();
+    }
+
 }
