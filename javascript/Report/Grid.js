@@ -3,21 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import dayjs from 'dayjs'
 import FullName from '../api/Name'
-
-const totalTime = (punch) => {
-  const inTime = punch.timeIn * 1000
-  const outTime = punch.timeOut * 1000
-  const date1 = dayjs(inTime)
-  if (outTime > 0) {
-    const date2 = dayjs(outTime)
-    const hours = date2.diff(date1, 'hour')
-    const minutes = date2.diff(date1, 'minute')
-
-    return `${hours} hour(s), ${minutes} minute(s)`
-  } else {
-    return 'N/A'
-  }
-}
+import totalTime from '../api/Time.js'
 
 const Grid = ({listing}) => {
   const rows = listing.map((value) => {
