@@ -120,7 +120,21 @@ const saveSponsor = async (sponsor) => {
 }
 
 const sendApproves = async (approvals) => {
-  console.log(approvals)
+  const url = 'volunteer/Admin/Punch/approvalList'
+  try {
+    const response = await axios.post(
+      url,
+      {approvals},
+      {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      }
+    )
+    return response
+  } catch (error) {
+    return false
+  }
 }
 
 const updateSetting = async (name, value) => {
