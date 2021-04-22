@@ -122,6 +122,7 @@ const Grid = ({listing, load}) => {
       <button className="btn btn-outline-dark" onClick={postApproves}>
         Approved checked
       </button>
+      <hr />
       {rows}
     </div>
   )
