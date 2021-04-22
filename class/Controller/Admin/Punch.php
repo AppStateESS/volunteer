@@ -38,4 +38,13 @@ class Punch extends SubController
         return ['success' => true];
     }
 
+    protected function approvalListPost(Request $request)
+    {
+        $approvals = $request->pullPostArray('approvals');
+        if (!empty($approvals)) {
+            PunchFactory::massApprove($approvals);
+        }
+        return ['success' => true];
+    }
+
 }
