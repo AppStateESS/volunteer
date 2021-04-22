@@ -108,6 +108,10 @@ class PunchFactory extends AbstractFactory
         $db = Database::getDB();
         $tbl = $db->addTable('vol_punch');
 
+        if (!empty($options['unapprovedOnly'])) {
+            $tbl->addFieldConditional('approved', 0);
+        }
+
         if (!empty($options['includeVolunteer'])) {
             $tbl2 = $db->addTable('vol_volunteer');
             $cond = $db->createConditional($tbl->getField('volunteerId'), $tbl2->getField('id'), '=');
@@ -129,6 +133,14 @@ class PunchFactory extends AbstractFactory
         if (!empty($options['sponsorId'])) {
             $tbl->addFieldConditional('sponsorId', $options['sponsorId']);
         }
+
+        if (!empty($options['includeSponsor'])) {
+            $tbl3 = $db->addTable('vol_sponsor');
+            $cond = $db->createConditional($tbl->getField('sponsorId'), $tbl3->getField('id'), '=');
+            $tbl3->addField('name', 'sponsorName');
+            $db->joinResources($tbl, $tbl3, $cond);
+        }
+
         $result = $db->select();
         if (!empty($result) && !empty($options['sortBySponsor'])) {
             return self::sortPunches($result);
