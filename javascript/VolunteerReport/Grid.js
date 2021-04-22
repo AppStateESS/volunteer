@@ -64,6 +64,7 @@ Punch.propTypes = {punch: PropTypes.object, load: PropTypes.func}
 
 const Grid = ({listing, load}) => {
   const [approveList, setApproveList] = useState({})
+
   const approve = (punchId) => {
     const copyList = Object.assign({}, approveList)
     if (copyList[punchId]) {
@@ -72,6 +73,17 @@ const Grid = ({listing, load}) => {
       copyList[punchId] = true
     }
     setApproveList(copyList)
+  }
+
+  const postApproves = () => {
+    const promise = sendApproves(Object.keys(approveList))
+    promise.then((response) => {
+      if (response && response.data.success) {
+        load()
+      } else {
+        console.log('Problem contacting server')
+      }
+    })
   }
 
   const rows = listing.map((value, key) => {
@@ -107,11 +119,7 @@ const Grid = ({listing, load}) => {
   })
   return (
     <div>
-      <button
-        className="btn btn-outline-dark"
-        onClick={() => {
-          sendApproves(Object.keys(approveList))
-        }}>
+      <button className="btn btn-outline-dark" onClick={postApproves}>
         Approved checked
       </button>
       {rows}
