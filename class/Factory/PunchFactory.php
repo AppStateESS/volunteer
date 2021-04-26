@@ -55,9 +55,10 @@ class PunchFactory extends AbstractFactory
         }
     }
 
-    private static function sortPunches(array $punches)
+    private static function sortPunches(array $punches, bool $includeTotals = false)
     {
         $rows = [];
+        $totalTimes = [];
         foreach ($punches as $punch) {
             if ($punch['timeOut']) {
                 $punch['totalTime'] = self::getTotalTime($punch['timeIn'], $punch['timeOut']);
@@ -65,12 +66,24 @@ class PunchFactory extends AbstractFactory
                 $punch['totalTime'] = '(' . self::getTotalTime($punch['timeIn'], time()) . ')';
             }
             $rows[$punch['sponsorId']]['punches'][] = $punch;
+            if ($includeTotals) {
+                if (!isset($totalTimes[$punch['sponsorId']])) {
+                    $totalTimes[$punch['sponsorId']] = 0;
+                }
+                $totalTimes[$punch['sponsorId']] += $punch['timeOut'] - $punch['timeIn'];
+            }
         }
+
         $sponsorIds = array_keys($rows);
 
         $sponsorList = SponsorFactory::list(['idList' => $sponsorIds, 'sortById' => true]);
         foreach ($sponsorList as $id => $sponsor) {
             $rows[$id]['sponsor'] = $sponsor['name'];
+            if ($includeTotals) {
+                $totalHours = self::totalHours($totalTimes[$id]);
+                $totalMinutes = self::totalMinutes($totalTimes[$id]);
+                $rows[$id]['totalTime'] = self::buildTotalTime($totalHours, $totalMinutes);
+            }
         }
         return array_values($rows);
     }
@@ -103,6 +116,18 @@ class PunchFactory extends AbstractFactory
         return self::save($punch);
     }
 
+    /**
+     * Options are:
+     * - unapprovedOnly = only return punches that are not approved
+     * - includeVolunteer = adds all volunteer information (name, banner id, etc) to the punch
+     * - volunteerId = if set, only pull punches with this volunteer id.
+     * - sponsorId = if set, only pull punches with this sponsor id.
+     * - includeSponsor = if set, include the sponsor's name as sponsorName
+     * - includeTotals = returns a total of all hours for a sponsor. includeSponsor option is
+     *   required.
+     * @param array $options
+     * @return array
+     */
     public static function list(array $options = [])
     {
         $db = Database::getDB();
@@ -142,8 +167,8 @@ class PunchFactory extends AbstractFactory
         }
 
         $result = $db->select();
-        if (!empty($result) && !empty($options['sortBySponsor'])) {
-            return self::sortPunches($result);
+        if (!empty($result) && (!empty($options['sortBySponsor']))) {
+            $result = self::sortPunches($result, !empty($options['includeTotals']));
         }
         return $result;
     }
@@ -151,13 +176,28 @@ class PunchFactory extends AbstractFactory
     public static function getTotalTime($timeIn, $timeOut)
     {
         $totalSeconds = $timeOut - $timeIn;
-        $totalHours = floor($totalSeconds / 3600);
-        $totalMinutes = floor(($totalSeconds % 3600) / 60);
+        $totalHours = self::totalHours($totalSeconds);
+        $totalMinutes = self::totalMinutes($totalSeconds);
+        return self::buildTotalTime($totalHours, $totalMinutes);
+    }
+
+    public static function totalHours($seconds)
+    {
+        return floor($seconds / 3600);
+    }
+
+    public static function totalMinutes($seconds)
+    {
+        return floor(($seconds % 3600) / 60);
+    }
+
+    public static function buildTotalTime($hours, $minutes)
+    {
         $totalTime = [];
-        if ($totalHours > 0) {
-            $totalTime[] = $totalHours . ' hour' . ($totalHours > 1 ? 's' : '') . ' and ';
+        if ($hours > 0) {
+            $totalTime[] = $hours . ' hour' . ($hours > 1 ? 's' : '') . ' and';
         }
-        $totalTime[] = $totalMinutes . ' minute' . ( ($totalMinutes > 1 || $totalMinutes == 0) ? 's' : '');
+        $totalTime[] = $minutes . ' minute' . ( ($minutes > 1 || $minutes == 0) ? 's' : '');
         return implode(' ', $totalTime);
     }
 

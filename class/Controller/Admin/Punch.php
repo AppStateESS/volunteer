@@ -23,7 +23,7 @@ class Punch extends SubController
 
     protected function reportJson(Request $request)
     {
-        return PunchFactory::list(['volunteerId' => $request->pullGetInteger('volunteerId'), 'sortBySponsor' => true]);
+        return PunchFactory::list(['volunteerId' => $request->pullGetInteger('volunteerId'), 'sortBySponsor' => true, 'includeTotals' => true]);
     }
 
     protected function punchOutPut(Request $request)
