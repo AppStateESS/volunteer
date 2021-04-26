@@ -13,6 +13,10 @@ const sendPunchOut = (punchId, load) => {
   })
 }
 
+const objLength = (obj) => {
+  return Object.keys(obj).length
+}
+
 const Approved = React.memo(({approved}) => {
   return approved ? (
     <div className="badge badge-success">Approved</div>
@@ -60,7 +64,11 @@ const Punch = ({punch, load, approve}) => {
   )
 }
 
-Punch.propTypes = {punch: PropTypes.object, load: PropTypes.func}
+Punch.propTypes = {
+  punch: PropTypes.object,
+  load: PropTypes.func,
+  approve: PropTypes.func,
+}
 
 const Grid = ({listing, load}) => {
   const [approveList, setApproveList] = useState({})
@@ -76,14 +84,16 @@ const Grid = ({listing, load}) => {
   }
 
   const postApproves = () => {
-    const promise = sendApproves(Object.keys(approveList))
-    promise.then((response) => {
-      if (response && response.data.success) {
-        load()
-      } else {
-        console.log('Problem contacting server')
-      }
-    })
+    if (objLength(approveList) > 0) {
+      const promise = sendApproves(Object.keys(approveList))
+      promise.then((response) => {
+        if (response && response.data.success) {
+          load()
+        } else {
+          console.log('Problem contacting server')
+        }
+      })
+    }
   }
 
   const rows = listing.map((value, key) => {
@@ -97,6 +107,20 @@ const Grid = ({listing, load}) => {
         />
       )
     })
+    const totalTime = (
+      <tr>
+        <td colSpan="4">
+          <strong>
+            <span className="lead">Total time</span>
+          </strong>
+        </td>
+        <td>
+          <span className="lead">{value.totalTime}</span>
+        </td>
+        <td>&nbsp;</td>
+      </tr>
+    )
+
     return (
       <div key={`sponsor-group-${key}`}>
         <h3>{value.sponsor}</h3>
@@ -108,18 +132,23 @@ const Grid = ({listing, load}) => {
               <th style={{width: '20%'}}>Day</th>
               <th style={{width: '20%'}}>Arrived</th>
               <th style={{width: '20%'}}>Left</th>
-              <th style={{width: '20%'}}>Total time</th>
-              <th style={{width: '15%'}}>Status</th>
+              <th style={{width: '25%'}}>Session length</th>
+              <th style={{width: '10%'}}>Status</th>
             </tr>
             {punches}
+            {totalTime}
           </tbody>
         </table>
       </div>
     )
   })
+
   return (
     <div>
-      <button className="btn btn-outline-dark" onClick={postApproves}>
+      <button
+        className="btn btn-outline-dark"
+        onClick={postApproves}
+        disabled={objLength(approveList) === 0}>
         Approved checked
       </button>
       <hr />
