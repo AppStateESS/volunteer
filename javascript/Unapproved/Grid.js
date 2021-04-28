@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import dayjs from 'dayjs'
 import FullName from '../api/Name'
 import totalTime from '../api/Time.js'
-import {ajaxPunchOut, sendApproves} from '../api/Fetch'
+import {sendApproves} from '../api/Fetch'
 
 const Grid = ({listing, load}) => {
   const [approveList, setApproveList] = useState({})
