@@ -1,6 +1,8 @@
 import axios from 'axios'
 import 'regenerator-runtime'
 
+const headers = {'X-Requested-With': 'XMLHttpRequest'}
+
 const getList = async (url, options) => {
   try {
     const response = await axios.get(url, {
@@ -155,6 +157,22 @@ const updateSetting = async (name, value) => {
   }
 }
 
+const updatePunch = async (punch) => {
+  const url = `volunteer/Admin/Punch/${punch.id}`
+  try {
+    const response = await axios.put(
+      url,
+      {timeIn: punch.timeIn, timeOut: punch.timeOut},
+      {
+        headers,
+      }
+    )
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
 export {
   getList,
   sendDelete,
@@ -165,4 +183,5 @@ export {
   sponsorPreApproved,
   updateSetting,
   sendApproves,
+  updatePunch,
 }
