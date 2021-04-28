@@ -1,8 +1,8 @@
 'use strict'
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import dayjs from 'dayjs'
 import {ajaxPunchOut, sendApproves} from '../api/Fetch'
+import Punch from './Punch'
 
 const sendPunchOut = (punchId, load) => {
   const promise = ajaxPunchOut(punchId)
@@ -17,61 +17,13 @@ const objLength = (obj) => {
   return Object.keys(obj).length
 }
 
-const Approved = React.memo(({approved}) => {
-  return approved ? (
-    <div className="badge badge-success">Approved</div>
-  ) : (
-    <div className="badge badge-danger">Not approved</div>
-  )
-})
-Approved.propTypes = {approved: PropTypes.number}
-
-const punchOut = (punch, load) => {
-  if (punch.timeOut > 0) {
-    return dayjs(punch.timeOut * 1000).format('h:mm A')
-  } else {
-    return (
-      <button
-        className="btn btn-outline-dark btn-sm"
-        onClick={() => sendPunchOut(punch.id, load)}>
-        Punch out
-      </button>
-    )
-  }
-}
-
-const Punch = ({punch, load, approve}) => {
-  return (
-    <tr>
-      <td>
-        {punch.approved == 0 ? (
-          <input
-            type="checkbox"
-            name="approve[]"
-            value={punch.id}
-            onChange={() => approve(punch.id)}
-          />
-        ) : null}
-      </td>
-      <td>{dayjs(punch.timeIn * 1000).format('MMM. D, YYYY')}</td>
-      <td>{dayjs(punch.timeIn * 1000).format('h:mm A')}</td>
-      <td>{punchOut(punch, load)}</td>
-      <td>{punch.totalTime}</td>
-      <td>
-        <Approved approved={punch.approved} />
-      </td>
-    </tr>
-  )
-}
-
-Punch.propTypes = {
-  punch: PropTypes.object,
-  load: PropTypes.func,
-  approve: PropTypes.func,
-}
-
-const Grid = ({listing, load}) => {
+const Grid = ({listing, load, edit}) => {
   const [approveList, setApproveList] = useState({})
+
+  const changeDate = (e, inOut) => {
+    console.log(e)
+    console.log(inOut)
+  }
 
   const approve = (punchId) => {
     const copyList = Object.assign({}, approveList)
@@ -96,22 +48,24 @@ const Grid = ({listing, load}) => {
     }
   }
 
-  const rows = listing.map((value, key) => {
-    const punches = value.punches.map((value) => {
+  const rows = listing.map((value, skey) => {
+    const punches = value.punches.map((value, pkey) => {
       return (
         <Punch
           key={`punch-${value.id}`}
+          edit={() => edit(skey, pkey)}
           punch={value}
           load={load}
           approve={approve}
+          sendPunchOut={sendPunchOut}
         />
       )
     })
     const totalTime = (
-      <tr>
+      <tr className="bg-dark text-white">
         <td colSpan="4">
           <strong>
-            <span className="lead">Total time</span>
+            <span className="lead">Total time with {value.sponsor}</span>
           </strong>
         </td>
         <td>
@@ -122,7 +76,7 @@ const Grid = ({listing, load}) => {
     )
 
     return (
-      <div key={`sponsor-group-${key}`}>
+      <div key={`sponsor-group-${skey}`}>
         <h3>{value.sponsor}</h3>
 
         <table className="table table-striped">
@@ -139,6 +93,7 @@ const Grid = ({listing, load}) => {
             {totalTime}
           </tbody>
         </table>
+        <hr className="my-4" />
       </div>
     )
   })
@@ -157,6 +112,10 @@ const Grid = ({listing, load}) => {
   )
 }
 
-Grid.propTypes = {listing: PropTypes.array, load: PropTypes.func}
+Grid.propTypes = {
+  listing: PropTypes.array,
+  load: PropTypes.func,
+  edit: PropTypes.func,
+}
 
 export default Grid
