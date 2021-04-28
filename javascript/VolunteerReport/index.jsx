@@ -3,15 +3,23 @@ import React, {useState, useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import Grid from './Grid'
-import {getList} from '../api/Fetch'
+import {getList, updatePunch} from '../api/Fetch'
 import FullName from '../api/Name'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
+import Overlay from '@essappstate/canopy-react-overlay'
+import Form from './Form'
 
 /* global volunteer */
 const VolunteerReport = ({volunteer}) => {
   const [loading, setLoading] = useState(true)
   const [listing, setListing] = useState([])
+  const [showModal, setShowModal] = useState(false)
+  const [currentPunch, setCurrentPunch] = useState({
+    id: 0,
+    timeIn: 0,
+    timeOut: 0,
+  })
 
   const load = () => {
     setLoading(true)
@@ -27,6 +35,24 @@ const VolunteerReport = ({volunteer}) => {
   }
 
   useEffect(load, [volunteer.id])
+
+  const edit = (skey, pkey) => {
+    setShowModal(true)
+    setCurrentPunch(listing[skey].punches[pkey])
+  }
+
+  const savePunch = (timeIn, timeOut) => {
+    currentPunch.timeIn = timeIn.getTime() / 1000
+    currentPunch.timeOut = timeOut.getTime() / 1000
+    const Promise = updatePunch(currentPunch)
+    Promise.then((response) => {
+      if (response.data.success) {
+        setCurrentPunch({id: 0, timeIn: 0, timeOut: 0})
+        setShowModal(false)
+        load()
+      }
+    })
+  }
 
   let content
   if (loading) {
@@ -45,7 +71,7 @@ const VolunteerReport = ({volunteer}) => {
   } else {
     content = (
       <div>
-        <Grid {...{listing, load}} />
+        <Grid {...{listing, load, edit}} />
       </div>
     )
   }
@@ -55,8 +81,19 @@ const VolunteerReport = ({volunteer}) => {
     note = <div className="small mb-4">Preferred name is in parentheses.</div>
   }
 
+  const closeModal = () => {
+    setShowModal(false)
+  }
+
   return (
     <div>
+      <Overlay
+        show={showModal}
+        close={closeModal}
+        width="600px"
+        title="Update punch">
+        <Form punch={currentPunch} close={closeModal} save={savePunch} />
+      </Overlay>
       <h2 className="mb-0">
         <FullName volunteer={volunteer} useAbbr={false} />
       </h2>
