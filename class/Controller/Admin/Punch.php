@@ -64,4 +64,13 @@ class Punch extends SubController
         return PunchFactory::list($options);
     }
 
+    protected function put(Request $request)
+    {
+        $punch = PunchFactory::build($this->id);
+        $punch->timeIn = $request->pullPutInteger('timeIn');
+        $punch->timeOut = $request->pullPutInteger('timeOut');
+        PunchFactory::save($punch);
+        return ['success' => true];
+    }
+
 }
