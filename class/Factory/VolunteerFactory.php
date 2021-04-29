@@ -31,6 +31,21 @@ class VolunteerFactory extends AbstractFactory
         }
     }
 
+    public static function loadByBannerId(string $bannerId)
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_volunteer');
+        $tbl->addFieldConditional('bannerId', $bannerId);
+        $row = $db->selectOneRow();
+        if (empty($row)) {
+            return false;
+        } else {
+            $volunteer = new Volunteer;
+            $volunteer->setVars($row);
+            return $volunteer;
+        }
+    }
+
     public static function loadByUsername(string $username)
     {
         $db = Database::getDB();
@@ -46,14 +61,14 @@ class VolunteerFactory extends AbstractFactory
         }
     }
 
-    protected static function createVolunteer(string $username)
+    public static function createVolunteer(string $identifier)
     {
-        $result = Banner::pullByUsername($username);
+        $result = Banner::queryServer($identifier);
 
         if ($result['success']) {
             $student = $result['student'];
             $volunteer = new Volunteer;
-            $volunteer->userName = $username;
+            $volunteer->userName = $student->userName;
             $volunteer->firstName = $student->firstName;
             $volunteer->lastName = $student->lastName;
             $volunteer->preferredName = $student->preferredName ?? null;
@@ -61,7 +76,7 @@ class VolunteerFactory extends AbstractFactory
             self::saveResource($volunteer);
             return $volunteer;
         } else {
-            throw new \volunteer\Exception\StudentNotFound($username);
+            throw new \volunteer\Exception\StudentNotFound($identifier);
         }
     }
 
