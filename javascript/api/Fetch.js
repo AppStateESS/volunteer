@@ -7,9 +7,7 @@ const getList = async (url, options) => {
   try {
     const response = await axios.get(url, {
       params: options,
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-      },
+      headers,
     })
     return response
   } catch (error) {
@@ -22,11 +20,7 @@ const ajaxPunchOut = async (punchId) => {
     const response = await axios.put(
       `volunteer/Admin/Punch/${punchId}/punchOut`,
       {},
-      {
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-      }
+      {headers}
     )
     return response
   } catch (error) {
@@ -37,9 +31,7 @@ const ajaxPunchOut = async (punchId) => {
 const sendDelete = async (url) => {
   try {
     const response = await axios.delete(url, {
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-      },
+      headers,
     })
     return response
   } catch (error) {
@@ -51,9 +43,7 @@ const getItem = async (role, itemName, id) => {
   const url = `volunteer/${role}/${itemName}/${id}`
   try {
     const response = await axios.get(url, {
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-      },
+      headers,
     })
     return response.data
   } catch (error) {
@@ -64,15 +54,7 @@ const getItem = async (role, itemName, id) => {
 const sponsorPreApproved = async (sponsorId, preApproved) => {
   const url = `volunteer/Admin/Sponsor/${sponsorId}/preApproved`
   try {
-    const response = await axios.patch(
-      url,
-      {preApproved},
-      {
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-      }
-    )
+    const response = await axios.patch(url, {preApproved}, {headers})
     return response
   } catch (error) {
     return false
@@ -82,15 +64,7 @@ const sponsorPreApproved = async (sponsorId, preApproved) => {
 const sendKiosk = async (sponsorId, kioskMode) => {
   const url = `volunteer/Admin/Sponsor/${sponsorId}/kiosk`
   try {
-    const response = await axios.patch(
-      url,
-      {kioskMode},
-      {
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-      }
-    )
+    const response = await axios.patch(url, {kioskMode}, {headers})
     return response
   } catch (error) {
     return false
@@ -111,9 +85,7 @@ const saveSponsor = async (sponsor) => {
       method,
       url,
       data: sponsor,
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-      },
+      headers,
     })
     return response
   } catch (error) {
@@ -124,15 +96,7 @@ const saveSponsor = async (sponsor) => {
 const sendApproves = async (approvals) => {
   const url = 'volunteer/Admin/Punch/approvalList'
   try {
-    const response = await axios.post(
-      url,
-      {approvals},
-      {
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-      }
-    )
+    const response = await axios.post(url, {approvals}, {headers})
     return response
   } catch (error) {
     return false
@@ -142,15 +106,7 @@ const sendApproves = async (approvals) => {
 const updateSetting = async (name, value) => {
   const url = 'volunteer/Admin/Settings'
   try {
-    const response = await axios.post(
-      url,
-      {name, value},
-      {
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-      }
-    )
+    const response = await axios.post(url, {name, value}, {headers})
     return response
   } catch (error) {
     return false
@@ -163,10 +119,21 @@ const updatePunch = async (punch) => {
     const response = await axios.put(
       url,
       {timeIn: punch.timeIn, timeOut: punch.timeOut},
-      {
-        headers,
-      }
+      {headers}
     )
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
+const swipeVolunteer = async (bannerId, sponsorId) => {
+  const url = 'volunteer/User/Punch/swipeIn'
+  try {
+    const response = await axios.get(url, {
+      params: {bannerId, sponsorId},
+      headers,
+    })
     return response
   } catch (error) {
     return false
@@ -184,4 +151,5 @@ export {
   updateSetting,
   sendApproves,
   updatePunch,
+  swipeVolunteer,
 }
