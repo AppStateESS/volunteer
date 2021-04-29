@@ -3,6 +3,8 @@ import React, {useState, useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import Grid from './Grid'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 import {getList, updatePunch} from '../api/Fetch'
 import FullName from '../api/Name'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -12,6 +14,10 @@ import Form from './Form'
 
 /* global volunteer */
 const VolunteerReport = ({volunteer}) => {
+  const today = new Date()
+  const lastMonth = new Date()
+  lastMonth.setDate(today.getDate() - 30)
+
   const [loading, setLoading] = useState(true)
   const [listing, setListing] = useState([])
   const [showModal, setShowModal] = useState(false)
@@ -20,11 +26,17 @@ const VolunteerReport = ({volunteer}) => {
     timeIn: 0,
     timeOut: 0,
   })
+  const [searchFrom, setSearchFrom] = useState(lastMonth)
+  const [searchTo, setSearchTo] = useState(today)
 
   const load = () => {
     setLoading(true)
     const Promise = getList(
-      `volunteer/Admin/Punch/report/?volunteerId=${volunteer.id}`
+      `volunteer/Admin/Punch/report/?volunteerId=${volunteer.id}`,
+      {
+        from: Math.floor(searchFrom.getTime() / 1000),
+        to: Math.floor(searchTo.getTime() / 1000),
+      }
     )
     Promise.then((response) => {
       setLoading(false)
@@ -98,6 +110,13 @@ const VolunteerReport = ({volunteer}) => {
         <FullName volunteer={volunteer} useAbbr={false} />
       </h2>
       {note}
+      <div className="mb-3">
+        <DatePicker onChange={setSearchFrom} selected={searchFrom} />
+        <button className="mx-2 btn btn-outline-dark btn-sm" onClick={load}>
+          Search between dates
+        </button>
+        <DatePicker onChange={setSearchTo} selected={searchTo} />
+      </div>
       <hr />
       {content}
     </div>

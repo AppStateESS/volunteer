@@ -18,12 +18,14 @@ class Punch extends SubController
 
     protected function listJson(Request $request)
     {
-        return PunchFactory::list(['sponsorId' => $request->pullGetInteger('sponsorId'), 'includeVolunteer' => true]);
+        return PunchFactory::list(['sponsorId' => $request->pullGetInteger('sponsorId'), 'includeVolunteer' => true, 'to' => $request->pullGetInteger('to',
+                            true), 'from' => $request->pullGetInteger('from', true)]);
     }
 
     protected function reportJson(Request $request)
     {
-        return PunchFactory::list(['volunteerId' => $request->pullGetInteger('volunteerId'), 'sortBySponsor' => true, 'includeTotals' => true]);
+        return PunchFactory::list(['volunteerId' => $request->pullGetInteger('volunteerId'), 'sortBySponsor' => true, 'includeTotals' => true, 'to' => $request->pullGetInteger('to',
+                            true), 'from' => $request->pullGetInteger('from', true)]);
     }
 
     protected function punchOutPut(Request $request)

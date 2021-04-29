@@ -4,13 +4,8 @@ import PropTypes from 'prop-types'
 import dayjs from 'dayjs'
 import FullName from '../api/Name'
 import totalTime from '../api/Time.js'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
 
 const Grid = ({listing}) => {
-  const [searchFrom, setSearchFrom] = useState(new Date())
-  const [searchTo, setSearchTo] = useState(new Date())
-
   const rows = listing.map((value) => {
     return (
       <tr key={`row-${value.id}`}>
@@ -31,12 +26,6 @@ const Grid = ({listing}) => {
   })
   return (
     <div>
-      <div className="mb-3">
-        <span>Search from&nbsp;</span>
-        <DatePicker onChange={setSearchFrom} selected={searchFrom} />
-        &nbsp;to&nbsp;
-        <DatePicker onChange={setSearchTo} selected={searchTo} />
-      </div>
       <table className="table table-striped">
         <tbody>
           <tr>

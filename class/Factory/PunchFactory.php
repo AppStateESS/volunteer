@@ -165,11 +165,18 @@ class PunchFactory extends AbstractFactory
             $tbl3->addField('name', 'sponsorName');
             $db->joinResources($tbl, $tbl3, $cond);
         }
+        if (!empty($options['from'])) {
+            $tbl->addFieldConditional('timeIn', $options['from'], '>=');
+            if (!empty($options['to']) && $options['to'] > $options['from']) {
+                $tbl->addFieldConditional('timeOut', $options['to'], '<=');
+            }
+        }
 
         $result = $db->select();
         if (!empty($result) && (!empty($options['sortBySponsor']))) {
             $result = self::sortPunches($result, !empty($options['includeTotals']));
         }
+
         return $result;
     }
 
