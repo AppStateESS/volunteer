@@ -36,7 +36,7 @@ const PickSponsor = ({volunteerName, contactEmail}) => {
       })
   }
 
-  let title = 'Check in'
+  let title = 'Clock in'
   let sponsorList
   if (sponsors.length == 0) {
     title = 'Sorry'
@@ -64,7 +64,7 @@ const PickSponsor = ({volunteerName, contactEmail}) => {
     loadSponsors()
   }, [])
   const subtitle = (
-    <span>Hello {volunteerName}, please choose your sponsor and check in.</span>
+    <span>Hello {volunteerName}, please choose your sponsor and clock in.</span>
   )
 
   if (error) {
@@ -95,7 +95,7 @@ const PickSponsor = ({volunteerName, contactEmail}) => {
           disabled={loading || sponsorId === 0 || sponsors.length == 0}>
           {' '}
           <FontAwesomeIcon icon={faClock} />
-          &nbsp;Check in
+          &nbsp;Clock in
         </button>
       </form>
     )
