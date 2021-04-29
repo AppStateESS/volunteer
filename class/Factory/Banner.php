@@ -10,10 +10,10 @@ namespace volunteer\Factory;
 class Banner
 {
 
-    public static function pullByUsername(string $username)
+    public static function queryServer(string $identifier)
     {
         $url = VOLUNTEER_BANNER_API;
-        $pluggedUrl = str_replace('{id}', $username, $url);
+        $pluggedUrl = str_replace('{id}', $identifier, $url);
 
         $curl = curl_init();
         curl_setopt_array($curl,
@@ -27,7 +27,7 @@ class Banner
             $endProcess = true;
             switch ($errNo) {
                 case 7:
-                    $error = 'Could not connect to API server.';
+                    $error = 'Could not connect to authentication server.';
                     break;
 
                 case 28:
