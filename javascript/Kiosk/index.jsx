@@ -37,6 +37,7 @@ const Kiosk = ({sponsor}) => {
       const reset = setTimeout(() => {
         setError('')
         setMessage('')
+        clearTimeout(reset)
       }, 3000)
     })
   }

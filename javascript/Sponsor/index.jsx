@@ -64,6 +64,9 @@ const Sponsor = () => {
     } else if (search.length == 0) {
       loadList()
     }
+    return () => {
+      clearTimeout(track.current)
+    }
   }, [search])
 
   const edit = (key) => {
