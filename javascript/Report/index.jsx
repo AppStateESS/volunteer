@@ -8,7 +8,6 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
-
 /* global sponsor */
 const Report = ({sponsor}) => {
   const today = new Date()
@@ -19,8 +18,6 @@ const Report = ({sponsor}) => {
   const [loading, setLoading] = useState(true)
   const [searchFrom, setSearchFrom] = useState(lastMonth)
   const [searchTo, setSearchTo] = useState(today)
-
-  useEffect(load, [sponsor.id])
 
   const load = () => {
     const promise = getList(`volunteer/Admin/Punch/?sponsorId=${sponsor.id}`, {
@@ -36,6 +33,7 @@ const Report = ({sponsor}) => {
       })
       .then(() => setLoading(false))
   }
+  useEffect(load, [])
 
   let content
 
