@@ -110,9 +110,8 @@ class PunchFactory extends AbstractFactory
             throw new PreviouslyPunched;
         }
         $punch->out();
-        if (!SettingsFactory::get('approvalRequired')) {
-            $punch->approved = true;
-        }
+        $punchApproved = SponsorFactory::isPreapproved($punch->sponsorId);
+
         return self::save($punch);
     }
 
