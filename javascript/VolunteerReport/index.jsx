@@ -15,6 +15,7 @@ import Form from './Form'
 /* global volunteer */
 const VolunteerReport = ({volunteer}) => {
   const today = new Date()
+  today.setHours(23, 59, 59)
   const lastMonth = new Date()
   lastMonth.setDate(today.getDate() - 30)
 
@@ -30,6 +31,7 @@ const VolunteerReport = ({volunteer}) => {
   const [searchTo, setSearchTo] = useState(today)
 
   const load = () => {
+    console.log('here')
     setLoading(true)
     const Promise = getList(
       `volunteer/Admin/Punch/report/?volunteerId=${volunteer.id}`,
@@ -115,7 +117,13 @@ const VolunteerReport = ({volunteer}) => {
         <button className="mx-2 btn btn-outline-dark btn-sm" onClick={load}>
           Search between dates
         </button>
-        <DatePicker onChange={setSearchTo} selected={searchTo} />
+        <DatePicker
+          onChange={(stDate) => {
+            stDate.setHours(23, 59, 59)
+            setSearchTo(stDate)
+          }}
+          selected={searchTo}
+        />
       </div>
       <hr />
       {content}
