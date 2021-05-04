@@ -91,8 +91,8 @@ const Grid = ({listing, edit, sendKiosk, sendPreApproved}) => {
             <th>&nbsp;</th>
             <th>Name</th>
             <th>Link</th>
-            <th>Kiosk mode</th>
-            <th>Pre-Approve punch</th>
+            <th>Kiosk</th>
+            <th>Pre-Approve</th>
           </tr>
           {rows}
         </tbody>
@@ -105,6 +105,7 @@ Grid.propTypes = {
   listing: PropTypes.array,
   edit: PropTypes.func,
   sendKiosk: PropTypes.func,
+  sendPreApproved: PropTypes.func,
 }
 
 export default Grid
