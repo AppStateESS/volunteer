@@ -28,6 +28,7 @@ if (is_file($defineFile)) {
     require_once $defineFile;
 } else {
     require_once PHPWS_SOURCE_DIR . 'mod/volunteer/config/defines.dist.php';
+    $GLOBALS['volunteer_dist'] = true;
 }
 
 class Module extends \Canopy\Module implements SettingDefaults
@@ -77,6 +78,9 @@ class Module extends \Canopy\Module implements SettingDefaults
 
     public function runTime(Request $request)
     {
+        if (!empty($GLOBALS['volunteer_dist']) || VOLUNTEER_BANNER_API == '') {
+            \Layout::add('<div class="alert alert-danger">Please copy defines.dist.php to defines.php and enter the required settings.</div>', 'volunteer');
+        }
         if (\phpws\PHPWS_Core::atHome()) {
             if (\Current_User::allow('volunteer')) {
                 AdminView::showMenu();
