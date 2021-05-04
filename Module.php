@@ -70,9 +70,7 @@ class Module extends \Canopy\Module implements SettingDefaults
 
     public function getSettingDefaults()
     {
-        $settings = [
-            'approvalRequired' => false
-        ];
+        $settings = [];
         return $settings;
     }
 

@@ -21,8 +21,6 @@ class SettingsFactory
     public static function getAll()
     {
         $settings = [];
-        $settings['approvalRequired'] = (bool) self::get('approvalRequired');
-        $settings['kioskMode'] = (bool) self::get('kioskMode');
 
         return $settings;
     }
@@ -58,23 +56,6 @@ class SettingsFactory
             return 'noreply@' . \Canopy\Server::getSiteUrl(false, false, false);
         } else {
             return $contact['email'];
-        }
-    }
-
-    public static function save(string $varName, $value)
-    {
-        switch ($varName) {
-            case 'approvalRequired':
-            case 'kioskMode':
-                Settings::set('volunteer', $varName, (bool) $value);
-                break;
-
-            case 'stringsetting':
-                Settings::set('volunteer', $varName, filter_var($value, FILTER_SANITIZE_STRING));
-                break;
-
-            default:
-                throw new \Exception('Unknown setting');
         }
     }
 
