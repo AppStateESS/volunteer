@@ -62,16 +62,11 @@ const Grid = ({listing, load, edit}) => {
       )
     })
     const totalTime = (
-      <tr className="bg-dark text-white">
-        <td colSpan="4">
-          <strong>
-            <span className="lead">Total time with {value.sponsor}</span>
-          </strong>
+      <tr className="bg-primary text-white">
+        <td colSpan="6">
+          <strong>Total time with {value.sponsor}</strong>
+          &nbsp;&ndash;&nbsp;{value.totalTime}
         </td>
-        <td>
-          <span className="lead">{value.totalTime}</span>
-        </td>
-        <td>&nbsp;</td>
       </tr>
     )
 
