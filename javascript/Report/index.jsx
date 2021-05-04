@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
-import {getList} from '../api/Fetch'
+import {getList, sendApproves} from '../api/Fetch'
 import Grid from './Grid'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -35,6 +35,16 @@ const Report = ({sponsor}) => {
   }
   useEffect(load, [])
 
+  const approve = (key) => {
+    const punch = punchList[key]
+    if (confirm('Are you sure you want to approve this punch?')) {
+      const promise = sendApproves([punch.id])
+      promise.then(() => {
+        load()
+      })
+    }
+  }
+
   let content
 
   if (loading) {
@@ -47,7 +57,7 @@ const Report = ({sponsor}) => {
   } else if (punchList.length === 0) {
     content = <p>No sessions recorded with this sponsor.</p>
   } else {
-    content = <Grid listing={punchList} />
+    content = <Grid listing={punchList} approve={approve} />
   }
   return (
     <div>
