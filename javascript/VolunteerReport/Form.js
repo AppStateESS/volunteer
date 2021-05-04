@@ -42,6 +42,7 @@ const Form = ({punch, close, save}) => {
                 onChange={setTimeIn}
                 selected={timeIn}
                 showTimeSelect
+                timeIntervals={15}
                 dateFormat="MMMM d, yyyy h:mm aa"
               />
             </td>
@@ -53,6 +54,7 @@ const Form = ({punch, close, save}) => {
                 onChange={setTimeOut}
                 selected={timeOut}
                 showTimeSelect
+                timeIntervals={15}
                 dateFormat="MMMM d, yyyy h:mm aa"
               />
             </td>
