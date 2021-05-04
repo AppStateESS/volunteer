@@ -20,11 +20,6 @@ const objLength = (obj) => {
 const Grid = ({listing, load, edit}) => {
   const [approveList, setApproveList] = useState({})
 
-  const changeDate = (e, inOut) => {
-    console.log(e)
-    console.log(inOut)
-  }
-
   const approve = (punchId) => {
     const copyList = Object.assign({}, approveList)
     if (copyList[punchId]) {
