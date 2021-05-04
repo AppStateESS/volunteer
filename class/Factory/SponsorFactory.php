@@ -49,6 +49,15 @@ class SponsorFactory extends AbstractFactory
         }
     }
 
+    public static function isPreapproved(int $sponsorId)
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_sponsor');
+        $tbl->addFieldConditional('id', $sponsorId);
+        $tbl->addField('preApproved');
+        return (bool) $db->selectColumn();
+    }
+
     public static function post(Request $request)
     {
         $sponsor = self::build();
