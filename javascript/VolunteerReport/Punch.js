@@ -39,7 +39,7 @@ const Punch = ({punch, load, approve, sendPunchOut, edit}) => {
   return (
     <tr>
       <td>
-        {punch.approved == 0 ? (
+        {punch.approved == 0 && punch.timeOut > 0 ? (
           <input
             type="checkbox"
             name="approve[]"
