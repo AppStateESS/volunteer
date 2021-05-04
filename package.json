@@ -11,6 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/AppStateESS/volunteer.git"
   },
+  "plugins": ["new BundleAnalyzerPlugin()"],
   "keywords": [
     "volunteer",
     "timeclock",
@@ -51,6 +52,7 @@
     "terser": "^5.7.0",
     "terser-webpack-plugin": "^5.1.1",
     "webpack": "^5.36.0",
+    "webpack-bundle-analyzer": "^4.4.1",
     "webpack-cli": "^4.6.0"
   }
 }
