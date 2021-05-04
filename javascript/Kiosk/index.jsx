@@ -38,14 +38,14 @@ const Kiosk = ({sponsor}) => {
         setError('')
         setMessage('')
         clearTimeout(reset)
-      }, 3000)
+      }, 4000)
     })
   }
 
   if (error.length > 0) {
-    return <div className="alert alert-warning">{error}</div>
+    return <div className="alert alert-warning lead text-center">{error}</div>
   } else if (message.length > 0) {
-    return <div className="alert alert-success">{message}</div>
+    return <div className="alert alert-success lead text-center">{message}</div>
   } else {
     return (
       <div>
