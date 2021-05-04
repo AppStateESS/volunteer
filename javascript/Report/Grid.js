@@ -5,8 +5,8 @@ import dayjs from 'dayjs'
 import FullName from '../api/Name'
 import totalTime from '../api/Time.js'
 
-const Grid = ({listing}) => {
-  const rows = listing.map((value) => {
+const Grid = ({listing, approve}) => {
+  const rows = listing.map((value, key) => {
     return (
       <tr key={`row-${value.id}`}>
         <td>
@@ -20,7 +20,18 @@ const Grid = ({listing}) => {
           {value.timeOut ? dayjs(value.timeOut * 1000).format('h:mm A') : 'N/A'}
         </td>
         <td>{totalTime(value)}</td>
-        <td>{value.approved ? 'Yes' : 'No'}</td>
+        <td>
+          {value.approved ? (
+            <span className="badge badge-success">Yes</span>
+          ) : (
+            <span
+              className="badge badge-danger"
+              onClick={() => approve(key)}
+              onMouseOver={(e) => (e.target.style.cursor = 'pointer')}>
+              No
+            </span>
+          )}
+        </td>
       </tr>
     )
   })
