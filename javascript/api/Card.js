@@ -12,7 +12,7 @@ const Card = ({title, subtitle, content}) => {
               <h2 className="m-0">{title}</h2>
             </div>
             <div className="card-body">
-              <div className="lead">{subtitle}</div>
+              <div className="lead mb-2">{subtitle}</div>
               {content}
             </div>
           </div>
