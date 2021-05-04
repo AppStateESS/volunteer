@@ -14,11 +14,10 @@ module.exports = (env, argv) => {
     watchOptions: {ignored: /node_modules/},
     optimization: {
       splitChunks: {
-        minChunks: 1,
         cacheGroups: {
           defaultVendors: {
             test: /[\\/]node_modules[\\/]/,
-            minChunks: 1,
+            minChunks: 3,
             name: 'vendor',
             enforce: true,
             chunks: 'all',
@@ -70,6 +69,9 @@ module.exports = (env, argv) => {
   }
 
   if (inProduction) {
+    // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    //   .BundleAnalyzerPlugin
+    // settings.plugins.push(new BundleAnalyzerPlugin())
     settings.optimization.minimize = true
     settings.optimization.minimizer = [new TerserPlugin()]
 
