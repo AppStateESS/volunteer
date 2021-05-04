@@ -28,8 +28,8 @@ const OptionSelect = ({edit, sponsor, key, sendKiosk, sendPreApproved}) => {
   const approveLabel =
     sponsor.preApproved == 1 ? 'Do not pre-approve' : 'Pre-approve punches'
   return (
-    <select onChange={adminOption} value={selected} className="btn btn-sm">
-      <option disabled={true} value="na">
+    <select onChange={adminOption} value={selected} className="form-control-sm">
+      <option disabled={true} value="na" className="text-center">
         - Commands -
       </option>
       <option value="edit">Edit</option>
@@ -66,8 +66,20 @@ const Grid = ({listing, edit, sendKiosk, sendPreApproved}) => {
         <td>
           <a href={`./volunteer/${value.searchName}`}>{value.searchName}</a>
         </td>
-        <td>{value.kioskMode ? <span>Yes</span> : <span>No</span>}</td>
-        <td>{value.preApproved ? <span>Yes</span> : <span>No</span>}</td>
+        <td>
+          {value.kioskMode ? (
+            <div className="badge badge-success">Yes</div>
+          ) : (
+            <div className="badge badge-danger">No</div>
+          )}
+        </td>
+        <td>
+          {value.preApproved ? (
+            <div className="badge badge-success">Yes</div>
+          ) : (
+            <div className="badge badge-danger">No</div>
+          )}
+        </td>
       </tr>
     )
   })
