@@ -13,6 +13,11 @@ use volunteer\Resource\Volunteer;
 class VolunteerFactory extends AbstractFactory
 {
 
+    /**
+     *
+     * @param int $id
+     * @return \volunteer\Resource\Volunteer
+     */
     public static function build(int $id = 0)
     {
         $volunteer = new Volunteer;
