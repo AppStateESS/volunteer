@@ -12,6 +12,7 @@ use volunteer\Resource\Volunteer;
 use volunteer\Resource\Punch;
 use volunteer\Exception\PreviouslyPunched;
 use volunteer\Factory\SponsorFactory;
+use volunteer\Factory\LogFactory;
 
 class PunchFactory extends AbstractFactory
 {
@@ -214,6 +215,11 @@ class PunchFactory extends AbstractFactory
         $tbl->addFieldConditional('id', $approvals, 'in');
         $tbl->addValue('approved', 1);
         return $db->update();
+    }
+
+    public static function getSponsorId(int $punchId)
+    {
+        return self::build($punchId)->sponsorId;
     }
 
 }
