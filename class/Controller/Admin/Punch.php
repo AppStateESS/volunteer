@@ -9,6 +9,7 @@ namespace volunteer\Controller\Admin;
 
 use volunteer\Controller\SubController;
 use volunteer\Factory\PunchFactory;
+use volunteer\Factory\LogFactory;
 use volunteer\View\PunchView;
 use volunteer\View\AdminView;
 use Canopy\Request;
@@ -18,14 +19,19 @@ class Punch extends SubController
 
     protected function listJson(Request $request)
     {
-        return PunchFactory::list(['sponsorId' => $request->pullGetInteger('sponsorId'), 'includeVolunteer' => true, 'to' => $request->pullGetInteger('to',
-                            true), 'from' => $request->pullGetInteger('from', true)]);
+        return PunchFactory::list(['sponsorId' => $request->pullGetInteger('sponsorId'),
+                    'includeVolunteer' => true,
+                    'to' => $request->pullGetInteger('to', true),
+                    'from' => $request->pullGetInteger('from', true)]);
     }
 
     protected function reportJson(Request $request)
     {
-        return PunchFactory::list(['volunteerId' => $request->pullGetInteger('volunteerId'), 'sortBySponsor' => true, 'includeTotals' => true, 'to' => $request->pullGetInteger('to',
-                            true), 'from' => $request->pullGetInteger('from', true)]);
+        return PunchFactory::list(['volunteerId' => $request->pullGetInteger('volunteerId'),
+                    'sortBySponsor' => true,
+                    'includeTotals' => true,
+                    'to' => $request->pullGetInteger('to', true),
+                    'from' => $request->pullGetInteger('from', true)]);
     }
 
     protected function punchOutPut(Request $request)
@@ -39,6 +45,7 @@ class Punch extends SubController
     {
         $punch = PunchFactory::build($this->id);
         PunchFactory::approve($punch);
+        LogFactory::approved($punch->id, $punch->sponsorId);
         return ['success' => true];
     }
 
@@ -46,14 +53,19 @@ class Punch extends SubController
     {
         $approvals = $request->pullPostArray('approvals');
         if (!empty($approvals)) {
-            PunchFactory::massApprove($approvals);
+            $result = PunchFactory::massApprove($approvals);
+            if ($result) {
+                foreach ($approvals as $punchId) {
+                    LogFactory::approved($punchId);
+                }
+            }
         }
         return ['success' => true];
     }
 
     protected function unapprovedHtml()
     {
-        AdminView::showMenu('sponsor', 'unapproved');
+        AdminView::showMenu('unapproved');
         return PunchView::unapproved();
     }
 
@@ -69,9 +81,12 @@ class Punch extends SubController
     protected function put(Request $request)
     {
         $punch = PunchFactory::build($this->id);
+        $oldTimeIn = $punch->timeIn;
+        $oldTimeOut = $punch->timeOut;
         $punch->timeIn = $request->pullPutInteger('timeIn');
         $punch->timeOut = $request->pullPutInteger('timeOut');
         PunchFactory::save($punch);
+        LogFactory::timeChange($oldTimeIn, $oldTimeOut, $punch);
         return ['success' => true];
     }
 
