@@ -1,0 +1,63 @@
+<?php
+function timeChange($log) {
+if ($log['action'] != 'timeChange') {
+return 'N/A';
+}
+$change = [];
+$clockIn = false;
+if ($log['oldTimeIn'] != $log['newTimeIn']) {
+$clockIn = true;
+$change[] = 'Clock in changed from';
+$change[] = strftime('%h %e %R', $log['oldTimeIn']);
+$change[] = 'to';
+$change[] = strftime('%h %e %R', $log['newTimeIn']);
+}
+if ($clockIn) {
+$change[] = '<br />';
+}
+if ($log['oldTimeOut'] != $log['newTimeOut']) {
+$change[] = 'Clock out changed from';
+$change[] = strftime('%h %e %R', $log['oldTimeOut']);
+$change[] = 'to';
+$change[] = strftime('%h %e %R', $log['newTimeOut']);
+}
+return implode(' ', $change);
+}
+?>
+<h2><?=$name?> Administrative Log</h2>
+<?php if (empty($rows)):?>
+<p>No history of activity found.</p>
+<?php else: ?>
+<table class="table table-striped">
+  <tbody>
+    <tr>
+      <th>Timestamp</th>
+      <th>Admin name</th>
+      <th>Action</th>
+      <th>Details</th>
+    </tr>
+<?php foreach ($rows as $r):?>
+<tr>
+  <td><?=strftime('%c', $r['timestamp'])?></td>
+  <td><?=$r['userDisplayName']?></td>
+  <td>
+<?php 
+switch($r['action']) {
+case 'timeChange':
+echo 'Time change'; 
+break;
+
+case 'approved':
+echo "Approved";
+break;
+}
+?>
+  </td>
+  <td>
+    <?=timeChange($r)?>
+  </td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+<?php endif;?>
