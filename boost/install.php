@@ -20,10 +20,14 @@ function volunteer_install(&$content)
         $sponsorTable = $tableCreate->createSponsorTable();
         $volunteerTable = $tableCreate->createVolunteerTable();
         $kioskTable = $tableCreate->createKioskTable();
+        $logTable = $tableCreate->createLogTable();
     } catch (\Exception $e) {
         \phpws2\Error::log($e);
         $db->rollback();
 
+        if (isset($logTable)) {
+            $logTable->drop();
+        }
         if (isset($kioskTable)) {
             $kioskTable->drop();
         }

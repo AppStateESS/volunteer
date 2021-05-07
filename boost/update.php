@@ -39,6 +39,7 @@ class VolunteerDataUpdate
             case $this->compare('1.1.0'):
                 $tableCreate->createKioskTable();
                 $tableCreate->createKioskColumn();
+                $tableCreate->createLogTable();
                 $tableCreate->addApprovedColumnToPunch();
                 $tableCreate->addPreApprovedColumnToSponsor();
                 $this->content[] = '<pre>';
@@ -46,6 +47,7 @@ class VolunteerDataUpdate
                 $this->content[] = '-----------------------------';
                 $this->content[] = 'Added kiosk mode';
                 $this->content[] = 'Added punch preapproved option for sponsors';
+                $this->content[] = 'Added logging';
                 $this->content[] = '</pre>';
         }
         return $this->content;

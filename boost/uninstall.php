@@ -8,6 +8,7 @@ function volunteer_uninstall(&$content)
     $db->buildTable('vol_volunteer')->drop(true);
     $db->buildTable('vol_punch')->drop(true);
     $db->buildTable('vol_kiosk')->drop(true);
+    $db->buildTable('vol_log')->drop(true);
 
     // From previous version
     return true;

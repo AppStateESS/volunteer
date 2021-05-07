@@ -48,6 +48,13 @@ class TableCreate
         return $kiosk->createTable($db);
     }
 
+    public function createLogTable()
+    {
+        $db = Database::getDB();
+        $log = new \volunteer\Resource\LogResource();
+        return $log->createTable($db);
+    }
+
     public function createKioskColumn()
     {
         $db = Database::getDB();
