@@ -17,9 +17,11 @@ const OptionSelect = ({edit, sponsor, key, sendKiosk, sendPreApproved}) => {
       case 'kiosk':
         sendKiosk(key)
         break
-
       case 'preapproved':
         sendPreApproved(key)
+        break
+      case 'log':
+        location.href = `volunteer/Admin/Log?sponsorId=${sponsor.id}`
         break
     }
     setSelected('na')
@@ -36,6 +38,7 @@ const OptionSelect = ({edit, sponsor, key, sendKiosk, sendPreApproved}) => {
       <option value="report">Report</option>
       <option value="kiosk">{kioskLabel}</option>
       <option value="preapproved">{approveLabel}</option>
+      <option value="log">Log</option>
     </select>
   )
 }
