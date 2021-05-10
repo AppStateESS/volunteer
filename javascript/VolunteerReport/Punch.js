@@ -18,9 +18,9 @@ const punchOut = (punch, load, sendPunchOut, edit) => {
   } else {
     return (
       <button
-        className="btn btn-outline-dark btn-sm"
+        className="btn btn-danger btn-sm"
         onClick={() => sendPunchOut(punch.id, load)}>
-        Punch out
+        Clock out
       </button>
     )
   }
@@ -51,9 +51,13 @@ const Punch = ({punch, load, approve, sendPunchOut, edit}) => {
       <td>{dayjs(punch.timeIn * 1000).format('MMM. D, YYYY')}</td>
       <td>
         {dayjs(punch.timeIn * 1000).format('h:mm A')}&nbsp;
-        <button className="btn btn-link" onClick={edit}>
-          <FontAwesomeIcon icon={faClock} />
-        </button>
+        {punch.timeOut > 0 ? (
+          <button className="btn btn-link" onClick={edit}>
+            <FontAwesomeIcon icon={faClock} />
+          </button>
+        ) : (
+          <span></span>
+        )}
       </td>
       <td>{punchOut(punch, load, sendPunchOut, edit)}</td>
       <td>{punch.totalTime}</td>
