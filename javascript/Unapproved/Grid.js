@@ -30,16 +30,20 @@ const Grid = ({listing, load}) => {
     })
   }
 
-  const rows = listing.map((value, key) => {
+  const rows = listing.map((value) => {
     return (
       <tr key={`row-${value.id}`}>
         <td>
-          <input
-            type="checkbox"
-            name="approve[]"
-            value={value.id}
-            onChange={() => approve(value.id)}
-          />
+          {value.timeOut != 0 ? (
+            <input
+              type="checkbox"
+              name="approve[]"
+              value={value.id}
+              onChange={() => approve(value.id)}
+            />
+          ) : (
+            <span></span>
+          )}
         </td>
         <td style={{width: '20%'}}>{value.sponsorName}</td>
         <td>
@@ -78,6 +82,6 @@ const Grid = ({listing, load}) => {
   )
 }
 
-Grid.propTypes = {listing: PropTypes.array}
+Grid.propTypes = {listing: PropTypes.array, load: PropTypes.func}
 
 export default Grid
