@@ -74,8 +74,8 @@ const Grid = ({listing, load, edit}) => {
             <tr>
               <th style={{width: '5%'}}></th>
               <th style={{width: '20%'}}>Day</th>
-              <th style={{width: '20%'}}>Arrived</th>
-              <th style={{width: '20%'}}>Left</th>
+              <th style={{width: '20%'}}>Clocked in</th>
+              <th style={{width: '20%'}}>Clocked out</th>
               <th style={{width: '25%'}}>Session length</th>
               <th style={{width: '10%'}}>Status</th>
             </tr>
