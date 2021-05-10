@@ -50,6 +50,19 @@ class LogFactory extends AbstractFactory
             $tbl3->addField('name', 'sponsorName');
             $db->joinResources($tbl, $tbl3, $cond, 'left');
         }
+        if (!empty($options['includeVolunteer'])) {
+            $tbl4 = $db->addTable('vol_volunteer');
+            $cond = new Database\Conditional($db, $tbl->getField('volunteerId'),
+                    $tbl4->getField('id'), '=');
+            $concat = 'concat(' . $tbl4->getField('firstName') . '," (",' . $tbl4->getField('preferredName') . ',") ",' . $tbl4->getField('lastName') . ')';
+            $expression = new Database\Expression($concat, 'volunteerName');
+            $db->addExpression($expression);
+            $db->joinResources($tbl, $tbl4, $cond, 'left');
+        }
+
+        if (empty($options['limit'])) {
+            $db->setLimit(100);
+        }
 
         $tbl->addOrderBy('timestamp', 'desc');
         return $db->select();

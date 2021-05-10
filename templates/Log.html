@@ -25,6 +25,7 @@ return implode(' ', $change);
 }
 ?>
 <h2><?=$name?> Administrative Log</h2>
+<p class="small">Last 100 log entries.</p>
 <?php if (empty($rows)):?>
 <p>No history of activity found.</p>
 <?php else: ?>
@@ -32,32 +33,41 @@ return implode(' ', $change);
   <tbody>
     <tr>
       <th>Timestamp</th>
+      <th>
+        <?= $logType == 'volunteer' ? 'Sponsor': '';?>
+        <?= $logType == 'sponsor' ? 'Volunteer': '';?>
+      </th>
       <th>Admin name</th>
       <th>Action</th>
       <th>Details</th>
     </tr>
-<?php foreach ($rows as $r):?>
-<tr>
-  <td><?=strftime('%c', $r['timestamp'])?></td>
-  <td><?=$r['userDisplayName']?></td>
-  <td>
-<?php 
-switch($r['action']) {
-case 'timeChange':
-echo 'Time change'; 
-break;
+    <?php foreach ($rows as $r):?>
+    <tr>
+      <td><?=strftime('%r %D', $r['timestamp'])?></td>
+      <td>
+        <?= $logType == 'volunteer' ? $r['sponsorName'] : '';?>
+        <?= $logType == 'sponsor' ? $r['volunteerName'] : '';?>
+      </td>
 
-case 'approved':
-echo "Approved";
-break;
-}
-?>
-  </td>
-  <td>
-    <?=timeChange($r)?>
-  </td>
-</tr>
-<?php endforeach; ?>
-</tbody>
+      <td><?=$r['userDisplayName']?></td>
+      <td>
+        <?php 
+        switch($r['action']) {
+        case 'timeChange':
+        echo 'Time change'; 
+        break;
+
+        case 'approved':
+        echo "Approved";
+        break;
+        }
+        ?>
+      </td>
+      <td>
+        <?=timeChange($r)?>
+      </td>
+    </tr>
+    <?php endforeach; ?>
+  </tbody>
 </table>
 <?php endif;?>

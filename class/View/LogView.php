@@ -16,11 +16,10 @@ class LogView
 
     public static function sponsor(int $sponsorId)
     {
-        $vars['rows'] = LogFactory::list(['sponsorId' => $sponsorId, 'includeUser' => true]);
-//        var_dump($vars['rows']);
-//        exit;
+        $vars['rows'] = LogFactory::list(['sponsorId' => $sponsorId, 'includeUser' => true, 'includeVolunteer' => true]);
         $sponsor = SponsorFactory::build($sponsorId);
         $vars['name'] = $sponsor->name;
+        $vars['logType'] = 'sponsor';
         $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('volunteer', 'Log.html');
         return $template->get();
@@ -29,9 +28,8 @@ class LogView
     public static function volunteer(int $volunteerId)
     {
         $vars['rows'] = LogFactory::list(['volunteerId' => $volunteerId, 'includeUser' => true, 'includeSponsor' => true]);
-//        var_dump($vars['rows']);
-//        exit;
         $volunteer = VolunteerFactory::build($volunteerId);
+        $vars['logType'] = 'volunteer';
         $vars['name'] = $volunteer->getFullName();
         $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('volunteer', 'Log.html');
