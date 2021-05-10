@@ -39,7 +39,7 @@ class Sponsor extends SubController
 
     protected function reportHtml(Request $request)
     {
-        AdminView::showMenu();
+        AdminView::showMenu('sponsor');
         $sponsor = SponsorFactory::build($this->id);
         return SponsorView::scriptView('Report', ['sponsor' => $sponsor->getStringVars()]);
     }
