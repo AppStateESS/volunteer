@@ -71,7 +71,9 @@ class PunchFactory extends AbstractFactory
                 if (!isset($totalTimes[$punch['sponsorId']])) {
                     $totalTimes[$punch['sponsorId']] = 0;
                 }
-                $totalTimes[$punch['sponsorId']] += $punch['timeOut'] - $punch['timeIn'];
+                if ($punch['timeOut'] > 0) {
+                    $totalTimes[$punch['sponsorId']] += $punch['timeOut'] - $punch['timeIn'];
+                }
             }
         }
 
