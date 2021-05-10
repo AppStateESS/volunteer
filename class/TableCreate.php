@@ -51,7 +51,7 @@ class TableCreate
     public function createLogTable()
     {
         $db = Database::getDB();
-        $log = new \volunteer\Resource\LogResource();
+        $log = new \volunteer\Resource\Log();
         return $log->createTable($db);
     }
 
