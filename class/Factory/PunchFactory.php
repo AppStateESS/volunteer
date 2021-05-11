@@ -168,18 +168,42 @@ class PunchFactory extends AbstractFactory
             $db->joinResources($tbl, $tbl3, $cond);
         }
         if (!empty($options['from'])) {
-            $tbl->addFieldConditional('timeIn', $options['from'], '>=');
+            $from = self::dayStart($options['from']);
+            $tbl->addFieldConditional('timeIn', $from, '>=');
             if (!empty($options['to']) && $options['to'] > $options['from']) {
-                $tbl->addFieldConditional('timeOut', $options['to'], '<=');
+                $to = self::dayEnd($options['to']);
+                $tbl->addFieldConditional('timeOut', $to, '<=');
             }
         }
 
         $result = $db->select();
-        if (!empty($result) && (!empty($options['sortBySponsor']))) {
-            $result = self::sortPunches($result, !empty($options['includeTotals']));
+        if (!empty($result)) {
+            if (!empty($options['sortBySponsor'])) {
+                $result = self::sortPunches($result, !empty($options['includeTotals']));
+            } else {
+                foreach ($result as $key => $punch) {
+                    if ($punch['timeOut']) {
+                        $result[$key]['totalTime'] = self::getTotalTime($punch['timeIn'],
+                                        $punch['timeOut']);
+                    } else {
+                        $result[$key]['totalTime'] = '(' . self::getTotalTime($punch['timeIn'],
+                                        time()) . ')';
+                    }
+                }
+            }
         }
 
         return $result;
+    }
+
+    public static function dayStart($timestamp)
+    {
+        return strtotime("0:00:00", $timestamp);
+    }
+
+    public static function dayEnd($timestamp)
+    {
+        return strtotime("23:59:59", $timestamp);
     }
 
     public static function getTotalTime($timeIn, $timeOut)
@@ -204,9 +228,9 @@ class PunchFactory extends AbstractFactory
     {
         $totalTime = [];
         if ($hours > 0) {
-            $totalTime[] = $hours . ' hour' . ($hours > 1 ? 's' : '') . ' and';
+            $totalTime[] = $hours . ' hr' . ($hours > 1 ? 's.' : '.') . ' and';
         }
-        $totalTime[] = $minutes . ' minute' . ( ($minutes > 1 || $minutes == 0) ? 's' : '');
+        $totalTime[] = $minutes . ' min' . ( ($minutes > 1 || $minutes == 0) ? 's.' : '.');
         return implode(' ', $totalTime);
     }
 
