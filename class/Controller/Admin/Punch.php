@@ -19,10 +19,22 @@ class Punch extends SubController
 
     protected function listJson(Request $request)
     {
-        return PunchFactory::list(['sponsorId' => $request->pullGetInteger('sponsorId'),
-                    'includeVolunteer' => true,
-                    'to' => $request->pullGetInteger('to', true),
-                    'from' => $request->pullGetInteger('from', true)]);
+        $sponsorId = $request->pullGetInteger('sponsorId');
+        $volunteerId = $request->pullGetInteger('volunteerId');
+        if ($sponsorId) {
+            return PunchFactory::list(['sponsorId' => $request->pullGetInteger('sponsorId'),
+                        'includeVolunteer' => true,
+                        'to' => $request->pullGetInteger('to', true),
+                        'from' => $request->pullGetInteger('from', true)]);
+        } elseif ($volunteerId) {
+            return PunchFactory::list(['volunteerId' => $request->pullGetInteger('volunteerId'),
+                        'sortBySponsor' => true,
+                        'includeTotals' => true,
+                        'to' => $request->pullGetInteger('to', true),
+                        'from' => $request->pullGetInteger('from', true)]);
+        } else {
+            throw new \Exception('Missing id');
+        }
     }
 
     protected function reportJson(Request $request)
