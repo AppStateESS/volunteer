@@ -45,7 +45,7 @@ const getItem = async (role, itemName, id) => {
     const response = await axios.get(url, {
       headers,
     })
-    return response.data
+    return response
   } catch (error) {
     return false
   }
