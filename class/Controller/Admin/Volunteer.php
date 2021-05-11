@@ -31,13 +31,14 @@ class Volunteer extends SubController
     protected function reportHtml(Request $request)
     {
         AdminView::showMenu('volunteer');
-        try {
-            $volunteer = VolunteerFactory::build($this->id);
-        } catch (ResourceNotFound $e) {
-            return '<p>Volunteer not found. <a href="volunteer/Admin/Volunteer/">Return to list</a></p>';
-        }
+        return VolunteerView::scriptView('PunchListing',
+                        ['volunteerId' => $this->id, 'sponsorId' => 0]);
+    }
 
-        return VolunteerView::report($volunteer);
+    protected function viewJson(Request $request)
+    {
+        $volunteer = VolunteerFactory::build($this->id);
+        return $volunteer->getStringVars();
     }
 
 }
