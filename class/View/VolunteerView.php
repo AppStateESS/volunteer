@@ -19,12 +19,6 @@ class VolunteerView extends AbstractView
         return self::scriptView('Volunteer', ['domain' => VOL_SHIB_DOMAIN]);
     }
 
-    public static function report(Volunteer $volunteer)
-    {
-        $vars['volunteer'] = $volunteer->getStringVars();
-        return self::scriptView('VolunteerReport', $vars);
-    }
-
     public static function logInPrompt()
     {
         $template = new \phpws2\Template();
