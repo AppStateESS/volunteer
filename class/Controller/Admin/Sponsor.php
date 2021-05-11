@@ -27,6 +27,12 @@ class Sponsor extends SubController
         return SponsorFactory::list(SponsorFactory::listingOptions($request));
     }
 
+    protected function viewJson(Request $request)
+    {
+        $sponsor = SponsorFactory::build($this->id);
+        return $sponsor->getStringVars();
+    }
+
     protected function post(Request $request)
     {
         return ['success' => true, 'id' => SponsorFactory::post($request)];
@@ -40,8 +46,8 @@ class Sponsor extends SubController
     protected function reportHtml(Request $request)
     {
         AdminView::showMenu('sponsor');
-        $sponsor = SponsorFactory::build($this->id);
-        return SponsorView::scriptView('Report', ['sponsor' => $sponsor->getStringVars()]);
+        return SponsorView::scriptView('PunchListing',
+                        ['volunteerId' => 0, 'sponsorId' => $this->id]);
     }
 
     protected function kioskPatch(Request $request)
