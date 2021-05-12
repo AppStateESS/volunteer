@@ -37,8 +37,7 @@ const PunchListing = ({sponsorId, volunteerId}) => {
   })
 
   let grid
-
-  const loadList = React.useCallback(() => {
+  const loadList = () => {
     setLoading(true)
     const listPromise = getList(
       `volunteer/Admin/Punch/?sponsorId=${sponsorId}&volunteerId=${volunteerId}`,
@@ -60,7 +59,7 @@ const PunchListing = ({sponsorId, volunteerId}) => {
         setListing([])
       })
       .then(() => setLoading(false))
-  }, [sponsorId, volunteerId, searchFrom, searchTo])
+  }
 
   const punchOut = (punchId) => {
     const Promise = ajaxPunchOut(punchId)
@@ -105,7 +104,7 @@ const PunchListing = ({sponsorId, volunteerId}) => {
         loadList()
       })
     }
-  }, [sponsorId, volunteerId, loadList])
+  }, [])
 
   if (loading) {
     grid = (
@@ -139,13 +138,27 @@ const PunchListing = ({sponsorId, volunteerId}) => {
       </Overlay>
       <div>
         <div className="mb-3">
-          <DatePicker onChange={setSearchFrom} selected={searchFrom} />
+          <DatePicker
+            onChange={(d) => {
+              if (d.getTime() < searchTo.getTime()) {
+                setSearchFrom(d)
+              }
+            }}
+            selected={searchFrom}
+          />
           <button
             className="mx-2 btn btn-outline-dark btn-sm"
             onClick={loadList}>
             Search between dates
           </button>
-          <DatePicker onChange={setSearchTo} selected={searchTo} />
+          <DatePicker
+            onChange={(d) => {
+              if (searchFrom.getTime() < d.getTime()) {
+                setSearchTo(d)
+              }
+            }}
+            selected={searchTo}
+          />
         </div>
         {grid}
       </div>
