@@ -3,7 +3,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import FullName from '../api/Name'
 import {Day, TimeFormat, ApproveButton, TimeOut, ChangeTime} from './Time'
-import {ajaxPunchOut} from '../api/Fetch'
 
 const SponsorGrid = ({sponsor, listing, punchOut, approve, edit}) => {
   let rows
@@ -74,6 +73,7 @@ SponsorGrid.propTypes = {
   listing: PropTypes.array,
   punchOut: PropTypes.func,
   approve: PropTypes.func,
+  edit: PropTypes.func,
 }
 
 export default SponsorGrid
