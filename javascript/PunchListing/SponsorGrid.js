@@ -69,7 +69,6 @@ const SponsorGrid = ({sponsor, listing, punchOut, approve, edit}) => {
 
 SponsorGrid.propTypes = {
   sponsor: PropTypes.object,
-  loading: PropTypes.bool,
   listing: PropTypes.array,
   punchOut: PropTypes.func,
   approve: PropTypes.func,
