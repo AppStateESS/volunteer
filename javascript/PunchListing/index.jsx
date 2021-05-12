@@ -1,6 +1,7 @@
 'use strict'
 import React, {useState, useEffect} from 'react'
 import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
 import SponsorGrid from './SponsorGrid'
 import VolunteerGrid from './VolunteerGrid'
 import {
@@ -36,9 +37,8 @@ const PunchListing = ({sponsorId, volunteerId}) => {
   })
 
   let grid
-  let ItemPromise
 
-  const loadList = () => {
+  const loadList = React.useCallback(() => {
     setLoading(true)
     const listPromise = getList(
       `volunteer/Admin/Punch/?sponsorId=${sponsorId}&volunteerId=${volunteerId}`,
@@ -55,12 +55,12 @@ const PunchListing = ({sponsorId, volunteerId}) => {
           setListing([])
         }
       })
-      .catch((e) => {
+      .catch(() => {
         console.log('Error pulling listing.')
         setListing([])
       })
       .then(() => setLoading(false))
-  }
+  }, [sponsorId, volunteerId, searchFrom, searchTo])
 
   const punchOut = (punchId) => {
     const Promise = ajaxPunchOut(punchId)
@@ -93,19 +93,19 @@ const PunchListing = ({sponsorId, volunteerId}) => {
 
   useEffect(() => {
     if (sponsorId) {
-      ItemPromise = getItem('Admin', 'Sponsor', sponsorId)
-      ItemPromise.then((response) => {
+      const SponsorPromise = getItem('Admin', 'Sponsor', sponsorId)
+      SponsorPromise.then((response) => {
         setSponsor(response.data)
         loadList()
       })
     } else {
-      ItemPromise = getItem('Admin', 'Volunteer', volunteerId)
-      ItemPromise.then((response) => {
+      const VolunteerPromise = getItem('Admin', 'Volunteer', volunteerId)
+      VolunteerPromise.then((response) => {
         setVolunteer(response.data)
         loadList()
       })
     }
-  }, [])
+  }, [sponsorId, volunteerId, loadList])
 
   if (loading) {
     grid = (
@@ -151,6 +151,11 @@ const PunchListing = ({sponsorId, volunteerId}) => {
       </div>
     </div>
   )
+}
+
+PunchListing.propTypes = {
+  sponsorId: PropTypes.number,
+  volunteerId: PropTypes.number,
 }
 
 ReactDOM.render(
