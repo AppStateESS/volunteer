@@ -10,8 +10,10 @@ import {swipeVolunteer} from '../api/Fetch'
 const Kiosk = ({sponsor}) => {
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
+  const [lockInput, setLockInput] = useState(false)
 
   const sendSwipe = (bannerId) => {
+    setLockInput(true)
     const Promise = swipeVolunteer(bannerId, sponsor.id)
     Promise.then((response) => {
       const {success, result} = response.data
@@ -34,6 +36,7 @@ const Kiosk = ({sponsor}) => {
             break
         }
       }
+      setLockInput(false)
       const reset = setTimeout(() => {
         setError('')
         setMessage('')
@@ -58,7 +61,7 @@ const Kiosk = ({sponsor}) => {
               type your Banner ID number below.
             </div>
           }
-          content={<ClockInput sendSwipe={sendSwipe} />}
+          content={<ClockInput sendSwipe={sendSwipe} lockInput={lockInput} />}
         />
       </div>
     )
