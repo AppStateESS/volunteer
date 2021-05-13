@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import FullName from '../api/Name'
 import {Day, TimeFormat, ApproveButton, TimeOut, ChangeTime} from './Time'
 
-const SponsorGrid = ({sponsor, listing, punchOut, approve, edit}) => {
+const SponsorGrid = ({listing, punchOut, approve, edit}) => {
   let rows
   if (listing.length == 0) {
     rows = (
@@ -16,7 +16,7 @@ const SponsorGrid = ({sponsor, listing, punchOut, approve, edit}) => {
     rows = listing.map((value, key) => {
       return (
         <tr key={`row-${value.id}`}>
-          <td>
+          <td className="d-print-none">
             {value.timeOut ? (
               <ChangeTime edit={() => edit(value)} />
             ) : (
@@ -48,11 +48,10 @@ const SponsorGrid = ({sponsor, listing, punchOut, approve, edit}) => {
 
   return (
     <div>
-      <h2>Punches for sponsor: {sponsor.name}</h2>
       <table className="table table-striped">
         <tbody>
           <tr>
-            <th>&nbsp;</th>
+            <th className="d-print-none">&nbsp;</th>
             <th>Volunteer/Attendee</th>
             <th>Date</th>
             <th>Clock in</th>

@@ -17,6 +17,18 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
 import Overlay from '@essappstate/canopy-react-overlay'
 import Form from './Form'
+import FullName from '../api/Name'
+
+const DateRange = ({searchFrom, searchTo}) => {
+  return (
+    <div>
+      Listing punches from <strong>{searchFrom.toDateString()}</strong> to{' '}
+      <strong>{searchTo.toDateString()}</strong>
+    </div>
+  )
+}
+
+DateRange.propTypes = {searchFrom: PropTypes.object, searchTo: PropTypes.object}
 
 /* global sponsorId, volunteerId */
 const PunchListing = ({sponsorId, volunteerId}) => {
@@ -35,10 +47,14 @@ const PunchListing = ({sponsorId, volunteerId}) => {
     timeIn: 0,
     timeOut: 0,
   })
+  const [dateRangeString, setDateRangeString] = useState('')
 
   let grid
+  let title
+
   const loadList = () => {
     setLoading(true)
+    setDateRangeString(<DateRange {...{searchFrom, searchTo}} />)
     const listPromise = getList(
       `volunteer/Admin/Punch/?sponsorId=${sponsorId}&volunteerId=${volunteerId}`,
       {
@@ -115,29 +131,36 @@ const PunchListing = ({sponsorId, volunteerId}) => {
     )
   } else {
     if (sponsorId) {
-      grid = <SponsorGrid {...{listing, sponsor, punchOut, approve, edit}} />
+      grid = <SponsorGrid {...{listing, punchOut, approve, edit}} />
+      title = <h2 className="mb-1">Punches for sponsor: {sponsor.name}</h2>
     } else {
-      grid = (
-        <VolunteerGrid {...{listing, volunteer, punchOut, approve, edit}} />
+      grid = <VolunteerGrid {...{listing, punchOut, approve, edit}} />
+      title = (
+        <h2 className="mb-1">
+          Punches for volunteer:{' '}
+          <FullName volunteer={volunteer} useAbbr={false} />
+        </h2>
       )
     }
   }
 
   return (
     <div>
-      <Overlay
-        show={showModal}
-        close={() => setShowModal(false)}
-        width="600px"
-        title="Update punch">
-        <Form
-          punch={currentPunch}
+      <div className="d-print-none">
+        <Overlay
+          show={showModal}
           close={() => setShowModal(false)}
-          save={savePunch}
-        />
-      </Overlay>
+          width="600px"
+          title="Update punch">
+          <Form
+            punch={currentPunch}
+            close={() => setShowModal(false)}
+            save={savePunch}
+          />
+        </Overlay>
+      </div>
       <div>
-        <div className="mb-3">
+        <div className="mb-3 d-print-none">
           <DatePicker
             onChange={(d) => {
               if (d.getTime() < searchTo.getTime()) {
@@ -160,6 +183,9 @@ const PunchListing = ({sponsorId, volunteerId}) => {
             selected={searchTo}
           />
         </div>
+        {title}
+        {dateRangeString}
+        <hr />
         {grid}
       </div>
     </div>

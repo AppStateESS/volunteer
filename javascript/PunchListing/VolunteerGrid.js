@@ -2,9 +2,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Day, TimeFormat, ApproveButton, TimeOut, ChangeTime} from './Time'
-import FullName from '../api/Name'
 
-const VolunteerGrid = ({volunteer, listing, punchOut, approve, edit}) => {
+const VolunteerGrid = ({listing, punchOut, approve, edit}) => {
   let rows
   const totalTime = (value) => {
     return (
@@ -27,7 +26,7 @@ const VolunteerGrid = ({volunteer, listing, punchOut, approve, edit}) => {
       const punches = value.punches.map((value) => {
         return (
           <tr key={`row-${value.id}`}>
-            <td>
+            <td className="d-print-none">
               {value.timeOut ? (
                 <ChangeTime edit={() => edit(value)} />
               ) : (
@@ -56,7 +55,7 @@ const VolunteerGrid = ({volunteer, listing, punchOut, approve, edit}) => {
           <table className="table table-striped">
             <tbody>
               <tr>
-                <th style={{width: '5%'}}></th>
+                <th className="d-print-none" style={{width: '5%'}}></th>
                 <th style={{width: '20%'}}>Day</th>
                 <th style={{width: '20%'}}>Clock in</th>
                 <th style={{width: '20%'}}>Clock out</th>
@@ -73,16 +72,7 @@ const VolunteerGrid = ({volunteer, listing, punchOut, approve, edit}) => {
     })
   }
 
-  return (
-    <div>
-      <h2>
-        Punches for volunteer:{' '}
-        <FullName volunteer={volunteer} useAbbr={false} />
-      </h2>
-
-      {rows}
-    </div>
-  )
+  return <div>{rows}</div>
 }
 
 VolunteerGrid.propTypes = {

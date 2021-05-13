@@ -19,24 +19,35 @@ TimeFormat.propTypes = {time: PropTypes.number}
 
 const ApproveButton = ({value, approve}) => {
   if (value.approved) {
-    return <span className="badge badge-success">Yes</span>
+    return (
+      <div>
+        <span className="d-none d-print-inline">Yes</span>
+        <span className="d-print-none badge badge-success">Yes</span>
+      </div>
+    )
   } else {
     if (value.timeOut == 0) {
       return (
-        <span
-          className="badge badge-danger"
-          title="Clock out volunteer before approving">
-          No
-        </span>
+        <div>
+          <span className="d-none d-print-inline">No</span>
+          <span
+            className="badge badge-danger d-print-none"
+            title="Clock out volunteer before approving">
+            No
+          </span>
+        </div>
       )
     } else {
       return (
-        <span
-          className="badge badge-danger"
-          onClick={() => approve(value.id)}
-          onMouseOver={(e) => (e.target.style.cursor = 'pointer')}>
-          No
-        </span>
+        <div>
+          <span className="d-none d-print-inline">Yes</span>
+          <span
+            className="badge badge-danger d-print-none"
+            onClick={() => approve(value.id)}
+            onMouseOver={(e) => (e.target.style.cursor = 'pointer')}>
+            No
+          </span>
+        </div>
       )
     }
   }
