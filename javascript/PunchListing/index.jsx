@@ -85,8 +85,8 @@ const PunchListing = ({sponsorId, volunteerId}) => {
     })
   }
 
-  const edit = (key) => {
-    setCurrentPunch(Object.assign({}, listing[key]))
+  const edit = (punch) => {
+    setCurrentPunch(Object.assign({}, punch))
     setShowModal(true)
   }
 

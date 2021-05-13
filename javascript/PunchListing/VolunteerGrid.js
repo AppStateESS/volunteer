@@ -24,12 +24,12 @@ const VolunteerGrid = ({volunteer, listing, punchOut, approve, edit}) => {
     )
   } else {
     rows = listing.map((value, skey) => {
-      const punches = value.punches.map((value, pkey) => {
+      const punches = value.punches.map((value) => {
         return (
           <tr key={`row-${value.id}`}>
             <td>
               {value.timeOut ? (
-                <ChangeTime edit={() => edit(pkey)} />
+                <ChangeTime edit={() => edit(value)} />
               ) : (
                 <span></span>
               )}
@@ -41,11 +41,7 @@ const VolunteerGrid = ({volunteer, listing, punchOut, approve, edit}) => {
               <TimeFormat time={value.timeIn} />
             </td>
             <td>
-              <TimeOut
-                punch={value}
-                punchOut={punchOut}
-                edit={() => edit(pkey)}
-              />
+              <TimeOut punch={value} punchOut={punchOut} />
             </td>
             <td>{value.totalTime}</td>
             <td>
