@@ -61,7 +61,10 @@ const Grid = ({listing, load}) => {
   return (
     <div>
       <h2>Unapproved punches</h2>
-      <button className="btn btn-primary mb-2" onClick={postApproves}>
+      <button
+        className="btn btn-primary mb-2"
+        onClick={postApproves}
+        disabled={Object.keys(approveList).length == 0}>
         Approved checked
       </button>
       <table className="table table-striped">
