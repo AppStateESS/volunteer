@@ -248,4 +248,9 @@ class PunchFactory extends AbstractFactory
         return self::build($punchId)->sponsorId;
     }
 
+    public static function getVolunteerId(int $punchId)
+    {
+        return self::build($punchId)->volunteerId;
+    }
+
 }
