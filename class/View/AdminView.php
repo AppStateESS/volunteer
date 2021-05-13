@@ -8,6 +8,7 @@
 namespace volunteer\View;
 
 use Canopy\Request;
+use volunteer\Factory\PunchFactory;
 
 class AdminView
 {
@@ -28,7 +29,8 @@ class AdminView
                 $volunteerActive = 'active';
                 break;
         }
-        $activeTpl = ['sponsorActive' => $sponsorActive, 'volunteerActive' => $volunteerActive, 'unapprovedActive' => $unapprovedActive];
+        $unapproved = PunchFactory::unapprovedCount();
+        $activeTpl = ['sponsorActive' => $sponsorActive, 'volunteerActive' => $volunteerActive, 'unapprovedActive' => $unapprovedActive, 'unapproved' => $unapproved];
         $template = new \phpws2\Template($activeTpl);
         $template->setModuleTemplate('volunteer', 'Menu.html');
         return $template->get();

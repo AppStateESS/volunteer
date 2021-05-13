@@ -224,6 +224,15 @@ class PunchFactory extends AbstractFactory
         return floor(($seconds % 3600) / 60);
     }
 
+    public static function unapprovedCount()
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_punch');
+        $tbl->addFieldConditional('approved', 0);
+        $tbl->addField(new Database\Expression('count(' . $tbl->getField('id') . ')'));
+        return $db->selectColumn();
+    }
+
     public static function buildTotalTime($hours, $minutes)
     {
         $totalTime = [];
