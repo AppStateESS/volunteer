@@ -50,7 +50,7 @@ const ChangeTime = ({edit}) => {
   )
 }
 
-const TimeOut = ({punch, punchOut, edit}) => {
+const TimeOut = ({punch, punchOut}) => {
   let content
   if (punch.timeOut) {
     content = (
