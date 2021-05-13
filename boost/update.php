@@ -48,6 +48,7 @@ class VolunteerDataUpdate
                 $this->content[] = 'Added kiosk mode';
                 $this->content[] = 'Added punch preapproved option for sponsors';
                 $this->content[] = 'Added logging';
+                $this->content[] = 'Many improvements and bug fixes';
                 $this->content[] = '</pre>';
         }
         return $this->content;
