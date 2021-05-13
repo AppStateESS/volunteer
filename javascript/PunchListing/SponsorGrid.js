@@ -18,7 +18,7 @@ const SponsorGrid = ({sponsor, listing, punchOut, approve, edit}) => {
         <tr key={`row-${value.id}`}>
           <td>
             {value.timeOut ? (
-              <ChangeTime edit={() => edit(key)} />
+              <ChangeTime edit={() => edit(value)} />
             ) : (
               <span></span>
             )}
@@ -35,7 +35,7 @@ const SponsorGrid = ({sponsor, listing, punchOut, approve, edit}) => {
             <TimeFormat time={value.timeIn} />
           </td>
           <td>
-            <TimeOut punch={value} punchOut={punchOut} edit={() => edit(key)} />
+            <TimeOut punch={value} punchOut={punchOut} />
           </td>
           <td>{value.totalTime}</td>
           <td>
