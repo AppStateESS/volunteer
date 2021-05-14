@@ -50,6 +50,6 @@ const ClockInput = ({sendSwipe, lockInput}) => {
   return <div className="mt-4">{input()}</div>
 }
 
-ClockInput.propTypes = {sendSwipe: PropTypes.func}
+ClockInput.propTypes = {sendSwipe: PropTypes.func, lockInput: PropTypes.func}
 
 export default ClockInput
