@@ -13,7 +13,7 @@ const SponsorGrid = ({listing, punchOut, approve, edit}) => {
       </tr>
     )
   } else {
-    rows = listing.map((value, key) => {
+    rows = listing.map((value) => {
       return (
         <tr key={`row-${value.id}`}>
           <td className="d-print-none">
