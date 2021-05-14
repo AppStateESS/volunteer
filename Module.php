@@ -77,7 +77,8 @@ class Module extends \Canopy\Module implements SettingDefaults
     public function runTime(Request $request)
     {
         if (!empty($GLOBALS['volunteer_dist']) || VOLUNTEER_BANNER_API == '') {
-            \Layout::add('<div class="alert alert-danger">Please copy defines.dist.php to defines.php and enter the required settings.</div>', 'volunteer');
+            \Layout::add('<div class="alert alert-danger">Please copy defines.dist.php to defines.php and enter the required settings.</div>',
+                    'volunteer');
         }
         if (\phpws\PHPWS_Core::atHome()) {
             if (\Current_User::allow('volunteer')) {
