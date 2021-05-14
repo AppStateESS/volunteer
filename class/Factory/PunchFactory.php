@@ -137,6 +137,7 @@ class PunchFactory extends AbstractFactory
 
         if (!empty($options['unapprovedOnly'])) {
             $tbl->addFieldConditional('approved', 0);
+            $tbl->addFieldConditional('timeOut', 0, '>');
         }
 
         if (!empty($options['includeVolunteer'])) {
@@ -229,6 +230,8 @@ class PunchFactory extends AbstractFactory
         $db = Database::getDB();
         $tbl = $db->addTable('vol_punch');
         $tbl->addFieldConditional('approved', 0);
+        $tbl->addFieldConditional('approved', 0);
+        $tbl->addFieldConditional('timeOut', 0, '>');
         $tbl->addField(new Database\Expression('count(' . $tbl->getField('id') . ')'));
         return $db->selectColumn();
     }
