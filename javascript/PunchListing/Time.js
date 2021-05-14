@@ -61,6 +61,8 @@ const ChangeTime = ({edit}) => {
   )
 }
 
+ChangeTime.propTypes = {edit: PropTypes.func}
+
 const TimeOut = ({punch, punchOut}) => {
   let content
   if (punch.timeOut) {
