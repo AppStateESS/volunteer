@@ -24,10 +24,9 @@ const PickSponsor = ({volunteerName, contactEmail}) => {
         setSponsors(response.data)
       } else {
         setSponsors([])
-        setError(true)
       }
     })
-      .catch((error) => {
+      .catch(() => {
         setSponsors([])
         setError(true)
       })
