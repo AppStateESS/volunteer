@@ -8,7 +8,7 @@
         <div class="card-body">
           <p>Hello <?= empty($volunteer['preferredName']) ? $volunteer['firstName'] : $volunteer['preferredName']?>.
             You have been clocked in for
-            <?=$totalTime?>.</p>
+            <?=$totalTime?></p>
           <form method="post" action="./volunteer/Student/Punch/out">
             <input type="hidden" name="punchId" value="<?=$punch['id']?>" />
             <button type="submit" class="btn btn-lg btn-block btn-success py-3"><i

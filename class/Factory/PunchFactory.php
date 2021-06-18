@@ -207,12 +207,12 @@ class PunchFactory extends AbstractFactory
         return strtotime("23:59:59", $timestamp);
     }
 
-    public static function getTotalTime($timeIn, $timeOut)
+    public static function getTotalTime($timeIn, $timeOut, $abbreviated = true)
     {
         $totalSeconds = $timeOut - $timeIn;
         $totalHours = self::totalHours($totalSeconds);
         $totalMinutes = self::totalMinutes($totalSeconds);
-        return self::buildTotalTime($totalHours, $totalMinutes);
+        return self::buildTotalTime($totalHours, $totalMinutes, $abbreviated);
     }
 
     public static function totalHours($seconds)
@@ -235,14 +235,25 @@ class PunchFactory extends AbstractFactory
         return $db->selectColumn();
     }
 
-    public static function buildTotalTime($hours, $minutes)
+    public static function buildTotalTime($hours, $minutes, $abbreviated = true)
     {
+        if ($abbreviated) {
+            $h_label = 'hr';
+            $m_label = 'min';
+        } else {
+            $h_label = 'hour';
+            $m_label = 'minute';
+        }
         $totalTime = [];
         if ($hours > 0) {
-            $totalTime[] = $hours . ' hr' . ($hours > 1 ? 's.' : '.') . ' and';
+            $totalTime[] = $hours . " $h_label" . ($hours > 1 ? 's' : '');
+            if ($h_label == 'hr') {
+                $totalTime[] = '.';
+            }
+            $totalTime[] = ' and ';
         }
-        $totalTime[] = $minutes . ' min' . ( ($minutes > 1 || $minutes == 0) ? 's.' : '.');
-        return implode(' ', $totalTime);
+        $totalTime[] = $minutes . " $m_label" . ( ($minutes > 1 || $minutes == 0) ? 's.' : '.');
+        return implode('', $totalTime);
     }
 
     public static function massApprove(array $approvals)

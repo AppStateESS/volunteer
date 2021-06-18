@@ -41,7 +41,7 @@ class PunchView extends AbstractView
         $vars['punch'] = $punch->getStringVars();
         $sponsor = SponsorFactory::build($punch->sponsorId);
         $vars['sponsor'] = $sponsor->getStringVars();
-        $vars['totalTime'] = PunchFactory::getTotalTime($punch->timeIn, time());
+        $vars['totalTime'] = PunchFactory::getTotalTime($punch->timeIn, time(), false);
         $template = new Template($vars);
         $template->setModuleTemplate('volunteer', 'PunchOut.html');
         return $template->get();
