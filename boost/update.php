@@ -58,6 +58,13 @@ class VolunteerDataUpdate
                 $this->content[] = 'Fixed sponsor listing bug.';
                 $this->content[] = 'Fixed unapproved list showing those not punched out.';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.1.2'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.1.2';
+                $this->content[] = '-----------------------------';
+                $this->content[] = 'Fixed logout.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }

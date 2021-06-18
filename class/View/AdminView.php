@@ -30,7 +30,7 @@ class AdminView
                 break;
         }
         $unapproved = PunchFactory::unapprovedCount();
-        $activeTpl = ['sponsorActive' => $sponsorActive, 'volunteerActive' => $volunteerActive, 'unapprovedActive' => $unapprovedActive, 'unapproved' => $unapproved];
+        $activeTpl = ['logoutUrl' => \volunteer\Factory\Authenticate::logoutUrl(), 'sponsorActive' => $sponsorActive, 'volunteerActive' => $volunteerActive, 'unapprovedActive' => $unapprovedActive, 'unapproved' => $unapproved];
         $template = new \phpws2\Template($activeTpl);
         $template->setModuleTemplate('volunteer', 'Menu.html');
         return $template->get();

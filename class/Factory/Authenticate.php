@@ -30,7 +30,8 @@ class Authenticate
 
     public static function logoutUrl()
     {
-        return $_SERVER[VOL_SHIB_LOGOUT_TAG];
+        $auth = \Current_User::getAuthorization();
+        return $auth->logout_link;
     }
 
 }
