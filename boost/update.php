@@ -50,6 +50,14 @@ class VolunteerDataUpdate
                 $this->content[] = 'Added logging';
                 $this->content[] = 'Many improvements and bug fixes';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.1.1'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.1.1';
+                $this->content[] = '-----------------------------';
+                $this->content[] = 'Fixed sponsor listing bug.';
+                $this->content[] = 'Fixed unapproved list showing those not punched out.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
