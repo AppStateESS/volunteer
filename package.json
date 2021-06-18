@@ -11,7 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/AppStateESS/volunteer.git"
   },
-  "plugins": ["new BundleAnalyzerPlugin()"],
+  "plugins": [
+    "new BundleAnalyzerPlugin()"
+  ],
   "keywords": [
     "volunteer",
     "timeclock",
