@@ -67,7 +67,7 @@ const Grid = ({listing, edit, sendKiosk, sendPreApproved}) => {
         </td>
         <td>{value.name}</td>
         <td>
-          <a href={`./volunteer/${value.searchName}`}>{value.searchName}</a>
+          <a href={`./${value.searchName}`}>{value.searchName}</a>
         </td>
         <td>
           {value.kioskMode ? (
