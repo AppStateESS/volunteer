@@ -10,6 +10,7 @@ import {
   ajaxPunchOut,
   sendApproves,
   updatePunch,
+  deletePunch,
 } from '../api/Fetch'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -106,6 +107,10 @@ const PunchListing = ({sponsorId, volunteerId}) => {
     setShowModal(true)
   }
 
+  const remove = (punch) => {
+    deletePunch(punch.id).then(loadList)
+  }
+
   useEffect(() => {
     if (sponsorId) {
       const SponsorPromise = getItem('Admin', 'Sponsor', sponsorId)
@@ -131,10 +136,10 @@ const PunchListing = ({sponsorId, volunteerId}) => {
     )
   } else {
     if (sponsorId) {
-      grid = <SponsorGrid {...{listing, punchOut, approve, edit}} />
+      grid = <SponsorGrid {...{listing, punchOut, approve, edit, remove}} />
       title = <h2 className="mb-1">Punches for sponsor: {sponsor.name}</h2>
     } else {
-      grid = <VolunteerGrid {...{listing, punchOut, approve, edit}} />
+      grid = <VolunteerGrid {...{listing, punchOut, approve, edit, remove}} />
       title = (
         <h2 className="mb-1">
           Punches for volunteer:{' '}
