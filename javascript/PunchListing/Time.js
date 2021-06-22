@@ -3,6 +3,7 @@ import React from 'react'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faTrash} from '@fortawesome/free-solid-svg-icons'
 import {faClock} from '@fortawesome/free-solid-svg-icons'
 
 const Day = ({time}) => {
@@ -55,7 +56,10 @@ const ApproveButton = ({value, approve}) => {
 
 const ChangeTime = ({edit}) => {
   return (
-    <button className="btn btn-link btn-sm" onClick={edit}>
+    <button
+      className="btn btn-primary btn-sm mr-1"
+      onClick={edit}
+      title="Change time">
       <FontAwesomeIcon icon={faClock} />
     </button>
   )
@@ -85,4 +89,20 @@ const TimeOut = ({punch, punchOut}) => {
   return content
 }
 
-export {Day, TimeFormat, ApproveButton, TimeOut, ChangeTime}
+const DeleteButton = ({remove, punch}) => {
+  return (
+    <button
+      title="Delete"
+      className="btn btn-danger btn-sm"
+      onClick={() => {
+        if (confirm('Are you sure you want to remove this punch forever?')) {
+          remove(punch)
+        }
+      }}>
+      <FontAwesomeIcon icon={faTrash} />
+    </button>
+  )
+}
+DeleteButton.propTypes = {remove: PropTypes.func, punch: PropTypes.object}
+
+export {Day, TimeFormat, ApproveButton, TimeOut, ChangeTime, DeleteButton}
