@@ -12,9 +12,9 @@ const Kiosk = ({sponsor}) => {
   const [message, setMessage] = useState('')
   const [lockInput, setLockInput] = useState(false)
 
-  const sendSwipe = (bannerId) => {
+  const sendSwipe = (studentBannerId) => {
     setLockInput(true)
-    const Promise = swipeVolunteer(bannerId, sponsor.id)
+    const Promise = swipeVolunteer(studentBannerId, sponsor.id)
     Promise.then((response) => {
       const {success, result} = response.data
       if (success) {

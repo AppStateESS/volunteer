@@ -23,12 +23,12 @@ class Punch extends SubController
 
     protected function swipeInJson(Request $request)
     {
-        $bannerId = $request->pullGetString('bannerId');
+        $studentBannerId = $request->pullGetString('studentBannerId');
         $sponsorId = $request->pullGetString('sponsorId');
-        $volunteer = VolunteerFactory::loadByBannerId($bannerId);
+        $volunteer = VolunteerFactory::loadByBannerId($studentBannerId);
         if (!$volunteer) {
             try {
-                $volunteer = VolunteerFactory::createVolunteer($bannerId);
+                $volunteer = VolunteerFactory::createVolunteer($studentBannerId);
             } catch (\volunteer\Exception\StudentNotFound $e) {
                 return ['success' => false, 'result' => 'notfound'];
             }
