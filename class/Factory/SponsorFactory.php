@@ -88,4 +88,33 @@ class SponsorFactory extends AbstractFactory
         }
     }
 
+    public static function save(\phpws2\Resource $sponsor)
+    {
+        parent::save($sponsor);
+        self::saveShortcut($sponsor);
+        return $sponsor->id;
+    }
+
+    private static function saveShortcut(Sponsor $sponsor)
+    {
+        $url = 'volunteer:' . $sponsor->id;
+        $db = Database::getDB();
+        $tbl = $db->addTable('access_shortcuts');
+        $tbl->addFieldConditional('url', $url);
+        $tbl->addField('id');
+        $shortcutId = $db->selectColumn();
+        $db->clearConditional();
+        if (empty($shortcutId)) {
+            $tbl->usePearSequence(true);
+            $tbl->addValue('keyword', $sponsor->searchName);
+            $tbl->addValue('url', 'volunteer:' . $sponsor->id);
+            $tbl->addValue('active', 1);
+            return $db->insert();
+        } else {
+            $tbl->addValue('keyword', $sponsor->searchName);
+            $tbl->addFieldConditional('id', $shortcutId);
+            return $db->update();
+        }
+    }
+
 }
