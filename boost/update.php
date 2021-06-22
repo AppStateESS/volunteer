@@ -65,6 +65,13 @@ class VolunteerDataUpdate
                 $this->content[] = '-----------------------------';
                 $this->content[] = 'Fixed logout.';
                 $this->content[] = '</pre>';
+            case $this->compare('1.2.0'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.2.0';
+                $this->content[] = '-----------------------------';
+                $this->content[] = 'Can now delete punches.';
+                $this->content[] = 'Changed the shortlink to an access link.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
