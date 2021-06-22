@@ -1,11 +1,19 @@
 'use strict'
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Day, TimeFormat, ApproveButton, TimeOut, ChangeTime} from './Time'
+import {
+  Day,
+  TimeFormat,
+  ApproveButton,
+  TimeOut,
+  ChangeTime,
+  DeleteButton,
+} from './Time'
 
-const VolunteerGrid = ({listing, punchOut, approve, edit}) => {
+const VolunteerGrid = ({listing, punchOut, approve, edit, remove}) => {
   let rows
-  const totalTime = (value) => {
+  let totalTime
+  totalTime = (value) => {
     return (
       <tr className="bg-primary text-white">
         <td colSpan="6">
@@ -16,22 +24,19 @@ const VolunteerGrid = ({listing, punchOut, approve, edit}) => {
     )
   }
   if (listing.length == 0) {
-    rows = (
-      <tr>
-        <td colSpan="6">No rows found.</td>
-      </tr>
-    )
+    rows = <p>No rows found.</p>
   } else {
     rows = listing.map((value, skey) => {
       const punches = value.punches.map((value) => {
         return (
           <tr key={`row-${value.id}`}>
-            <td className="d-print-none">
+            <td className="d-print-none" style={{width: '10%'}}>
               {value.timeOut ? (
                 <ChangeTime edit={() => edit(value)} />
               ) : (
                 <span></span>
               )}
+              <DeleteButton punch={value} remove={remove} />
             </td>
             <td>
               <Day time={value.timeIn} />
@@ -81,6 +86,7 @@ VolunteerGrid.propTypes = {
   punchOut: PropTypes.func,
   approve: PropTypes.func,
   edit: PropTypes.func,
+  remove: PropTypes.func,
 }
 
 export default VolunteerGrid

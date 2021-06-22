@@ -2,9 +2,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import FullName from '../api/Name'
-import {Day, TimeFormat, ApproveButton, TimeOut, ChangeTime} from './Time'
+import {
+  Day,
+  TimeFormat,
+  ApproveButton,
+  TimeOut,
+  ChangeTime,
+  DeleteButton,
+} from './Time'
 
-const SponsorGrid = ({listing, punchOut, approve, edit}) => {
+const SponsorGrid = ({listing, punchOut, approve, edit, remove}) => {
   let rows
   if (listing.length == 0) {
     rows = (
@@ -13,7 +20,7 @@ const SponsorGrid = ({listing, punchOut, approve, edit}) => {
       </tr>
     )
   } else {
-    rows = listing.map((value) => {
+    rows = listing.punches.map((value) => {
       return (
         <tr key={`row-${value.id}`}>
           <td className="d-print-none">
@@ -22,6 +29,7 @@ const SponsorGrid = ({listing, punchOut, approve, edit}) => {
             ) : (
               <span></span>
             )}
+            <DeleteButton punch={value} remove={remove} />
           </td>
           <td>
             <a href={`./volunteer/Admin/Volunteer/${value.volunteerId}/report`}>
@@ -60,6 +68,12 @@ const SponsorGrid = ({listing, punchOut, approve, edit}) => {
             <th>Approved</th>
           </tr>
           {rows}
+          <tr>
+            <td colSpan="7" className="bg-primary text-white">
+              <strong>Total time:</strong>
+              &nbsp;{listing.totalTime}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -68,7 +82,7 @@ const SponsorGrid = ({listing, punchOut, approve, edit}) => {
 
 SponsorGrid.propTypes = {
   sponsor: PropTypes.object,
-  listing: PropTypes.array,
+  listing: PropTypes.object,
   punchOut: PropTypes.func,
   approve: PropTypes.func,
   edit: PropTypes.func,
