@@ -22,10 +22,15 @@ class Punch extends SubController
         $sponsorId = $request->pullGetInteger('sponsorId');
         $volunteerId = $request->pullGetInteger('volunteerId');
         if ($sponsorId) {
-            return PunchFactory::list(['sponsorId' => $request->pullGetInteger('sponsorId'),
+            $listing = PunchFactory::list(['sponsorId' => $request->pullGetInteger('sponsorId'),
                         'includeVolunteer' => true,
                         'to' => $request->pullGetInteger('to', true),
                         'from' => $request->pullGetInteger('from', true)]);
+            if (!empty($listing)) {
+                return PunchFactory::sortPunches($listing, true)[0];
+            } else {
+                return [];
+            }
         } elseif ($volunteerId) {
             return PunchFactory::list(['volunteerId' => $request->pullGetInteger('volunteerId'),
                         'sortBySponsor' => true,
@@ -99,6 +104,13 @@ class Punch extends SubController
         $punch->timeOut = $request->pullPutInteger('timeOut');
         PunchFactory::save($punch);
         LogFactory::timeChange($oldTimeIn, $oldTimeOut, $punch);
+        return ['success' => true];
+    }
+
+    protected function delete(Request $request)
+    {
+        $punch = PunchFactory::build($this->id);
+        PunchFactory::deleteResource($punch);
         return ['success' => true];
     }
 
