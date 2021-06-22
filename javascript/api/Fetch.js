@@ -127,11 +127,21 @@ const updatePunch = async (punch) => {
   }
 }
 
-const swipeVolunteer = async (bannerId, sponsorId) => {
+const deletePunch = async (punchId) => {
+  const url = `volunteer/Admin/Punch/${punchId}`
+  try {
+    const response = await axios.delete(url, {headers})
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
+const swipeVolunteer = async (studentBannerId, sponsorId) => {
   const url = 'volunteer/User/Punch/swipeIn'
   try {
     const response = await axios.get(url, {
-      params: {bannerId, sponsorId},
+      params: {studentBannerId, sponsorId},
       headers,
     })
     return response
@@ -152,4 +162,5 @@ export {
   sendApproves,
   updatePunch,
   swipeVolunteer,
+  deletePunch,
 }
