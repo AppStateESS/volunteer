@@ -56,7 +56,7 @@ class PunchFactory extends AbstractFactory
         }
     }
 
-    private static function sortPunches(array $punches, bool $includeTotals = false)
+    public static function sortPunches(array $punches, bool $includeTotals = false)
     {
         $rows = [];
         $totalTimes = [];
