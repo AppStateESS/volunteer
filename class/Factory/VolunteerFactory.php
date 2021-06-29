@@ -24,6 +24,14 @@ class VolunteerFactory extends AbstractFactory
         return $id > 0 ? self::load($volunteer, $id) : $volunteer;
     }
 
+    public static function delete(int $id)
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_volunteer');
+        $tbl->addFieldConditional('id', $id);
+        return $db->delete();
+    }
+
     public static function loadCurrent($createIfNotFound = true)
     {
         $volunteer = self::loadByUsername(Authenticate::getLoginUsername());

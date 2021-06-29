@@ -2,11 +2,9 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import FullName from '../api/Name'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faList} from '@fortawesome/free-solid-svg-icons'
 
-const Grid = ({listing, domain}) => {
-  const [selected, setSelected] = useState('na')
+const Grid = ({listing, domain, deleteVolunteer}) => {
+  const selected = 'na'
 
   const adminOption = (option, id) => {
     switch (option) {
@@ -15,6 +13,16 @@ const Grid = ({listing, domain}) => {
         break
       case 'log':
         location.href = `./volunteer/Admin/Log/?volunteerId=${id}`
+        break
+
+      case 'delete':
+        if (
+          prompt(
+            'Deleting this volunteer will remove all their punch information.\nType DELETE below if you wish to do so.'
+          ) === 'DELETE'
+        ) {
+          deleteVolunteer(id)
+        }
         break
     }
   }
@@ -32,6 +40,7 @@ const Grid = ({listing, domain}) => {
             </option>
             <option value="report">Report</option>
             <option value="log">Log</option>
+            <option value="delete">Delete</option>
           </select>
         </td>
         <td>

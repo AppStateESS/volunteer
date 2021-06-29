@@ -34,6 +34,17 @@ class PunchFactory extends AbstractFactory
         return $id > 0 ? self::load($punch, $id) : $punch;
     }
 
+    public static function deleteByVolunteerId(int $volunteerId)
+    {
+        if (empty($volunteerId)) {
+            throw new \Exception('Missing volunteer id');
+        }
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_punch');
+        $tbl->addFieldConditional('volunteerId', $volunteerId);
+        return $db->delete();
+    }
+
     /**
      * Grabs an incomplete punch for the current volunteer.
      * @param Volunteer $volunteer

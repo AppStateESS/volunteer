@@ -11,6 +11,8 @@ use volunteer\Controller\SubController;
 use volunteer\View\VolunteerView;
 use volunteer\View\AdminView;
 use volunteer\Factory\VolunteerFactory;
+use volunteer\Factory\PunchFactory;
+use volunteer\Factory\LogFactory;
 use volunteer\Exception\ResourceNotFound;
 use Canopy\Request;
 
@@ -39,6 +41,14 @@ class Volunteer extends SubController
     {
         $volunteer = VolunteerFactory::build($this->id);
         return $volunteer->getStringVars();
+    }
+
+    protected function delete(Request $request)
+    {
+        VolunteerFactory::delete($this->id);
+        PunchFactory::deleteByVolunteerId($this->id);
+        LogFactory::deleteByVolunteerId($this->id);
+        return ['success' => true];
     }
 
 }

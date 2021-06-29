@@ -1,7 +1,7 @@
 'use strict'
 import React, {useState, useEffect, useRef} from 'react'
 import ReactDOM from 'react-dom'
-import {getList} from '../api/Fetch'
+import {getList, deleteVolunteer} from '../api/Fetch'
 import Grid from './Grid.js'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
@@ -63,7 +63,14 @@ const Volunteer = ({domain}) => {
   } else {
     content = (
       <div>
-        <Grid listing={listing} domain={domain} />
+        <Grid
+          listing={listing}
+          domain={domain}
+          deleteVolunteer={(id) => {
+            deleteVolunteer(id)
+            loadList(search)
+          }}
+        />
       </div>
     )
   }

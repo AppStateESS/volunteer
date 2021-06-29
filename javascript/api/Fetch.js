@@ -28,6 +28,11 @@ const ajaxPunchOut = async (punchId) => {
   }
 }
 
+const deleteVolunteer = async (id) => {
+  const url = `./volunteer/Admin/Volunteer/${id}`
+  return sendDelete(url)
+}
+
 const sendDelete = async (url) => {
   try {
     const response = await axios.delete(url, {
@@ -163,4 +168,5 @@ export {
   updatePunch,
   swipeVolunteer,
   deletePunch,
+  deleteVolunteer,
 }

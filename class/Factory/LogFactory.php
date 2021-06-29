@@ -88,6 +88,14 @@ class LogFactory extends AbstractFactory
         self::save($log);
     }
 
+    public static function deleteByVolunteerId(int $volunteerId)
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_log');
+        $tbl->addFieldConditional('volunteerId', $volunteerId);
+        $db->delete();
+    }
+
     public static function timeChange($timeIn, $timeOut, Punch $newPunch)
     {
         $log = self::build();
