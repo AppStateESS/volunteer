@@ -65,12 +65,17 @@ class VolunteerDataUpdate
                 $this->content[] = '-----------------------------';
                 $this->content[] = 'Fixed logout.';
                 $this->content[] = '</pre>';
+
             case $this->compare('1.2.0'):
+                $tableCreate->addAttendanceColumn();
+                $tableCreate->addAttendedColumn();
                 $this->content[] = '<pre>';
                 $this->content[] = '1.2.0';
                 $this->content[] = '-----------------------------';
                 $this->content[] = 'Can now delete punches.';
+                $this->content[] = 'Can now delete volunteers.';
                 $this->content[] = 'Changed the shortlink to an access link.';
+                $this->content[] = 'Added attended only functionality.';
                 $this->content[] = '</pre>';
         }
         return $this->content;
