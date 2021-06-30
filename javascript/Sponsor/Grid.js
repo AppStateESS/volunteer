@@ -2,7 +2,14 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 
-const OptionSelect = ({edit, sponsor, key, sendKiosk, sendPreApproved}) => {
+const OptionSelect = ({
+  edit,
+  sponsor,
+  key,
+  sendKiosk,
+  sendPreApproved,
+  sendAttendance,
+}) => {
   const [selected, setSelected] = useState('na')
 
   const adminOption = (e) => {
@@ -20,15 +27,20 @@ const OptionSelect = ({edit, sponsor, key, sendKiosk, sendPreApproved}) => {
       case 'preapproved':
         sendPreApproved(key)
         break
+      case 'attendance':
+        sendAttendance(key)
+        break
       case 'log':
         location.href = `volunteer/Admin/Log?sponsorId=${sponsor.id}`
         break
     }
     setSelected('na')
   }
-  const kioskLabel = sponsor.kioskMode ? 'Disable kiosk' : 'Enable kiosk'
+  const kioskLabel = sponsor.kioskMode == 1 ? 'Disable kiosk' : 'Enable kiosk'
   const approveLabel =
     sponsor.preApproved == 1 ? 'Do not pre-approve' : 'Pre-approve punches'
+  const attendanceLabel =
+    sponsor.attendanceOnly == 1 ? 'Punch in/out' : 'Attendance only'
   return (
     <select onChange={adminOption} value={selected} className="form-control-sm">
       <option disabled={true} value="na" className="text-center">
@@ -38,6 +50,7 @@ const OptionSelect = ({edit, sponsor, key, sendKiosk, sendPreApproved}) => {
       <option value="report">Report</option>
       <option value="kiosk">{kioskLabel}</option>
       <option value="preapproved">{approveLabel}</option>
+      <option value="attendance">{attendanceLabel}</option>
       <option value="log">Log</option>
     </select>
   )
@@ -49,9 +62,10 @@ OptionSelect.propTypes = {
   key: PropTypes.number,
   sendKiosk: PropTypes.func,
   sendPreApproved: PropTypes.func,
+  sendAttendance: PropTypes.func,
 }
 
-const Grid = ({listing, edit, sendKiosk, sendPreApproved}) => {
+const Grid = ({listing, edit, sendKiosk, sendPreApproved, sendAttendance}) => {
   const rows = listing.map((value, key) => {
     return (
       <tr key={`row-${value.id}`}>
@@ -62,6 +76,7 @@ const Grid = ({listing, edit, sendKiosk, sendPreApproved}) => {
               sendKiosk(key)
             }}
             sponsor={value}
+            sendAttendance={() => sendAttendance(key)}
             sendPreApproved={() => sendPreApproved(key)}
           />
         </td>
@@ -83,9 +98,18 @@ const Grid = ({listing, edit, sendKiosk, sendPreApproved}) => {
             <div className="badge badge-danger">No</div>
           )}
         </td>
+        <td>
+          {value.attendanceOnly ? (
+            <div className="badge badge-success">Yes</div>
+          ) : (
+            <div className="badge badge-danger">No</div>
+          )}
+        </td>
       </tr>
     )
   })
+
+  const style = {width: '10%'}
   return (
     <div>
       <table className="table table-striped">
@@ -94,8 +118,9 @@ const Grid = ({listing, edit, sendKiosk, sendPreApproved}) => {
             <th>&nbsp;</th>
             <th>Name</th>
             <th>Link</th>
-            <th>Kiosk</th>
-            <th>Pre-Approve</th>
+            <th style={style}>Kiosk</th>
+            <th style={style}>Pre-approve</th>
+            <th style={style}>Attendance only</th>
           </tr>
           {rows}
         </tbody>
@@ -109,6 +134,7 @@ Grid.propTypes = {
   edit: PropTypes.func,
   sendKiosk: PropTypes.func,
   sendPreApproved: PropTypes.func,
+  sendAttendanceOnly: PropTypes.func,
 }
 
 export default Grid
