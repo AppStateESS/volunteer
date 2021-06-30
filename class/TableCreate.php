@@ -79,4 +79,20 @@ class TableCreate
         $app->add();
     }
 
+    public function addAttendanceColumn()
+    {
+        $db = Database::getDB();
+        $sponsor = $db->addTable('vol_sponsor');
+        $app = $sponsor->addDataType('attendanceOnly', 'smallint');
+        $app->add();
+    }
+
+    public function addAttendedColumn()
+    {
+        $db = Database::getDB();
+        $punch = $db->addTable('vol_punch');
+        $app = $punch->addDataType('attended', 'smallint');
+        $app->add();
+    }
+
 }
