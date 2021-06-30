@@ -1,7 +1,12 @@
 'use strict'
 import React, {useState, useEffect, useRef} from 'react'
 import ReactDOM from 'react-dom'
-import {getList, sendKiosk, sponsorPreApproved} from '../api/Fetch'
+import {
+  getList,
+  sendKiosk,
+  sponsorPreApproved,
+  sendAttendanceOnly,
+} from '../api/Fetch'
 import Grid from './Grid'
 import Form from './Form'
 import Overlay from '@essappstate/canopy-react-overlay'
@@ -22,21 +27,35 @@ const Sponsor = () => {
   const [search, setSearch] = useState('')
 
   const updateKiosk = (key) => {
-    const listCopy = [...listing]
-    const sponsor = listCopy[key]
+    const sponsor = pullSponsor(key)
     sponsor.kioskMode = 1 - sponsor.kioskMode
     sendKiosk(sponsor.id, sponsor.kioskMode)
+    pushSponsor(key, sponsor)
+  }
+
+  const pullSponsor = (key) => {
+    const listCopy = [...listing]
+    return listCopy[key]
+  }
+
+  const pushSponsor = (key, sponsor) => {
+    const listCopy = [...listing]
     listCopy[key] = sponsor
-    setListing(listCopy)
+    setListing([...listCopy])
+  }
+
+  const sendAttendance = (key) => {
+    const sponsor = pullSponsor(key)
+    sponsor.attendanceOnly = 1 - sponsor.attendanceOnly
+    sendAttendanceOnly(sponsor.id, sponsor.attendanceOnly)
+    pushSponsor(key, sponsor)
   }
 
   const sendPreApproved = (key) => {
-    const listCopy = [...listing]
-    const sponsor = listCopy[key]
+    const sponsor = pullSponsor(key)
     sponsor.preApproved = 1 - sponsor.preApproved
     sponsorPreApproved(sponsor.id, sponsor.preApproved)
-    listCopy[key] = sponsor
-    setListing(listCopy)
+    pushSponsor(key, sponsor)
   }
 
   const loadList = (search = '') => {
@@ -122,6 +141,7 @@ const Sponsor = () => {
           edit={edit}
           sendKiosk={updateKiosk}
           sendPreApproved={sendPreApproved}
+          sendAttendance={sendAttendance}
         />
       </div>
     )
