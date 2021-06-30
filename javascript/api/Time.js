@@ -1,6 +1,9 @@
 'use strict'
 import dayjs from 'dayjs'
 const totalTime = (punch) => {
+  if (punch.attended) {
+    return 'Attended'
+  }
   const inTime = punch.timeIn * 1000
   const outTime = punch.timeOut * 1000
   const date1 = dayjs(inTime)
