@@ -76,6 +76,16 @@ const sendKiosk = async (sponsorId, kioskMode) => {
   }
 }
 
+const sendAttendanceOnly = async (sponsorId, attendanceOnly) => {
+  const url = `volunteer/Admin/Sponsor/${sponsorId}/attendance`
+  try {
+    const response = await axios.patch(url, {attendanceOnly}, {headers})
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
 const saveSponsor = async (sponsor) => {
   let url = 'volunteer/Admin/Sponsor'
   let method = 'post'
@@ -169,4 +179,5 @@ export {
   swipeVolunteer,
   deletePunch,
   deleteVolunteer,
+  sendAttendanceOnly,
 }
