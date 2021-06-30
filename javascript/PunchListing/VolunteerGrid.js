@@ -47,7 +47,7 @@ const VolunteerGrid = ({listing, punchOut, approve, edit, remove}) => {
             <td>
               <TimeOut punch={value} punchOut={punchOut} />
             </td>
-            <td>{value.totalTime}</td>
+            <td>{value.attended == 1 ? 'Attended' : value.totalTime}</td>
             <td>
               <ApproveButton value={value} approve={approve} />
             </td>
