@@ -58,7 +58,7 @@ class PunchView extends AbstractView
     {
         $punch = PunchFactory::build($punchId);
         $sponsor = SponsorFactory::build($punch->sponsorId);
-        $template = new Template(['logoutUrl' => \volunteer\Factory\Authenticate::logoutUrl(), 'sponsorName' => $sponsor->name]);
+        $template = new Template(['logoutUrl' => \volunteer\Factory\Authenticate::logoutUrl(), 'sponsorName' => $sponsor->name, 'attended' => $punch->attended]);
         $template->setModuleTemplate('volunteer', 'AfterPunchIn.html');
         return $template->get();
     }
