@@ -102,16 +102,33 @@ class PunchFactory extends AbstractFactory
         return array_values($rows);
     }
 
+    /**
+     * Punches the student in to the system.
+     * @param Volunteer $volunteer
+     * @param int $sponsorId
+     * @return type
+     * @throws \Exception
+     */
     public static function in(Volunteer $volunteer, int $sponsorId)
     {
         if (empty($sponsorId)) {
             throw new \Exception('Missing sponsor is on punch in');
         }
+        $sponsor = SponsorFactory::build($sponsorId);
         $punch = new Punch;
         $punch->volunteerId = $volunteer->id;
         $punch->sponsorId = $sponsorId;
         $punch->eventId = 0;
         $punch->in();
+        /*
+         * If sponsor tracks attendance only, we punch out and set approval now
+         * to close it out.
+         */
+        if ($sponsor->attendanceOnly) {
+            $punch->attended = 1;
+            $punch->out();
+            $punch->approved = SponsorFactory::isPreapproved($punch->sponsorId);
+        }
         return self::save($punch);
     }
 
