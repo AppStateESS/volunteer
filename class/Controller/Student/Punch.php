@@ -21,7 +21,6 @@ class Punch extends SubController
         $punchId = PunchFactory::in(VolunteerFactory::loadCurrent(),
                         $request->pullPostInteger('sponsorId'));
         \Canopy\Server::forward('volunteer/Student/Punch/' . $punchId . '/punchedIn');
-        return PunchView::afterPunchIn();
     }
 
     protected function outPost(Request $request)
