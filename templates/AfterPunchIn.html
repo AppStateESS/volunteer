@@ -3,7 +3,11 @@
     <div class="col-md-8 col-sm-10">
       <div class="card">
         <div class="card-header text-center">
-          <h2 class="m-0">Your session with <span class="text-primary"><?=$sponsorName?></span> has started</h2>
+          <?php if ($attended = 1):?>
+          <h3 class="m-0">Thank you for attending <span class="text-primary"><?=$sponsorName?></span></h3>
+          <?php else:?>
+          <h3 class="m-0">Your session with <span class="text-primary"><?=$sponsorName?></span> has started</h3>
+          <?php endif;?>
         </div>
         <div class="card-body text-center">
           <p class="card-text"><a href="./">Go back to the main page</a> or <a href="<?=$logoutUrl?>">log out of the
