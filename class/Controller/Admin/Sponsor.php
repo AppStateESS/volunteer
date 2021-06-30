@@ -66,4 +66,12 @@ class Sponsor extends SubController
         return ['success' => true];
     }
 
+    protected function attendancePatch(Request $request)
+    {
+        $sponsor = SponsorFactory::build($this->id);
+        $sponsor->attendanceOnly = $request->pullPatchBoolean('attendanceOnly');
+        SponsorFactory::save($sponsor);
+        return ['success' => true];
+    }
+
 }
