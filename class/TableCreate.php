@@ -34,18 +34,18 @@ class TableCreate
         return $sponsor->createTable($db);
     }
 
+    public function createReasonTable()
+    {
+        $db = Database::getDB();
+        $reason = new \volunteer\Resource\Reason;
+        return $reason->createTable($db);
+    }
+
     public function createVolunteerTable()
     {
         $db = Database::getDB();
         $volunteer = new \volunteer\Resource\Volunteer;
         return $volunteer->createTable($db);
-    }
-
-    public function createKioskTable()
-    {
-        $db = Database::getDB();
-        $kiosk = new \volunteer\Resource\KioskResource();
-        return $kiosk->createTable($db);
     }
 
     public function createLogTable()
@@ -76,6 +76,14 @@ class TableCreate
         $db = Database::getDB();
         $sponsor = $db->addTable('vol_sponsor');
         $app = $sponsor->addDataType('preApproved', 'smallint');
+        $app->add();
+    }
+
+    public function addUseReasonsColumnToSponsor()
+    {
+        $db = Database::getDB();
+        $sponsor = $db->addTable('vol_sponsor');
+        $app = $sponsor->addDataType('useReasons', 'smallint');
         $app->add();
     }
 
