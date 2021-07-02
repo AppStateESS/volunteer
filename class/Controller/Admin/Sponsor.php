@@ -52,25 +52,25 @@ class Sponsor extends SubController
 
     protected function kioskPatch(Request $request)
     {
-        $sponsor = SponsorFactory::build($this->id);
-        $sponsor->kioskMode = $request->pullPatchBoolean('kioskMode');
-        SponsorFactory::save($sponsor);
+        SponsorFactory::patchValue('kioskMode', $request->pullPatchBoolean('kioskMode'), $this->id);
         return ['success' => true];
     }
 
     protected function preApprovedPatch(Request $request)
     {
-        $sponsor = SponsorFactory::build($this->id);
-        $sponsor->preApproved = $request->pullPatchBoolean('preApproved');
-        SponsorFactory::save($sponsor);
+        SponsorFactory::patchValue('preApproved', $request->pullPatchBoolean('preApproved'), $this->id);
+        return ['success' => true];
+    }
+
+    protected function useReasonsPatch(Request $request)
+    {
+        SponsorFactory::patchValue('useReasons', $request->pullPatchBoolean('useReasons'), $this->id);
         return ['success' => true];
     }
 
     protected function attendancePatch(Request $request)
     {
-        $sponsor = SponsorFactory::build($this->id);
-        $sponsor->attendanceOnly = $request->pullPatchBoolean('attendanceOnly');
-        SponsorFactory::save($sponsor);
+        SponsorFactory::patchValue('attendanceOnly', $request->pullPatchBoolean('attendanceOnly'), $this->id);
         return ['success' => true];
     }
 

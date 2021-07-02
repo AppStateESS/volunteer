@@ -95,6 +95,13 @@ class SponsorFactory extends AbstractFactory
         return $sponsor->id;
     }
 
+    public static function patchValue($valueName, $value, $id)
+    {
+        $sponsor = self::build($id);
+        $sponsor->$valueName = $value;
+        self::save($sponsor);
+    }
+
     private static function saveShortcut(Sponsor $sponsor)
     {
         $url = 'volunteer:' . $sponsor->id;
