@@ -6,6 +6,7 @@ import {
   sendKiosk,
   sponsorPreApproved,
   sendAttendanceOnly,
+  sendReasons,
 } from '../api/Fetch'
 import Grid from './Grid'
 import Form from './Form'
@@ -48,6 +49,13 @@ const Sponsor = () => {
     const sponsor = pullSponsor(key)
     sponsor.attendanceOnly = 1 - sponsor.attendanceOnly
     sendAttendanceOnly(sponsor.id, sponsor.attendanceOnly)
+    pushSponsor(key, sponsor)
+  }
+
+  const sendUseReasons = (key) => {
+    const sponsor = pullSponsor(key)
+    sponsor.useReasons = 1 - sponsor.useReasons
+    sendReasons(sponsor.id, sponsor.useReasons)
     pushSponsor(key, sponsor)
   }
 
@@ -142,6 +150,7 @@ const Sponsor = () => {
           sendKiosk={updateKiosk}
           sendPreApproved={sendPreApproved}
           sendAttendance={sendAttendance}
+          sendUseReasons={sendUseReasons}
         />
       </div>
     )
