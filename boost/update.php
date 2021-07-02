@@ -42,6 +42,7 @@ class VolunteerDataUpdate
                 $tableCreate->createLogTable();
                 $tableCreate->addApprovedColumnToPunch();
                 $tableCreate->addPreApprovedColumnToSponsor();
+                $tableCreate->addUseReasonsColumnToSponsor();
                 $this->content[] = '<pre>';
                 $this->content[] = '1.1.0';
                 $this->content[] = '-----------------------------';
@@ -69,11 +70,13 @@ class VolunteerDataUpdate
             case $this->compare('1.2.0'):
                 $tableCreate->addAttendanceColumn();
                 $tableCreate->addAttendedColumn();
+                $tableCreate->createReasonTable();
                 $this->content[] = '<pre>';
                 $this->content[] = '1.2.0';
                 $this->content[] = '-----------------------------';
                 $this->content[] = 'Can now delete punches.';
                 $this->content[] = 'Can now delete volunteers.';
+                $this->content[] = 'Added reasons';
                 $this->content[] = 'Changed the shortlink to an access link.';
                 $this->content[] = 'Added attended only functionality.';
                 $this->content[] = '</pre>';
