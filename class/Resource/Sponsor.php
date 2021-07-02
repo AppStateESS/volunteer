@@ -35,6 +35,7 @@ class Sponsor extends AbstractResource
      * @var \phpws2\Variable\Boolean
      */
     protected $attendanceOnly;
+    protected $useReasons;
     protected $table = 'vol_sponsor';
 
     public function __construct()
@@ -45,6 +46,7 @@ class Sponsor extends AbstractResource
         $this->kioskMode = new \phpws2\Variable\BooleanVar(false, 'kioskMode');
         $this->preApproved = new \phpws2\Variable\BooleanVar(false, 'preApproved');
         $this->attendanceOnly = new \phpws2\Variable\BooleanVar(false, 'attendanceOnly');
+        $this->useReasons = new \phpws2\Variable\BooleanVar(false, 'useReasons');
     }
 
     public function setName($name)
