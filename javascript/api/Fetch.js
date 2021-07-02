@@ -86,6 +86,16 @@ const sendAttendanceOnly = async (sponsorId, attendanceOnly) => {
   }
 }
 
+const sendReasons = async (sponsorId, useReasons) => {
+  const url = `volunteer/Admin/Sponsor/${sponsorId}/useReasons`
+  try {
+    const response = await axios.patch(url, {useReasons}, {headers})
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
 const saveSponsor = async (sponsor) => {
   let url = 'volunteer/Admin/Sponsor'
   let method = 'post'
@@ -100,6 +110,27 @@ const saveSponsor = async (sponsor) => {
       method,
       url,
       data: sponsor,
+      headers,
+    })
+    return response
+  } catch (error) {
+    return false
+  }
+}
+const saveReason = async (reason) => {
+  let url = 'volunteer/Admin/Reason'
+  let method = 'post'
+
+  if (reason.id > 0) {
+    method = 'put'
+    url = url + '/' + reason.id
+  }
+
+  try {
+    const response = await axios({
+      method,
+      url,
+      data: reason,
       headers,
     })
     return response
@@ -170,6 +201,7 @@ export {
   sendDelete,
   getItem,
   saveSponsor,
+  saveReason,
   ajaxPunchOut,
   sendKiosk,
   sponsorPreApproved,
@@ -180,4 +212,5 @@ export {
   deletePunch,
   deleteVolunteer,
   sendAttendanceOnly,
+  sendReasons,
 }
