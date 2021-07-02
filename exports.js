@@ -10,4 +10,5 @@ exports.entry = {
   Settings: exports.APP_DIR + '/Settings/index.jsx',
   Volunteer: exports.APP_DIR + '/Volunteer/index.jsx',
   PunchListing: exports.APP_DIR + '/PunchListing/index.jsx',
+  ReasonList: exports.APP_DIR + '/ReasonList/index.jsx',
 }
