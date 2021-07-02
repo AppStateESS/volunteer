@@ -9,6 +9,7 @@ const OptionSelect = ({
   sendKiosk,
   sendPreApproved,
   sendAttendance,
+  sendUseReasons,
 }) => {
   const [selected, setSelected] = useState('na')
 
@@ -30,6 +31,9 @@ const OptionSelect = ({
       case 'attendance':
         sendAttendance(key)
         break
+      case 'reason':
+        sendUseReasons(key)
+        break
       case 'log':
         location.href = `volunteer/Admin/Log?sponsorId=${sponsor.id}`
         break
@@ -41,6 +45,7 @@ const OptionSelect = ({
     sponsor.preApproved == 1 ? 'Do not pre-approve' : 'Pre-approve punches'
   const attendanceLabel =
     sponsor.attendanceOnly == 1 ? 'Punch in/out' : 'Attendance only'
+  const reasonLabel = sponsor.useReasons == 1 ? 'No reasons' : 'Use reasons'
   return (
     <select onChange={adminOption} value={selected} className="form-control-sm">
       <option disabled={true} value="na" className="text-center">
@@ -51,6 +56,7 @@ const OptionSelect = ({
       <option value="kiosk">{kioskLabel}</option>
       <option value="preapproved">{approveLabel}</option>
       <option value="attendance">{attendanceLabel}</option>
+      <option value="reason">{reasonLabel}</option>
       <option value="log">Log</option>
     </select>
   )
@@ -63,9 +69,20 @@ OptionSelect.propTypes = {
   sendKiosk: PropTypes.func,
   sendPreApproved: PropTypes.func,
   sendAttendance: PropTypes.func,
+  sendUseReasons: PropTypes.func,
 }
 
-const Grid = ({listing, edit, sendKiosk, sendPreApproved, sendAttendance}) => {
+const Grid = ({
+  listing,
+  edit,
+  sendKiosk,
+  sendPreApproved,
+  sendAttendance,
+  sendUseReasons,
+}) => {
+  const yes = <span className="badge badge-success mr-1">Yes</span>
+  const no = <span className="badge badge-danger mr-1">No</span>
+
   const rows = listing.map((value, key) => {
     return (
       <tr key={`row-${value.id}`}>
@@ -78,49 +95,39 @@ const Grid = ({listing, edit, sendKiosk, sendPreApproved, sendAttendance}) => {
             sponsor={value}
             sendAttendance={() => sendAttendance(key)}
             sendPreApproved={() => sendPreApproved(key)}
+            sendUseReasons={() => sendUseReasons(key)}
           />
         </td>
-        <td>{value.name}</td>
         <td>
-          <a href={`./${value.searchName}`}>{value.searchName}</a>
+          {value.name}{' '}
+          <a href={`./${value.searchName}`}>
+            <i className="fas fa-link"></i>
+          </a>
         </td>
-        <td>
-          {value.kioskMode ? (
-            <div className="badge badge-success">Yes</div>
-          ) : (
-            <div className="badge badge-danger">No</div>
-          )}
-        </td>
-        <td>
-          {value.preApproved ? (
-            <div className="badge badge-success">Yes</div>
-          ) : (
-            <div className="badge badge-danger">No</div>
-          )}
-        </td>
-        <td>
-          {value.attendanceOnly ? (
-            <div className="badge badge-success">Yes</div>
-          ) : (
-            <div className="badge badge-danger">No</div>
-          )}
-        </td>
+        <td>{value.kioskMode ? yes : no}</td>
+        <td>{value.preApproved ? yes : no}</td>
+        <td>{value.attendanceOnly ? yes : no}</td>
+        <td>{value.useReasons ? yes : no}</td>
       </tr>
     )
   })
 
-  const style = {width: '10%'}
+  const vertical = {
+    writingMode: 'vertical-rl',
+    textOrientation: 'sideways-right',
+    width: '5%',
+  }
+
   return (
     <div>
       <table className="table table-striped">
         <tbody>
           <tr>
-            <th>&nbsp;</th>
-            <th>Name</th>
-            <th>Link</th>
-            <th style={style}>Kiosk</th>
-            <th style={style}>Pre-approve</th>
-            <th style={style}>Attendance only</th>
+            <th colSpan="2">&nbsp;</th>
+            <th style={vertical}>Kiosk mode</th>
+            <th style={vertical}>Preapproved</th>
+            <th style={vertical}>Attended only</th>
+            <th style={vertical}>Use reasons</th>
           </tr>
           {rows}
         </tbody>
@@ -134,7 +141,8 @@ Grid.propTypes = {
   edit: PropTypes.func,
   sendKiosk: PropTypes.func,
   sendPreApproved: PropTypes.func,
-  sendAttendanceOnly: PropTypes.func,
+  sendAttendance: PropTypes.func,
+  sendUseReasons: PropTypes.func,
 }
 
 export default Grid
