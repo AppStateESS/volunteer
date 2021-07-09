@@ -90,6 +90,14 @@ class TableCreate
         $app->add();
     }
 
+    public function addReasonIdColumnToPunch()
+    {
+        $db = Database::getDB();
+        $punch = $db->addTable('vol_punch');
+        $rid = $punch->addDataType('reasonId', 'int');
+        $rid->add();
+    }
+
     public function addUseReasonsColumnToSponsor()
     {
         $db = Database::getDB();
