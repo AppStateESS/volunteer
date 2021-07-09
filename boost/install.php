@@ -22,10 +22,14 @@ function volunteer_install(&$content)
         $kioskTable = $tableCreate->createKioskTable();
         $logTable = $tableCreate->createLogTable();
         $reasonTable = $tableCreate->createReasonTable();
+        $reasonToSponsorTable = $tableCreate->createReasonToSponsorTable();
     } catch (\Exception $e) {
         \phpws2\Error::log($e);
         $db->rollback();
 
+        if (isset($reasonToSponsorTable)) {
+            $reasonToSponsorTable->drop();
+        }
         if (isset($reasonTable)) {
             $reasonTable->drop();
         }
