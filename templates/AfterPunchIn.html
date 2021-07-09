@@ -3,8 +3,8 @@
     <div class="col-md-8 col-sm-10">
       <div class="card">
         <div class="card-header text-center">
-          <?php if ($attended = 1):?>
-          <h3 class="m-0">Thank you for attending <span class="text-primary"><?=$sponsorName?></span></h3>
+          <?php if ($attended == 1):?>
+          <h3 class="m-0">Thank you for visiting <span class="text-primary"><?=$sponsorName?></span></h3>
           <?php else:?>
           <h3 class="m-0">Your session with <span class="text-primary"><?=$sponsorName?></span> has started</h3>
           <?php endif;?>
