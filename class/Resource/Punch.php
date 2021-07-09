@@ -17,6 +17,7 @@ class Punch extends AbstractResource
     protected $timeOut;
     protected $approved;
     protected $attended;
+    protected $reasonId;
     protected $table = 'vol_punch';
 
     public function __construct()
@@ -29,6 +30,7 @@ class Punch extends AbstractResource
         $this->timeOut = new \phpws2\Variable\IntegerVar(0, 'timeOut');
         $this->approved = new \phpws2\Variable\BooleanVar(0, 'approved');
         $this->attended = new \phpws2\Variable\BooleanVar(0, 'attended');
+        $this->reasonId = new \phpws2\Variable\IntegerVar(0, 'reasonId');
     }
 
     public function in()
