@@ -1,7 +1,7 @@
 'use strict'
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
-import {getList, getSponsorReasons} from '../api/Fetch'
+import {getList} from '../api/Fetch'
 import Select from 'react-select'
 import Card from '../api/Card'
 import Overlay from '@essappstate/canopy-react-overlay'
@@ -9,16 +9,20 @@ import ReasonList from './ReasonList'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner, faClock} from '@fortawesome/free-solid-svg-icons'
 
-const PickSponsor = ({volunteerName, contactEmail}) => {
+const PickSponsor = ({
+  volunteerName,
+  contactEmail,
+  reasons,
+  setReasonId,
+  reasonId,
+  loadSponsorReasons,
+  formRef,
+}) => {
   const [sponsors, setSponsors] = useState([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [currentSponsor, setCurrentSponsor] = useState({id: 0})
   const [error, setError] = useState(false)
-  const [reasons, setReasons] = useState([])
-  const [reasonId, setReasonId] = useState(0)
-
-  const formRef = useRef()
 
   const loadSponsors = () => {
     const Promise = getList('volunteer/Student/Sponsor')
@@ -44,15 +48,8 @@ const PickSponsor = ({volunteerName, contactEmail}) => {
 
   const submitCheckIn = () => {
     if (currentSponsor.useReasons === 1) {
-      getSponsorReasons(currentSponsor.id).then((response) => {
-        const reasonList = response.data
-        if (reasonList.length === 0) {
-          formRef.current.submit()
-        } else {
-          setReasons(reasonList)
-          setShowModal(true)
-        }
-      })
+      loadSponsorReasons(currentSponsor.id)
+      setShowModal(true)
     } else {
       formRef.current.submit()
     }
@@ -98,12 +95,6 @@ const PickSponsor = ({volunteerName, contactEmail}) => {
   const subtitle = (
     <span>Hello {volunteerName}, please choose your sponsor and clock in.</span>
   )
-
-  useEffect(() => {
-    if (reasonId > 0) {
-      formRef.current.submit()
-    }
-  }, [reasonId])
 
   if (error) {
     return (
