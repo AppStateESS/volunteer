@@ -12,6 +12,7 @@ use volunteer\Resource\Volunteer;
 use volunteer\Resource\Punch;
 use volunteer\Exception\PreviouslyPunched;
 use volunteer\Factory\SponsorFactory;
+use volunteer\Factory\ReasonFactory;
 use volunteer\Factory\LogFactory;
 
 class PunchFactory extends AbstractFactory
@@ -109,22 +110,28 @@ class PunchFactory extends AbstractFactory
      * @return type
      * @throws \Exception
      */
-    public static function in(Volunteer $volunteer, int $sponsorId)
+    public static function in(Volunteer $volunteer, int $sponsorId, int $reasonId = 0)
     {
+        $reasonAttended = false;
+
         if (empty($sponsorId)) {
             throw new \Exception('Missing sponsor is on punch in');
         }
         $sponsor = SponsorFactory::build($sponsorId);
+        if ($reasonId) {
+            $reasonAttended = ReasonFactory::isForceAttended($reasonId);
+        }
         $punch = new Punch;
         $punch->volunteerId = $volunteer->id;
         $punch->sponsorId = $sponsorId;
         $punch->eventId = 0;
+        $punch->reasonId = $reasonId;
         $punch->in();
         /*
          * If sponsor tracks attendance only, we punch out and set approval now
          * to close it out.
          */
-        if ($sponsor->attendanceOnly) {
+        if ($sponsor->attendanceOnly || $reasonAttended) {
             $punch->attended = 1;
             $punch->out();
             $punch->approved = SponsorFactory::isPreapproved($punch->sponsorId);
