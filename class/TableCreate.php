@@ -48,6 +48,17 @@ class TableCreate
         return $volunteer->createTable($db);
     }
 
+    public function createReasonToSponsorTable()
+    {
+        $db = Database::getDB();
+        $tbl = $db->buildTable('vol_reasontosponsor');
+        $reasonId = $tbl->addDataType('reasonId', 'int');
+        $sponsorId = $tbl->addDataType('sponsorId', 'int');
+        $tbl->create();
+        $unique = new \phpws2\Database\Unique([$sponsorId, $reasonId]);
+        $unique->add();
+    }
+
     public function createLogTable()
     {
         $db = Database::getDB();
