@@ -32,7 +32,12 @@ class VolunteerFactory extends AbstractFactory
         return $db->delete();
     }
 
-    public static function loadCurrent($createIfNotFound = true)
+    /**
+     *
+     * @param type $createIfNotFound
+     * @return
+     */
+    public static function loadCurrent(bool $createIfNotFound = true)
     {
         $volunteer = self::loadByUsername(Authenticate::getLoginUsername());
         if ($volunteer) {
