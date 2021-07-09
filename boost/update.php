@@ -71,6 +71,7 @@ class VolunteerDataUpdate
                 $tableCreate->addAttendanceColumn();
                 $tableCreate->addAttendedColumn();
                 $tableCreate->createReasonTable();
+                $tableCreate->createReasonToSponsorTable();
                 $this->content[] = '<pre>';
                 $this->content[] = '1.2.0';
                 $this->content[] = '-----------------------------';
