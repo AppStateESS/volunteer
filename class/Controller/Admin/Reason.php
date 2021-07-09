@@ -27,9 +27,10 @@ class Reason extends SubController
         return ReasonView::listView();
     }
 
-    protected function listJson()
+    protected function listJson(Request $request)
     {
-        return ReasonFactory::listing() ?? [];
+        $sponsorId = (int) $request->pullGetInteger('sponsorId', true);
+        return ReasonFactory::listing(['sponsorId' => $sponsorId]) ?? [];
     }
 
     protected function post(Request $request)
@@ -44,6 +45,25 @@ class Reason extends SubController
         $reason = ReasonFactory::put($request);
         $reasonId = ReasonFactory::save($reason);
         return ['success' => true, 'id' => $reasonId];
+    }
+
+    protected function getSponsorReasonIdsJson(Request $request)
+    {
+        $sponsorId = (int) $request->pullGetInteger('sponsorId', true);
+        $result = ReasonFactory::getSponsorReasonIds($sponsorId);
+        return $result ? $result : [];
+    }
+
+    protected function assignHtml(Request $request)
+    {
+        AdminView::showMenu('reason');
+        return ReasonView::assign($request->pullGetInteger('sponsorId', true));
+    }
+
+    protected function assignPost(Request $request)
+    {
+        ReasonFactory::assign($request->pullPostInteger('sponsorId'), $request->pullPostArray('matchList'));
+        return ['success' => true];
     }
 
 }
