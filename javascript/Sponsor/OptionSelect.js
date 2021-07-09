@@ -34,6 +34,9 @@ const OptionSelect = ({
       case 'reason':
         sendUseReasons(key)
         break
+      case 'assignReasons':
+        location.href = `volunteer/Admin/Reason/assign/?sponsorId=${sponsor.id}`
+        break
       case 'log':
         location.href = `volunteer/Admin/Log?sponsorId=${sponsor.id}`
         break
@@ -46,6 +49,10 @@ const OptionSelect = ({
   const attendanceLabel =
     sponsor.attendanceOnly == 1 ? 'Punch in/out' : 'Attendance only'
   const reasonLabel = sponsor.useReasons == 1 ? 'No reasons' : 'Use reasons'
+  const assignReasonsOption =
+    sponsor.useReasons == 1 ? (
+      <option value="assignReasons">Assign reasons</option>
+    ) : null
   return (
     <select onChange={adminOption} value={selected} className="form-control-sm">
       <option disabled={true} value="na" className="text-center">
@@ -57,6 +64,7 @@ const OptionSelect = ({
       <option value="preapproved">{approveLabel}</option>
       <option value="attendance">{attendanceLabel}</option>
       <option value="reason">{reasonLabel}</option>
+      {assignReasonsOption}
       <option value="log">Log</option>
     </select>
   )
