@@ -42,7 +42,6 @@ class VolunteerDataUpdate
                 $tableCreate->createLogTable();
                 $tableCreate->addApprovedColumnToPunch();
                 $tableCreate->addPreApprovedColumnToSponsor();
-                $tableCreate->addUseReasonsColumnToSponsor();
                 $this->content[] = '<pre>';
                 $this->content[] = '1.1.0';
                 $this->content[] = '-----------------------------';
@@ -72,6 +71,8 @@ class VolunteerDataUpdate
                 $tableCreate->addAttendedColumn();
                 $tableCreate->createReasonTable();
                 $tableCreate->createReasonToSponsorTable();
+                $tableCreate->addUseReasonsColumnToSponsor();
+                $tableCreate->addReasonIdColumnToPunch();
                 $this->content[] = '<pre>';
                 $this->content[] = '1.2.0';
                 $this->content[] = '-----------------------------';
