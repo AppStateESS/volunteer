@@ -29,6 +29,9 @@ class Sponsor extends SubController
 
     protected function viewJson(Request $request)
     {
+        if ($this->id === 0) {
+            return null;
+        }
         $sponsor = SponsorFactory::build($this->id);
         return $sponsor->getStringVars();
     }
