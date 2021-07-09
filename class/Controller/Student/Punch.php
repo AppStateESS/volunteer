@@ -9,6 +9,7 @@ namespace volunteer\Controller\Student;
 
 use volunteer\Controller\SubController;
 use volunteer\Factory\PunchFactory;
+use volunteer\Factory\SponsorFactory;
 use volunteer\Factory\VolunteerFactory;
 use volunteer\View\PunchView;
 use Canopy\Request;
@@ -18,8 +19,10 @@ class Punch extends SubController
 
     protected function inPost(Request $request)
     {
-        $punchId = PunchFactory::in(VolunteerFactory::loadCurrent(),
-                        $request->pullPostInteger('sponsorId'));
+        $sponsor = SponsorFactory::build($request->pullPostInteger('sponsorId'));
+        $volunteer = VolunteerFactory::loadCurrent();
+        $reasonId = (int) $request->pullPostInteger('reasonId', true);
+        $punchId = PunchFactory::in($volunteer, $sponsor->id, $reasonId);
         \Canopy\Server::forward('volunteer/Student/Punch/' . $punchId . '/punchedIn');
     }
 
