@@ -1,17 +1,24 @@
 'use strict'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import PropTypes from 'prop-types'
-import {getList} from '../api/Fetch'
+import {getList, getSponsorReasons} from '../api/Fetch'
 import Select from 'react-select'
 import Card from '../api/Card'
+import Overlay from '@essappstate/canopy-react-overlay'
+import ReasonList from './ReasonList'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner, faClock} from '@fortawesome/free-solid-svg-icons'
 
 const PickSponsor = ({volunteerName, contactEmail}) => {
   const [sponsors, setSponsors] = useState([])
   const [loading, setLoading] = useState(true)
-  const [sponsorId, setSponsorId] = useState(0)
+  const [showModal, setShowModal] = useState(false)
+  const [currentSponsor, setCurrentSponsor] = useState({id: 0})
   const [error, setError] = useState(false)
+  const [reasons, setReasons] = useState([])
+  const [reasonId, setReasonId] = useState(0)
+
+  const formRef = useRef()
 
   const loadSponsors = () => {
     const Promise = getList('volunteer/Student/Sponsor')
@@ -35,6 +42,22 @@ const PickSponsor = ({volunteerName, contactEmail}) => {
       })
   }
 
+  const submitCheckIn = () => {
+    if (currentSponsor.useReasons === 1) {
+      getSponsorReasons(currentSponsor.id).then((response) => {
+        const reasonList = response.data
+        if (reasonList.length === 0) {
+          formRef.current.submit()
+        } else {
+          setReasons(reasonList)
+          setShowModal(true)
+        }
+      })
+    } else {
+      formRef.current.submit()
+    }
+  }
+
   let title = 'Clock in'
   let sponsorList
   if (sponsors.length == 0) {
@@ -45,16 +68,26 @@ const PickSponsor = ({volunteerName, contactEmail}) => {
       </div>
     )
   } else {
-    const options = sponsors.map((value) => {
+    const options = sponsors.map((value, key) => {
       return {
-        value: value.id,
+        value: key,
         label: value.name,
       }
     })
     sponsorList = (
       <div>
-        <Select options={options} onChange={({value}) => setSponsorId(value)} />
-        <input type="hidden" name="sponsorId" value={sponsorId} />
+        <Select
+          options={options}
+          onChange={({value}) => {
+            setCurrentSponsor({...sponsors[value]})
+          }}
+        />
+        <input
+          type="hidden"
+          name="sponsorId"
+          onChange={() => {}}
+          value={currentSponsor.id}
+        />
       </div>
     )
   }
@@ -65,6 +98,12 @@ const PickSponsor = ({volunteerName, contactEmail}) => {
   const subtitle = (
     <span>Hello {volunteerName}, please choose your sponsor and clock in.</span>
   )
+
+  useEffect(() => {
+    if (reasonId > 0) {
+      formRef.current.submit()
+    }
+  }, [reasonId])
 
   if (error) {
     return (
@@ -82,21 +121,37 @@ const PickSponsor = ({volunteerName, contactEmail}) => {
     )
   } else {
     const content = (
-      <form method="post" action="./volunteer/Student/Punch/In">
-        {sponsorList}
-        <p className="small text-center">
-          If your sponsor is not shown,{' '}
-          <a href={`mailto:${contactEmail}`}>contact us</a>.
-        </p>
-        <button
-          type="submit"
-          className="btn btn-lg btn-success btn-block mt-3 py-3"
-          disabled={loading || sponsorId === 0 || sponsors.length == 0}>
-          {' '}
-          <FontAwesomeIcon icon={faClock} />
-          &nbsp;Clock in
-        </button>
-      </form>
+      <div>
+        <Overlay
+          show={showModal}
+          close={() => setShowModal(false)}
+          title="Reason for visit"
+          width="80%">
+          <ReasonList
+            reasons={reasons}
+            pick={(reasonId) => {
+              setReasonId(reasonId)
+            }}
+          />
+        </Overlay>
+        <form method="post" action="./volunteer/Student/Punch/In" ref={formRef}>
+          <input type="hidden" name="reasonId" value={reasonId} />
+          {sponsorList}
+          <p className="small text-center">
+            If your sponsor is not shown,{' '}
+            <a href={`mailto:${contactEmail}`}>contact us</a>.
+          </p>
+          <button
+            type="button"
+            onClick={submitCheckIn}
+            className="btn btn-lg btn-success btn-block mt-3 py-3"
+            disabled={loading || currentSponsor === 0 || sponsors.length == 0}>
+            {' '}
+            <FontAwesomeIcon icon={faClock} />
+            &nbsp;Clock in
+          </button>
+        </form>
+      </div>
     )
     return <Card {...{title, subtitle, content}} />
   }
