@@ -60,6 +60,11 @@ const getSponsorReasonIds = async (sponsorId) => {
   return getList(url)
 }
 
+const getSponsorReasons = async (sponsorId) => {
+  const url = `volunteer/User/Reason/?sponsorId=${sponsorId}`
+  return getList(url)
+}
+
 /** PATCH **/
 const sendAttendanceOnly = async (sponsorId, attendanceOnly) => {
   const url = `volunteer/Admin/Sponsor/${sponsorId}/attendance`
@@ -245,5 +250,6 @@ export {
   sendAttendanceOnly,
   sendReasons,
   getSponsorReasonIds,
+  getSponsorReasons,
   assignReasons,
 }
