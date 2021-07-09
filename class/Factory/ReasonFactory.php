@@ -25,12 +25,70 @@ class ReasonFactory extends AbstractFactory
         return $id > 0 ? self::load($reason, $id) : $reason;
     }
 
-    public static function listing()
+    public static function assign(int $sponsorId, array $matchList)
+    {
+        if ($sponsorId === 0) {
+            throw new \Exception('Null id received');
+        }
+        self::clearSponsor($sponsorId);
+        /**
+         * If empty, all matches were cleared by the above.
+         */
+        if (empty($matchList)) {
+            return;
+        }
+        foreach ($matchList as $reasonId) {
+            self::addMatch($sponsorId, $reasonId);
+        }
+    }
+
+    public static function addMatch($sponsorId, $reasonId)
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_reasontosponsor');
+        $tbl->addValue('sponsorId', $sponsorId);
+        $tbl->addValue('reasonId', $reasonId);
+        return $db->insert();
+    }
+
+    public static function clearSponsor(int $sponsorId)
+    {
+        if ($sponsorId === 0) {
+            throw new \Exception('Null id received');
+        }
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_reasontosponsor');
+        $tbl->addFieldConditional('sponsorId', $sponsorId);
+        return $db->delete();
+    }
+
+    public static function listing(array $options = [])
     {
         $db = Database::getDB();
         $tbl = $db->addTable('vol_reason');
+        if (!empty($options['sponsorId'])) {
+            $reasonIdList = self::getSponsorReasonIds($options['sponsorId']);
+            if (empty($reasonIdList)) {
+                return null;
+            } else {
+                $tbl->addFieldConditional('id', $reasonIdList, 'in');
+            }
+        }
         $tbl->addOrderBy('title');
         return $db->select();
+    }
+
+    public static function getSponsorReasonIds(int $sponsorId)
+    {
+        $result = [];
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_reasontosponsor');
+        $tbl->addField('reasonId');
+        $tbl->addFieldConditional('sponsorId', $sponsorId);
+        while ($column = $db->selectColumn()) {
+            $result[] = $column;
+        }
+        return $result;
     }
 
     public static function post(Request $request)
