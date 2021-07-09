@@ -13,6 +13,7 @@
 namespace volunteer\View;
 
 use volunteer\Resource\Reason;
+use volunteer\Factory\SponsorFactory;
 
 class ReasonView extends AbstractView
 {
@@ -20,6 +21,11 @@ class ReasonView extends AbstractView
     public static function listView()
     {
         return parent::scriptView('ReasonList');
+    }
+
+    public static function assign(int $sponsorId = 0)
+    {
+        return self::scriptView('AssignReason', ['sponsorId' => $sponsorId]);
     }
 
 }
