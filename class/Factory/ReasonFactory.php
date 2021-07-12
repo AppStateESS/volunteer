@@ -90,7 +90,15 @@ class ReasonFactory extends AbstractFactory
             }
         }
         $tbl->addOrderBy('title');
-        return $db->select();
+        $result = $db->select();
+        if (!empty($options['sortById']) && !empty($result)) {
+            foreach ($result as $row) {
+                $sorted[$row['id']] = $row;
+            }
+            return $sorted;
+        } else {
+            return $result;
+        }
     }
 
     public static function getSponsorReasonIds(int $sponsorId)
