@@ -19,6 +19,11 @@ use volunteer\Resource\Reason;
 class ReasonFactory extends AbstractFactory
 {
 
+    /**
+     *
+     * @param int $id
+     * @return \volunteer\Resource\Reason
+     */
     public static function build(int $id = 0)
     {
         $reason = new Reason;

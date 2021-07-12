@@ -14,6 +14,11 @@ use Canopy\Request;
 class SponsorFactory extends AbstractFactory
 {
 
+    /**
+     *
+     * @param int $id
+     * @return \volunteer\Resource\Sponsor
+     */
     public static function build(int $id = 0)
     {
         $sponsor = new Sponsor;
