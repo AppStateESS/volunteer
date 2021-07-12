@@ -13,13 +13,14 @@ const PunchIn = ({volunteerName, defaultSponsor, contactEmail}) => {
   const [reasonId, setReasonId] = useState(0)
   const formRef = useRef()
 
-  const loadSponsorReasons = (sponsorId) => {
+  const loadSponsorReasons = (sponsorId, success, fail) => {
     getSponsorReasons(sponsorId).then((response) => {
       const reasonList = response.data
       if (reasonList.length === 0) {
-        formRef.current.submit()
+        fail()
       } else {
         setReasons(reasonList)
+        success()
       }
     })
   }

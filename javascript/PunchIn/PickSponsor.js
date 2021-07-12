@@ -5,7 +5,7 @@ import {getList} from '../api/Fetch'
 import Select from 'react-select'
 import Card from '../api/Card'
 import Overlay from '@essappstate/canopy-react-overlay'
-import ReasonList from './ReasonList'
+import ReasonList from '../api/ReasonList'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner, faClock} from '@fortawesome/free-solid-svg-icons'
 
@@ -48,8 +48,11 @@ const PickSponsor = ({
 
   const submitCheckIn = () => {
     if (currentSponsor.useReasons === 1) {
-      loadSponsorReasons(currentSponsor.id)
-      setShowModal(true)
+      loadSponsorReasons(
+        currentSponsor.id,
+        () => setShowModal(true),
+        () => formRef.current.submit()
+      )
     } else {
       formRef.current.submit()
     }
