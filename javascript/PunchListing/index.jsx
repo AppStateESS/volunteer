@@ -37,6 +37,7 @@ const PunchListing = ({sponsorId, volunteerId}) => {
   const [sponsor, setSponsor] = useState({})
   const [volunteer, setVolunteer] = useState({})
   const [listing, setListing] = useState([])
+  const [reasonList, setReasonList] = useState({})
   const [showModal, setShowModal] = useState(false)
   const today = new Date()
   const lastMonth = new Date()
@@ -111,7 +112,14 @@ const PunchListing = ({sponsorId, volunteerId}) => {
     deletePunch(punch.id).then(loadList)
   }
 
+  const loadReasons = () => {
+    getList('./volunteer/Admin/Reason/?sortById=true').then((response) => {
+      setReasonList(response.data)
+    })
+  }
+
   useEffect(() => {
+    loadReasons()
     if (sponsorId) {
       const SponsorPromise = getItem('Admin', 'Sponsor', sponsorId)
       SponsorPromise.then((response) => {
@@ -136,10 +144,18 @@ const PunchListing = ({sponsorId, volunteerId}) => {
     )
   } else {
     if (sponsorId) {
-      grid = <SponsorGrid {...{listing, punchOut, approve, edit, remove}} />
+      grid = (
+        <SponsorGrid
+          {...{listing, punchOut, approve, edit, remove, reasonList}}
+        />
+      )
       title = <h2 className="mb-1">Punches for sponsor: {sponsor.name}</h2>
     } else {
-      grid = <VolunteerGrid {...{listing, punchOut, approve, edit, remove}} />
+      grid = (
+        <VolunteerGrid
+          {...{listing, punchOut, approve, edit, remove, reasonList}}
+        />
+      )
       title = (
         <h2 className="mb-1">
           Punches for volunteer:{' '}

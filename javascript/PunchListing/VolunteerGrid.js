@@ -10,7 +10,14 @@ import {
   DeleteButton,
 } from './Time'
 
-const VolunteerGrid = ({listing, punchOut, approve, edit, remove}) => {
+const VolunteerGrid = ({
+  listing,
+  punchOut,
+  approve,
+  edit,
+  remove,
+  reasonList,
+}) => {
   let rows
   let totalTime
   totalTime = (value) => {
@@ -28,6 +35,10 @@ const VolunteerGrid = ({listing, punchOut, approve, edit, remove}) => {
   } else {
     rows = listing.map((value, skey) => {
       const punches = value.punches.map((value) => {
+        let reason = 'N/A'
+        if (value.reasonId > 0) {
+          reason = reasonList[value.reasonId].title
+        }
         return (
           <tr key={`row-${value.id}`}>
             <td className="d-print-none" style={{width: '10%'}}>
@@ -38,14 +49,20 @@ const VolunteerGrid = ({listing, punchOut, approve, edit, remove}) => {
               )}
               <DeleteButton punch={value} remove={remove} />
             </td>
+            <td>{reason}</td>
             <td>
               <Day time={value.timeIn} />
             </td>
             <td>
               <TimeFormat time={value.timeIn} />
-            </td>
-            <td>
-              <TimeOut punch={value} punchOut={punchOut} />
+              {value.attended ? (
+                ''
+              ) : (
+                <span>
+                  &nbsp;/&nbsp;
+                  <TimeOut punch={value} punchOut={punchOut} />
+                </span>
+              )}
             </td>
             <td>{value.attended == 1 ? 'Attended' : value.totalTime}</td>
             <td>
@@ -61,11 +78,11 @@ const VolunteerGrid = ({listing, punchOut, approve, edit, remove}) => {
             <tbody>
               <tr>
                 <th className="d-print-none" style={{width: '5%'}}></th>
-                <th style={{width: '20%'}}>Day</th>
-                <th style={{width: '20%'}}>Clock in</th>
-                <th style={{width: '20%'}}>Clock out</th>
-                <th style={{width: '25%'}}>Total time</th>
-                <th style={{width: '10%'}}>Approved</th>
+                <th>Reason</th>
+                <th>Day</th>
+                <th>Clock in&nbsp;/&nbsp;Clock out</th>
+                <th>Total time</th>
+                <th>Approved</th>
               </tr>
               {punches}
               {totalTime(value)}
@@ -87,6 +104,7 @@ VolunteerGrid.propTypes = {
   approve: PropTypes.func,
   edit: PropTypes.func,
   remove: PropTypes.func,
+  reasonList: PropTypes.object,
 }
 
 export default VolunteerGrid

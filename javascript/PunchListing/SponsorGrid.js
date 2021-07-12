@@ -11,7 +11,14 @@ import {
   DeleteButton,
 } from './Time'
 
-const SponsorGrid = ({listing, punchOut, approve, edit, remove}) => {
+const SponsorGrid = ({
+  listing,
+  punchOut,
+  approve,
+  edit,
+  remove,
+  reasonList,
+}) => {
   let rows
   if (listing.length == 0) {
     rows = (
@@ -21,6 +28,10 @@ const SponsorGrid = ({listing, punchOut, approve, edit, remove}) => {
     )
   } else {
     rows = listing.punches.map((value) => {
+      let reason
+      if (value.reasonId > 0) {
+        reason = reasonList[value.reasonId].title
+      }
       return (
         <tr key={`row-${value.id}`}>
           <td className="d-print-none">
@@ -35,15 +46,22 @@ const SponsorGrid = ({listing, punchOut, approve, edit, remove}) => {
             <a href={`./volunteer/Admin/Volunteer/${value.volunteerId}/report`}>
               <FullName volunteer={value} useAbbr={false} />
             </a>
+            <br />
+            <span className="small">{reason}</span>
           </td>
           <td>
             <Day time={value.timeIn} />
           </td>
           <td>
             <TimeFormat time={value.timeIn} />
-          </td>
-          <td>
-            <TimeOut punch={value} punchOut={punchOut} />
+            {value.attended ? (
+              ''
+            ) : (
+              <span>
+                &nbsp;/&nbsp;
+                <TimeOut punch={value} punchOut={punchOut} />
+              </span>
+            )}
           </td>
           <td>{value.attended == 1 ? 'Attended' : value.totalTime}</td>
           <td>
@@ -60,10 +78,13 @@ const SponsorGrid = ({listing, punchOut, approve, edit, remove}) => {
         <tbody>
           <tr>
             <th className="d-print-none">&nbsp;</th>
-            <th>Volunteer/Attendee</th>
+            <th>
+              Volunteer/Attendee
+              <br />
+              Reason
+            </th>
             <th>Date</th>
-            <th>Clock in</th>
-            <th>Clock out</th>
+            <th>Clock in / out</th>
             <th>Total time</th>
             <th>Approved</th>
           </tr>
@@ -87,6 +108,7 @@ SponsorGrid.propTypes = {
   approve: PropTypes.func,
   edit: PropTypes.func,
   remove: PropTypes.func,
+  reasonList: PropTypes.object,
 }
 
 export default SponsorGrid
