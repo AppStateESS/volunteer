@@ -1,16 +1,52 @@
 'use strict'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import Card from '../api/Card'
 import ClockInput from './ClockInput'
-import {swipeVolunteer} from '../api/Fetch'
+import ReasonList from '../api/ReasonList'
+import Overlay from '@essappstate/canopy-react-overlay'
+import {swipeVolunteer, clockInReason} from '../api/Fetch'
 
 /* global sponsor */
 const Kiosk = ({sponsor}) => {
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
+  const [reasons, setReasons] = useState([])
+  const [reasonId, setReasonId] = useState(0)
   const [lockInput, setLockInput] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [volunteerId, setVolunteerId] = useState(0)
+  const [attended, setAttended] = useState(false)
+
+  useEffect(() => {
+    if (reasonId > 0) {
+      clockInReason(sponsor.id, volunteerId, reasonId).then((response) => {
+        if (response.data.attendanceOnly) {
+          setMessage(
+            'Thank you for being here today. You do not need to swipe out.'
+          )
+        } else {
+          setMessage(
+            'Thank you for clocking in. Please swipe again when you leave.'
+          )
+        }
+        setShowModal(false)
+        pauseAndReset()
+      })
+    }
+  }, [reasonId])
+
+  const pauseAndReset = () => {
+    const reset = setTimeout(() => {
+      setAttended(false)
+      setVolunteerId(0)
+      setReasonId(0)
+      setError('')
+      setMessage('')
+      clearTimeout(reset)
+    }, 4000)
+  }
 
   const sendSwipe = (studentBannerId) => {
     setLockInput(true)
@@ -20,28 +56,40 @@ const Kiosk = ({sponsor}) => {
       if (success) {
         switch (result) {
           case 'in':
-            setMessage('Thank you for clocking in.')
+            if (sponsor.attendanceOnly == 1) {
+              setMessage(
+                'Thank you for being here today. You do not need to swipe out.'
+              )
+            } else {
+              setMessage(
+                'Thank you for clocking in. Remember to swipe out when you leave.'
+              )
+            }
+            pauseAndReset()
             break
           case 'out':
             setMessage('Thank you, you have clocked out.')
+            pauseAndReset()
+            break
+          case 'reason':
+            setReasons(response.data.reasons)
+            setVolunteerId(response.data.volunteerId)
+            setShowModal(true)
             break
         }
       } else {
         switch (result) {
           case 'punchedInElsewhere':
             setError('You are currently clocked in elsewhere.')
+            pauseAndReset()
             break
           case 'notfound':
             setError('Could not find your account. Check at the desk.')
+            pauseAndReset()
             break
         }
       }
       setLockInput(false)
-      const reset = setTimeout(() => {
-        setError('')
-        setMessage('')
-        clearTimeout(reset)
-      }, 4000)
     })
   }
 
@@ -52,6 +100,18 @@ const Kiosk = ({sponsor}) => {
   } else {
     return (
       <div>
+        <Overlay
+          show={showModal}
+          close={() => setShowModal(false)}
+          title="Reason for visit"
+          width="80%">
+          <ReasonList
+            reasons={reasons}
+            pick={(reasonId) => {
+              setReasonId(reasonId)
+            }}
+          />
+        </Overlay>
         <Card
           title={`Welcome to ${sponsor.name}`}
           subtitle={
