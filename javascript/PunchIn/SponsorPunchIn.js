@@ -23,8 +23,11 @@ const SponsorPunchIn = ({
 
   const submitCheckIn = () => {
     if (sponsor.useReasons === 1) {
-      loadSponsorReasons(sponsor.id)
-      setShowModal(true)
+      loadSponsorReasons(
+        sponsor.id,
+        () => setShowModal(true),
+        () => formRef.current.submit()
+      )
     } else {
       formRef.current.submit()
     }
@@ -68,7 +71,7 @@ SponsorPunchIn.propTypes = {
   loadSponsorReasons: PropTypes.func,
   reasonId: PropTypes.number,
   reasons: PropTypes.array,
-  setReasonId: PropTypes.number,
+  setReasonId: PropTypes.func,
   formRef: PropTypes.object,
 }
 
