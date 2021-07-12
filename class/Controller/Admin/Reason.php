@@ -30,7 +30,8 @@ class Reason extends SubController
     protected function listJson(Request $request)
     {
         $sponsorId = (int) $request->pullGetInteger('sponsorId', true);
-        return ReasonFactory::listing(['sponsorId' => $sponsorId]) ?? [];
+        $sortById = (int) $request->pullGetBoolean('sortById', true);
+        return ReasonFactory::listing(['sponsorId' => $sponsorId, 'sortById' => $sortById]) ?? [];
     }
 
     protected function post(Request $request)
