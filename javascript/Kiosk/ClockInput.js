@@ -11,7 +11,7 @@ const ClockInput = ({sendSwipe, lockInput}) => {
       sendSwipe(bannerId)
       setBannerId('')
     }
-  }, [bannerId, sendSwipe])
+  }, [bannerId])
 
   const enterId = (e) => {
     const {value} = e.target
