@@ -140,6 +140,23 @@ const assignReasons = async (sponsorId, matchList) => {
   }
 }
 
+const clockInReason = async (sponsorId, volunteerId, reasonId) => {
+  const method = 'post'
+  const url = 'volunteer/User/Punch/clockInReason'
+  const data = {sponsorId, volunteerId, reasonId}
+  try {
+    const response = await axios({
+      method,
+      url,
+      data,
+      headers,
+    })
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
 const saveReason = async (reason) => {
   let url = 'volunteer/Admin/Reason'
   let method = 'post'
@@ -252,4 +269,5 @@ export {
   getSponsorReasonIds,
   getSponsorReasons,
   assignReasons,
+  clockInReason,
 }
