@@ -43,7 +43,6 @@
     "browser-sync-webpack-plugin": "^2.3.0",
     "css-loader": "^5.2.4",
     "dayjs": "^1.10.4",
-    "es6-promise": "^4.2.8",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-datepicker": "^3.8.0",
