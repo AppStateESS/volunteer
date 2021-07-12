@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import Card from '../api/Card'
 import Overlay from '@essappstate/canopy-react-overlay'
-import ReasonList from './ReasonList'
+import ReasonList from '../api/ReasonList'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faClock} from '@fortawesome/free-solid-svg-icons'
 
@@ -65,6 +65,11 @@ SponsorPunchIn.propTypes = {
   volunteerName: PropTypes.string,
   sponsor: PropTypes.object,
   reason: PropTypes.object,
+  loadSponsorReasons: PropTypes.func,
+  reasonId: PropTypes.number,
+  reasons: PropTypes.array,
+  setReasonId: PropTypes.number,
+  formRef: PropTypes.object,
 }
 
 export default SponsorPunchIn

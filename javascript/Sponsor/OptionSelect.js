@@ -2,15 +2,7 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 
-const OptionSelect = ({
-  edit,
-  sponsor,
-  key,
-  sendKiosk,
-  sendPreApproved,
-  sendAttendance,
-  sendUseReasons,
-}) => {
+const OptionSelect = ({edit, sponsor, key}) => {
   const [selected, setSelected] = useState('na')
 
   const adminOption = (e) => {
@@ -22,18 +14,6 @@ const OptionSelect = ({
       case 'report':
         location.href = `volunteer/Admin/Sponsor/${sponsor.id}/report`
         break
-      case 'kiosk':
-        sendKiosk(key)
-        break
-      case 'preapproved':
-        sendPreApproved(key)
-        break
-      case 'attendance':
-        sendAttendance(key)
-        break
-      case 'reason':
-        sendUseReasons(key)
-        break
       case 'assignReasons':
         location.href = `volunteer/Admin/Reason/assign/?sponsorId=${sponsor.id}`
         break
@@ -43,12 +23,7 @@ const OptionSelect = ({
     }
     setSelected('na')
   }
-  const kioskLabel = sponsor.kioskMode == 1 ? 'Disable kiosk' : 'Enable kiosk'
-  const approveLabel =
-    sponsor.preApproved == 1 ? 'Do not pre-approve' : 'Pre-approve punches'
-  const attendanceLabel =
-    sponsor.attendanceOnly == 1 ? 'Punch in/out' : 'Attendance only'
-  const reasonLabel = sponsor.useReasons == 1 ? 'No reasons' : 'Use reasons'
+
   const assignReasonsOption =
     sponsor.useReasons == 1 ? (
       <option value="assignReasons">Assign reasons</option>
@@ -60,10 +35,6 @@ const OptionSelect = ({
       </option>
       <option value="edit">Edit</option>
       <option value="report">Report</option>
-      <option value="kiosk">{kioskLabel}</option>
-      <option value="preapproved">{approveLabel}</option>
-      <option value="attendance">{attendanceLabel}</option>
-      <option value="reason">{reasonLabel}</option>
       {assignReasonsOption}
       <option value="log">Log</option>
     </select>
@@ -74,10 +45,6 @@ OptionSelect.propTypes = {
   sponsor: PropTypes.object,
   edit: PropTypes.func,
   key: PropTypes.number,
-  sendKiosk: PropTypes.func,
-  sendPreApproved: PropTypes.func,
-  sendAttendance: PropTypes.func,
-  sendUseReasons: PropTypes.func,
 }
 
 export default OptionSelect

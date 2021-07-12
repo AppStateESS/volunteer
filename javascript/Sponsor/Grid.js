@@ -11,23 +11,44 @@ const Grid = ({
   sendAttendance,
   sendUseReasons,
 }) => {
-  const yes = <span className="badge badge-success mr-1">Yes</span>
-  const no = <span className="badge badge-danger mr-1">No</span>
+  const send = (key, type) => {
+    switch (type) {
+      case 'attend':
+        sendAttendance(key)
+        break
+      case 'kiosk':
+        sendKiosk(key)
+        break
+      case 'pre':
+        sendPreApproved(key)
+        break
+      case 'reason':
+        sendUseReasons(key)
+        break
+    }
+  }
+
+  const button = (key, type, answer) => {
+    let cn = 'btn btn-danger btn-sm mr-1'
+    if (answer === 'Yes') {
+      cn = 'btn btn-success btn-sm mr-1'
+    }
+    return (
+      <button
+        className={cn}
+        onClick={() => {
+          send(key, type)
+        }}>
+        {answer}
+      </button>
+    )
+  }
 
   const rows = listing.map((value, key) => {
     return (
       <tr key={`row-${value.id}`}>
         <td style={{width: '20%'}}>
-          <OptionSelect
-            edit={() => edit(key)}
-            sendKiosk={() => {
-              sendKiosk(key)
-            }}
-            sponsor={value}
-            sendAttendance={() => sendAttendance(key)}
-            sendPreApproved={() => sendPreApproved(key)}
-            sendUseReasons={() => sendUseReasons(key)}
-          />
+          <OptionSelect edit={() => edit(key)} sponsor={value} />
         </td>
         <td>
           {value.name}{' '}
@@ -35,10 +56,26 @@ const Grid = ({
             <i className="fas fa-link"></i>
           </a>
         </td>
-        <td>{value.kioskMode ? yes : no}</td>
-        <td>{value.preApproved ? yes : no}</td>
-        <td>{value.attendanceOnly ? yes : no}</td>
-        <td>{value.useReasons ? yes : no}</td>
+        <td>
+          {value.kioskMode
+            ? button(key, 'kiosk', 'Yes')
+            : button(key, 'kiosk', 'No')}
+        </td>
+        <td>
+          {value.preApproved
+            ? button(key, 'pre', 'Yes')
+            : button(key, 'pre', 'No')}
+        </td>
+        <td>
+          {value.attendanceOnly
+            ? button(key, 'attend', 'Yes')
+            : button(key, 'attend', 'No')}
+        </td>
+        <td>
+          {value.useReasons
+            ? button(key, 'reason', 'Yes')
+            : button(key, 'reason', 'No')}
+        </td>
       </tr>
     )
   })
