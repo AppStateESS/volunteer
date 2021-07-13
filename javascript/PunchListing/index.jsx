@@ -39,6 +39,7 @@ const PunchListing = ({sponsorId, volunteerId}) => {
   const [listing, setListing] = useState([])
   const [reasonList, setReasonList] = useState({})
   const [showModal, setShowModal] = useState(false)
+  const [forceLoad, setForceLoad] = useState(0)
   const today = new Date()
   const lastMonth = new Date()
   lastMonth.setDate(today.getDate() - 30)
@@ -93,6 +94,12 @@ const PunchListing = ({sponsorId, volunteerId}) => {
       loadList()
     })
   }
+
+  useEffect(() => {
+    if (forceLoad > 0) {
+      loadList()
+    }
+  }, [forceLoad])
 
   const approve = (punchId) => {
     sendApproves([punchId]).then(loadList)
@@ -229,8 +236,9 @@ const PunchListing = ({sponsorId, volunteerId}) => {
         </Overlay>
       </div>
       <div>
-        <div className="mb-3 d-print-none">
+        <div className="mb-3 d-print-none d-flex">
           <DatePicker
+            closeOnScroll={true}
             onChange={(d) => {
               if (d.getTime() < searchTo.getTime()) {
                 setSearchFrom(d)
@@ -244,6 +252,7 @@ const PunchListing = ({sponsorId, volunteerId}) => {
             Search between dates
           </button>
           <DatePicker
+            closeOnScroll={true}
             onChange={(d) => {
               if (searchFrom.getTime() < d.getTime()) {
                 setSearchTo(d)
@@ -256,7 +265,7 @@ const PunchListing = ({sponsorId, volunteerId}) => {
             onClick={() => {
               setSearchFrom(today)
               setSearchTo(today)
-              loadList()
+              setForceLoad((prev) => prev + 1)
             }}>
             Today only
           </button>
