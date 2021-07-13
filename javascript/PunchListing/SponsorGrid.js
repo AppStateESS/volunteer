@@ -19,58 +19,53 @@ const SponsorGrid = ({
   remove,
   reasonList,
 }) => {
+  let totalPunches
   let rows
-  if (listing.length == 0) {
-    rows = (
-      <tr>
-        <td colSpan="6">No rows found.</td>
+
+  totalPunches = listing.punches.length
+  rows = listing.punches.map((value) => {
+    let reason
+    if (value.reasonId > 0) {
+      reason = reasonList[value.reasonId].title
+    }
+    return (
+      <tr key={`row-${value.id}`}>
+        <td className="d-print-none">
+          {value.timeOut ? (
+            <ChangeTime edit={() => edit(value)} />
+          ) : (
+            <span></span>
+          )}
+          <DeleteButton punch={value} remove={remove} />
+        </td>
+        <td>
+          <a href={`./volunteer/Admin/Volunteer/${value.volunteerId}/report`}>
+            <FullName volunteer={value} useAbbr={false} />
+          </a>
+          <br />
+          <span className="small">{reason}</span>
+        </td>
+        <td>
+          <Day time={value.timeIn} />
+        </td>
+        <td>
+          <TimeFormat time={value.timeIn} />
+          {value.attended ? (
+            ''
+          ) : (
+            <span>
+              &nbsp;/&nbsp;
+              <TimeOut punch={value} punchOut={punchOut} />
+            </span>
+          )}
+        </td>
+        <td>{value.attended == 1 ? 'Attended' : value.totalTime}</td>
+        <td>
+          <ApproveButton value={value} approve={approve} />
+        </td>
       </tr>
     )
-  } else {
-    rows = listing.punches.map((value) => {
-      let reason
-      if (value.reasonId > 0) {
-        reason = reasonList[value.reasonId].title
-      }
-      return (
-        <tr key={`row-${value.id}`}>
-          <td className="d-print-none">
-            {value.timeOut ? (
-              <ChangeTime edit={() => edit(value)} />
-            ) : (
-              <span></span>
-            )}
-            <DeleteButton punch={value} remove={remove} />
-          </td>
-          <td>
-            <a href={`./volunteer/Admin/Volunteer/${value.volunteerId}/report`}>
-              <FullName volunteer={value} useAbbr={false} />
-            </a>
-            <br />
-            <span className="small">{reason}</span>
-          </td>
-          <td>
-            <Day time={value.timeIn} />
-          </td>
-          <td>
-            <TimeFormat time={value.timeIn} />
-            {value.attended ? (
-              ''
-            ) : (
-              <span>
-                &nbsp;/&nbsp;
-                <TimeOut punch={value} punchOut={punchOut} />
-              </span>
-            )}
-          </td>
-          <td>{value.attended == 1 ? 'Attended' : value.totalTime}</td>
-          <td>
-            <ApproveButton value={value} approve={approve} />
-          </td>
-        </tr>
-      )
-    })
-  }
+  })
 
   return (
     <div>
@@ -93,6 +88,10 @@ const SponsorGrid = ({
             <td colSpan="7" className="bg-primary text-white">
               <strong>Total time:</strong>
               &nbsp;{listing.totalTime}
+              <br />
+              <span>
+                <strong>Total visits:</strong> {totalPunches}
+              </span>
             </td>
           </tr>
         </tbody>
@@ -103,7 +102,7 @@ const SponsorGrid = ({
 
 SponsorGrid.propTypes = {
   sponsor: PropTypes.object,
-  listing: PropTypes.object,
+  listing: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   punchOut: PropTypes.func,
   approve: PropTypes.func,
   edit: PropTypes.func,

@@ -26,6 +26,10 @@ const VolunteerGrid = ({
         <td colSpan="6">
           <strong>Total time with {value.sponsor}</strong>
           &nbsp;&ndash;&nbsp;{value.totalTime}
+          <br />
+          <span>
+            <strong>Total visits:</strong> {value.punches.length}
+          </span>
         </td>
       </tr>
     )
@@ -73,7 +77,12 @@ const VolunteerGrid = ({
       })
       return (
         <div key={`sponsor-group-${skey}`}>
-          <h3>{value.sponsor}</h3>
+          <h3>
+            <a
+              href={`./volunteer/Admin/Sponsor/${value.punches[0].sponsorId}/report`}>
+              {value.sponsor}
+            </a>
+          </h3>
           <table className="table table-striped">
             <tbody>
               <tr>

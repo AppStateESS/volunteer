@@ -54,14 +54,22 @@ const PunchListing = ({sponsorId, volunteerId}) => {
   let grid
   let title
 
+  const getFromTime = () => {
+    return Math.floor(searchFrom.getTime() / 1000)
+  }
+
+  const getToTime = () => {
+    return Math.floor(searchTo.getTime() / 1000)
+  }
+
   const loadList = () => {
     setLoading(true)
     setDateRangeString(<DateRange {...{searchFrom, searchTo}} />)
     const listPromise = getList(
       `volunteer/Admin/Punch/?sponsorId=${sponsorId}&volunteerId=${volunteerId}`,
       {
-        from: Math.floor(searchFrom.getTime() / 1000),
-        to: Math.floor(searchTo.getTime() / 1000),
+        from: getFromTime(),
+        to: getToTime(),
       }
     )
     listPromise
@@ -135,6 +143,8 @@ const PunchListing = ({sponsorId, volunteerId}) => {
     }
   }, [])
 
+  let printButton
+
   if (loading) {
     grid = (
       <div className="lead text-center">
@@ -144,23 +154,61 @@ const PunchListing = ({sponsorId, volunteerId}) => {
     )
   } else {
     if (sponsorId) {
-      grid = (
-        <SponsorGrid
-          {...{listing, punchOut, approve, edit, remove, reasonList}}
-        />
-      )
-      title = <h2 className="mb-1">Punches for sponsor: {sponsor.name}</h2>
-    } else {
-      grid = (
-        <VolunteerGrid
-          {...{listing, punchOut, approve, edit, remove, reasonList}}
-        />
-      )
+      if (listing.length === 0) {
+        grid = <div>No punches recorded for this date range.</div>
+      } else {
+        grid = (
+          <SponsorGrid
+            {...{listing, punchOut, approve, edit, remove, reasonList}}
+          />
+        )
+        printButton = (
+          <a
+            target="_blank"
+            rel="nofollow noreferrer"
+            href={`./volunteer/Admin/CSV/?report=sponsor&sponsorId=${
+              sponsor.id
+            }&from=${getFromTime()}&to=${getToTime()}`}
+            className="btn btn-outline-dark float-right">
+            <i className="fas fa-print"></i>
+          </a>
+        )
+      }
       title = (
-        <h2 className="mb-1">
-          Punches for volunteer:{' '}
-          <FullName volunteer={volunteer} useAbbr={false} />
-        </h2>
+        <div>
+          <div>{printButton}</div>
+          <h2 className="mb-1">Punches for sponsor: {sponsor.name}</h2>
+        </div>
+      )
+    } else {
+      if (listing.length === 0) {
+        grid = <div>No punches recorded for this date range.</div>
+      } else {
+        grid = (
+          <VolunteerGrid
+            {...{listing, punchOut, approve, edit, remove, reasonList}}
+          />
+        )
+        printButton = (
+          <a
+            target="_blank"
+            rel="nofollow noreferrer"
+            href={`./volunteer/Admin/CSV/?report=volunteer&volunteerId=${
+              volunteer.id
+            }&from=${getFromTime()}&to=${getToTime()}`}
+            className="btn btn-outline-dark float-right">
+            <i className="fas fa-print"></i>
+          </a>
+        )
+      }
+      title = (
+        <div>
+          <div>{printButton}</div>
+          <h2 className="mb-1">
+            Punches for volunteer:{' '}
+            <FullName volunteer={volunteer} useAbbr={false} />
+          </h2>
+        </div>
       )
     }
   }
