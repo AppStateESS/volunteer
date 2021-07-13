@@ -4,7 +4,8 @@ function volunteer_uninstall(&$content)
 {
     $db = \phpws2\Database::getDB();
     $db->buildTable('vol_sponsor')->drop(true);
-    $db->buildTable('vol_event')->drop(true);
+    $db->buildTable('vol_reason')->drop(true);
+    $db->buildTable('vol_reasontosponsor')->drop(true);
     $db->buildTable('vol_volunteer')->drop(true);
     $db->buildTable('vol_punch')->drop(true);
     $db->buildTable('vol_kiosk')->drop(true);
