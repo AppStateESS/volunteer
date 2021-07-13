@@ -15,11 +15,11 @@ const Form = ({punch, close, save}) => {
   }, [punch])
 
   useEffect(() => {
-    setTimeError(timeIn.getTime() >= timeOut.getTime())
+    setTimeError(timeIn.getTime() >= timeOut.getTime() && punch.attended === 0)
   }, [timeIn, timeOut])
 
   let errorMessage
-  if (timeError) {
+  if (timeError && punch.attended === 0) {
     errorMessage = (
       <div className="alert alert-danger">Clock out time must be later.</div>
     )
@@ -30,6 +30,36 @@ const Form = ({punch, close, save}) => {
     setTimeOut(new Date(punch.timeOut * 1000))
   }
 
+  const updateTimeIn = (value) => {
+    setTimeIn(value)
+    if (punch.attended === 1) {
+      setTimeOut(value)
+    }
+  }
+
+  const updateTimeOut = (value) => {
+    if (punch.attended === 0) {
+      setTimeOut(value)
+    }
+  }
+
+  let timeOutInput
+  if (punch.attended === 0) {
+    timeOutInput = (
+      <tr>
+        <th>Time out</th>
+        <td>
+          <DatePicker
+            onChange={updateTimeOut}
+            selected={timeOut}
+            showTimeSelect
+            timeIntervals={15}
+            dateFormat="MMMM d, yyyy h:mm aa"
+          />
+        </td>
+      </tr>
+    )
+  }
   return (
     <div style={{minHeight: '450px'}}>
       {errorMessage}
@@ -39,7 +69,7 @@ const Form = ({punch, close, save}) => {
             <th>Time in</th>
             <td>
               <DatePicker
-                onChange={setTimeIn}
+                onChange={updateTimeIn}
                 selected={timeIn}
                 showTimeSelect
                 timeIntervals={15}
@@ -47,18 +77,7 @@ const Form = ({punch, close, save}) => {
               />
             </td>
           </tr>
-          <tr>
-            <th>Time out</th>
-            <td>
-              <DatePicker
-                onChange={setTimeOut}
-                selected={timeOut}
-                showTimeSelect
-                timeIntervals={15}
-                dateFormat="MMMM d, yyyy h:mm aa"
-              />
-            </td>
-          </tr>
+          {timeOutInput}
         </tbody>
       </table>
 
