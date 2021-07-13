@@ -251,6 +251,15 @@ const PunchListing = ({sponsorId, volunteerId}) => {
             }}
             selected={searchTo}
           />
+          <button
+            className="btn btn-success btn-sm ml-2"
+            onClick={() => {
+              setSearchFrom(today)
+              setSearchTo(today)
+              loadList()
+            }}>
+            Today only
+          </button>
         </div>
         {title}
         {dateRangeString}
