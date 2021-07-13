@@ -83,6 +83,7 @@ class VolunteerDataUpdate
                 $this->content[] = 'Added reasons';
                 $this->content[] = 'Changed the shortlink to an access link.';
                 $this->content[] = 'Added attended only functionality.';
+                $this->content[] = 'Added CSV reports';
                 $this->content[] = '</pre>';
         }
         return $this->content;
