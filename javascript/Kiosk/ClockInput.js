@@ -1,10 +1,11 @@
 'use strict'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 
 import PropTypes from 'prop-types'
 
 const ClockInput = ({sendSwipe, lockInput}) => {
   const [bannerId, setBannerId] = useState('')
+  const bannerInput = useRef()
 
   useEffect(() => {
     if (bannerId.length === 9) {
@@ -12,6 +13,14 @@ const ClockInput = ({sendSwipe, lockInput}) => {
       setBannerId('')
     }
   }, [bannerId])
+
+  const focusInput = () => {
+    bannerInput.current.focus()
+  }
+
+  useEffect(() => {
+    focusInput()
+  }, [])
 
   const enterId = (e) => {
     const {value} = e.target
@@ -32,6 +41,7 @@ const ClockInput = ({sendSwipe, lockInput}) => {
             className="form-control"
             name="bannerId"
             value={bannerId}
+            ref={bannerInput}
             onChange={enterId}
             disabled={lockInput}
           />
@@ -39,6 +49,7 @@ const ClockInput = ({sendSwipe, lockInput}) => {
             className="btn btn-outline-danger"
             onClick={() => {
               setBannerId('')
+              focusInput()
             }}>
             Clear
           </button>
