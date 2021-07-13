@@ -175,6 +175,10 @@ class PunchFactory extends AbstractFactory
             $tbl->addFieldConditional('timeOut', 0, '>');
         }
 
+        if (!empty($options['approvedOnly'])) {
+            $tbl->addFieldConditional('approved', 1);
+        }
+
         if (!empty($options['includeVolunteer'])) {
             $tbl2 = $db->addTable('vol_volunteer');
             $cond = $db->createConditional($tbl->getField('volunteerId'), $tbl2->getField('id'), '=');
