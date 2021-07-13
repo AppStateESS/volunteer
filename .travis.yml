@@ -1,25 +1,26 @@
 sudo: false
 matrix:
   include:
-    - language: php
-      php:
-        - 7
-      script:
-        - '.travis-build/phplint .'
-    - language: node.js
-      node_js: 10.20.1
+  - language: php
+    php:
+    - 7
+    script:
+    - ".travis-build/phplint ."
+  - language: node.js
+    node_js: 10.20.1
 before_install:
-  - npm i -g npm@v6.14.8
+- npm i -g npm@v6.14.8
 install:
-  - npm install
+- npm install
 after_success:
-  - npm run build
-  - rm -rf node_modules
-  - tar -czf volunteer.tar.gz *
+- npm run build
+- rm -rf node_modules
+- tar -czf volunteer.tar.gz *
 deploy:
   provider: releases
   skip_cleanup: true
-  api_key: uTNUHiRw2+qZYmD7dxSEuOCjH6rX+pBGmQdUZWaPcp24DgIfTXH/HGPalQieDMYZzYy/DhymiWOqUhlOZ6aEauG3EYcMW0RsfKNYaEJrEZWAI8+G9q7OixIYKGmNwyHFvni1+spPxl1waGaoQ3UF2vL/11TIBwGxTUmZ8ucpK2yxTIbP3fLBwdiUxyV8uYpfHcOc6q6vjm5pDT/8cZ2vP8IXwBnRirefk15Kf8Y+bgaYMkafWzc3lgVgAYYVKkYFYVOdbEJdtFfyOR26Z7kuySTw2W4bPKf4ypR5w/BTGh/eTRdiWX4LOqYKpvRXI0+MSFSzT+h7M0kCZi1tYjjngZPOI/kpth2zCWoMMIGKojmhr2bjy/ObAKJDC1XQ0JVwEOqJCptU+ubK+HddAwrgBd2FdHFn6aDPI5nfJMJY7gLa0oZ7ua75qfTxfXeOBaiVfBzM0bZyiyqZAIj+H3wTA7onhpH1EOXxZNBEqhGLZ1eZrN99+MKqksyHo9RzBRKL8dKF8S7xL54JnsWf2aj05wfUq9Q1H1ZQU+tovFSPQfotOzfuZcLGVPOaQyfMX7EYwlKoyldm5lyCbXeAnUnjFNVLoiodMIb1BuNX2L6cBY3l/Vl3df+lHp1/bjX4Ai30tyLZeABHXashQeOk+PqYcOrbyTEnnt7z/aqzeCqlaYU=
+  api-key:
+    secure: GtWjeJCEnCgj17bzrfYJU8q3G3OS06EhSyan3Dsv3L3YezF19rcgWiIOwjesRYxuvi9B1og27exU4vRL/r9SGwMTNG2o8fZmdXuuVtSTvydXkI7C6x93q16Ct2hQubHZLnLjHYgCnQvSlEz3qWxqEJkYv47u+74l+4i0mNCnjCq0V9xgKRK1O/33n4QqafS5IknPXVawhEEzfHYaHFJWcFAeERdbJQaGLzTGXAqiNQZlXJ4gItmi181RVIsSBDFhWc2TY1yaA4WLrtJ5Vcf2S7FrUQlnOCC+L7TT9kwI3ldiwttv+bWvtX9YTln+0dfh3FlQKtg79RFf4kmcWRYoMMYzv3mzT2roYBzKTeXcfpL4mw5yN0KTxLSglrgyRQ5l48p7/+IqKDPNZuUQQIWF8YrpLy61obkgCyzY51n9USBjsN3X40XuRz34b4Un07DrIR5VrooMWBDcD4gBtlVU80atEi1qB465jUWbjjm1kgm0z16N+cMzLOG1P+S9KwWYVu6hznSOhM3+3qeJCpwW1ZymEIUc6oEqFxNgCyEClBhcOSLaxCRlKPeMAaPt8YjP/r4lTkalYUVCFrElWWJpoG0RumgeE91TEGNLfIpILjF9mKAuKE7/rk+6g8f/89X97D1/yVjMN2HRJ9BDU1GVtvGX+OdIe+nJlgeQaWSTgY0=
   file: volunteer.tar.gz
   overwrite: true
   on:
