@@ -13,13 +13,6 @@ use phpws2\Database\ForeignKey;
 class TableCreate
 {
 
-    public function createEventTable()
-    {
-        $db = Database::getDB();
-        $event = new \volunteer\Resource\Event;
-        return $event->createTable($db);
-    }
-
     public function createPunchTable()
     {
         $db = Database::getDB();
@@ -72,6 +65,20 @@ class TableCreate
         $sponsor = $db->addTable('vol_sponsor');
         $km = $sponsor->addDataType('kioskMode', 'smallint');
         $km->add();
+    }
+
+    public function dropEventTable()
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_event');
+        $tbl->drop(true);
+    }
+
+    public function dropKioskTable()
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_kiosk');
+        $tbl->drop(true);
     }
 
     public function addApprovedColumnToPunch()

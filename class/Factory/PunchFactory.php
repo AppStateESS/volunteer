@@ -124,7 +124,6 @@ class PunchFactory extends AbstractFactory
         $punch = new Punch;
         $punch->volunteerId = $volunteer->id;
         $punch->sponsorId = $sponsorId;
-        $punch->eventId = 0;
         $punch->reasonId = $reasonId;
         $punch->in();
         /*

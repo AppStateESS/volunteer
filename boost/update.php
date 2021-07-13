@@ -73,6 +73,8 @@ class VolunteerDataUpdate
                 $tableCreate->createReasonToSponsorTable();
                 $tableCreate->addUseReasonsColumnToSponsor();
                 $tableCreate->addReasonIdColumnToPunch();
+                $tableCreate->dropEventTable();
+                $tableCreate->dropKioskTable();
                 $this->content[] = '<pre>';
                 $this->content[] = '1.2.0';
                 $this->content[] = '-----------------------------';

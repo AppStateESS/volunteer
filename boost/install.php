@@ -15,11 +15,9 @@ function volunteer_install(&$content)
     $tableCreate = new TableCreate;
 
     try {
-        $eventTable = $tableCreate->createEventTable();
         $punchTable = $tableCreate->createPunchTable();
         $sponsorTable = $tableCreate->createSponsorTable();
         $volunteerTable = $tableCreate->createVolunteerTable();
-        $kioskTable = $tableCreate->createKioskTable();
         $logTable = $tableCreate->createLogTable();
         $reasonTable = $tableCreate->createReasonTable();
         $reasonToSponsorTable = $tableCreate->createReasonToSponsorTable();
@@ -47,9 +45,6 @@ function volunteer_install(&$content)
         }
         if (isset($punchTable)) {
             $punchTable->drop();
-        }
-        if (isset($eventTable)) {
-            $eventTable->drop();
         }
         throw $e;
     }
