@@ -47,13 +47,6 @@ class PunchView extends AbstractView
         return $template->get();
     }
 
-    private static function noSponsors()
-    {
-        $template = new Template();
-        $template->setModuleTemplate('volunteer', 'NoSponsors.html');
-        return $template->get();
-    }
-
     public static function afterPunchIn(int $punchId)
     {
         $punch = PunchFactory::build($punchId);
