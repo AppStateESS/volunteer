@@ -17,8 +17,9 @@ use Canopy\Response;
 use Canopy\Server;
 use Canopy\SettingDefaults;
 use volunteer\Controller\Controller;
-use volunteer\Factory\MemberFactory;
 use volunteer\Factory\Authenticate;
+use volunteer\Factory\MemberFactory;
+use volunteer\Factory\SponsorFactory;
 use volunteer\View\PunchView;
 use volunteer\View\AdminView;
 use volunteer\Exception\StudentNotFound;
@@ -86,7 +87,8 @@ class Module extends \Canopy\Module implements SettingDefaults
             }
             try {
                 if (Authenticate::isLoggedIn()) {
-                    \Layout::add(PunchView::punchButton(), 'volunteer', 'volunteer-create');
+                    $sponsor = SponsorFactory::singleSponsor();
+                    \Layout::add(PunchView::punchButton($sponsor ?? null), 'volunteer', 'volunteer-create');
                 } else {
                     $content = View\VolunteerView::logInPrompt();
                     \Layout::add($content, 'volunteer', 'volunteer-create');

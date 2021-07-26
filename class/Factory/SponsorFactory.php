@@ -25,6 +25,19 @@ class SponsorFactory extends AbstractFactory
         return $id > 0 ? self::load($sponsor, $id) : $sponsor;
     }
 
+    /**
+     * Returns a sponsor array if only one is in the system.
+     * Null otherwise.
+     * @return array
+     */
+    public static function singleSponsor()
+    {
+        $sponsors = self::list(['limit' => 2]);
+        if (count($sponsors) === 1) {
+            return $sponsors[0];
+        }
+    }
+
     public static function list(array $options = [])
     {
         $db = Database::getDB();
