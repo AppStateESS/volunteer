@@ -73,7 +73,7 @@ const Form = ({reason, success, failure, reset, titleRef}) => {
         <div className="col-sm-3"></div>
         <div className="col-sm-9">
           <BigCheckBox
-            label="Force attended only status"
+            label="Do not track time"
             checked={forceAttended}
             handle={setForceAttended}
           />

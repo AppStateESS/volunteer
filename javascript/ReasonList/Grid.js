@@ -17,7 +17,7 @@ const Grid = ({listing, edit}) => {
         </td>
         <td>{value.title}</td>
         <td>{value.description}</td>
-        <td>{value.forceAttended === 1 ? 'Yes' : 'No'}</td>
+        <td>{value.forceAttended === 1 ? 'No' : 'Yes'}</td>
       </tr>
     )
   })
@@ -29,7 +29,7 @@ const Grid = ({listing, edit}) => {
             <th>&nbsp;</th>
             <th>Title</th>
             <th>Description</th>
-            <th>Force attend</th>
+            <th>Track time</th>
           </tr>
           {rows}
         </tbody>

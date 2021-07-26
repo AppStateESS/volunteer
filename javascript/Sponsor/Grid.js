@@ -68,8 +68,8 @@ const Grid = ({
         </td>
         <td>
           {value.attendanceOnly
-            ? button(key, 'attend', 'Yes')
-            : button(key, 'attend', 'No')}
+            ? button(key, 'attend', 'No')
+            : button(key, 'attend', 'Yes')}
         </td>
         <td>
           {value.useReasons
@@ -94,7 +94,7 @@ const Grid = ({
             <th colSpan="2">&nbsp;</th>
             <th style={vertical}>Kiosk mode</th>
             <th style={vertical}>Preapproved</th>
-            <th style={vertical}>Attended only</th>
+            <th style={vertical}>Track time</th>
             <th style={vertical}>Use reasons</th>
           </tr>
           {rows}
