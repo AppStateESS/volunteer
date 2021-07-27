@@ -6,6 +6,7 @@ import OptionSelect from './OptionSelect'
 const Grid = ({
   listing,
   edit,
+  deleteSponsor,
   sendKiosk,
   sendPreApproved,
   sendAttendance,
@@ -48,7 +49,11 @@ const Grid = ({
     return (
       <tr key={`row-${value.id}`}>
         <td style={{width: '20%'}}>
-          <OptionSelect edit={() => edit(key)} sponsor={value} />
+          <OptionSelect
+            edit={() => edit(key)}
+            sponsor={value}
+            deleteSponsor={() => deleteSponsor(key)}
+          />
         </td>
         <td>
           {value.name}{' '}
@@ -80,11 +85,7 @@ const Grid = ({
     )
   })
 
-  const vertical = {
-    writingMode: 'vertical-rl',
-    textOrientation: 'sideways-right',
-    width: '5%',
-  }
+  const underline = {textDecoration: 'none'}
 
   return (
     <div>
@@ -92,10 +93,26 @@ const Grid = ({
         <tbody>
           <tr>
             <th colSpan="2">&nbsp;</th>
-            <th style={vertical}>Kiosk mode</th>
-            <th style={vertical}>Preapproved</th>
-            <th style={vertical}>Track time</th>
-            <th style={vertical}>Use reasons</th>
+            <th style={{width: '6%'}}>
+              <abbr style={underline} title="Users scan their ID to clock in">
+                Kiosk
+              </abbr>
+            </th>
+            <th style={{width: '6%'}}>
+              <abbr style={underline} title="All clock ins are preapproved">
+                Preapp.
+              </abbr>
+            </th>
+            <th style={{width: '6%'}}>
+              <abbr style={underline} title="Track the time of a visit">
+                Track
+              </abbr>
+            </th>
+            <th style={{width: '6%'}}>
+              <abbr style={underline} title="Use reasons on clock in">
+                Reasons
+              </abbr>
+            </th>
           </tr>
           {rows}
         </tbody>
@@ -107,6 +124,7 @@ const Grid = ({
 Grid.propTypes = {
   listing: PropTypes.array,
   edit: PropTypes.func,
+  deleteSponsor: PropTypes.func,
   sendKiosk: PropTypes.func,
   sendPreApproved: PropTypes.func,
   sendAttendance: PropTypes.func,

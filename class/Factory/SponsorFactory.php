@@ -38,10 +38,18 @@ class SponsorFactory extends AbstractFactory
         }
     }
 
+    public static function delete(int $id)
+    {
+        $sponsor = self::build($id);
+        $sponsor->deleted = true;
+        return self::save($sponsor);
+    }
+
     public static function list(array $options = [])
     {
         $db = Database::getDB();
         $tbl = $db->addTable('vol_sponsor');
+        $tbl->addFieldConditional('deleted', 0);
         if (empty($options['orderBy'])) {
             $options['orderBy'] = 'name';
             $options['dir'] = 1;

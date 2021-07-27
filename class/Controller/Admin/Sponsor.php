@@ -36,6 +36,12 @@ class Sponsor extends SubController
         return $sponsor->getStringVars();
     }
 
+    protected function delete(Request $request)
+    {
+        SponsorFactory::delete($this->id);
+        return['success' => true, 'id' => $this->id];
+    }
+
     protected function post(Request $request)
     {
         return ['success' => true, 'id' => SponsorFactory::post($request)];

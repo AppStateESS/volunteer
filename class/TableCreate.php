@@ -105,6 +105,14 @@ class TableCreate
         $rid->add();
     }
 
+    public function addSponsorDeleteColumn()
+    {
+        $db = Database::getDB();
+        $sponsor = $db->addTable('vol_sponsor');
+        $delete = $sponsor->addDataType('deleted', 'smallint');
+        $delete->add();
+    }
+
     public function addUseReasonsColumnToSponsor()
     {
         $db = Database::getDB();

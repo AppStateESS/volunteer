@@ -2,14 +2,17 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 
-const OptionSelect = ({edit, sponsor, key}) => {
+const OptionSelect = ({edit, sponsor, deleteSponsor, key}) => {
   const [selected, setSelected] = useState('na')
 
   const adminOption = (e) => {
     const {value} = e.target
     switch (value) {
       case 'edit':
-        edit(key)
+        edit()
+        break
+      case 'delete':
+        deleteSponsor()
         break
       case 'report':
         location.href = `volunteer/Admin/Sponsor/${sponsor.id}/report`
@@ -34,6 +37,7 @@ const OptionSelect = ({edit, sponsor, key}) => {
         - Commands -
       </option>
       <option value="edit">Edit</option>
+      <option value="delete">Delete</option>
       <option value="report">Report</option>
       {assignReasonsOption}
       <option value="log">Log</option>
@@ -44,6 +48,7 @@ const OptionSelect = ({edit, sponsor, key}) => {
 OptionSelect.propTypes = {
   sponsor: PropTypes.object,
   edit: PropTypes.func,
+  deleteSponsor: PropTypes.func,
   key: PropTypes.number,
 }
 

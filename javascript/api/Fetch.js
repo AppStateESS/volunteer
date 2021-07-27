@@ -30,6 +30,11 @@ const deleteVolunteer = async (id) => {
   return sendDelete(url)
 }
 
+const sendDeleteSponsor = async (id) => {
+  const url = `./volunteer/Admin/Sponsor/${id}`
+  return sendDelete(url)
+}
+
 /** GET **/
 const getItem = async (role, itemName, id) => {
   const url = `volunteer/${role}/${itemName}/${id}`
@@ -270,4 +275,5 @@ export {
   getSponsorReasons,
   assignReasons,
   clockInReason,
+  sendDeleteSponsor,
 }

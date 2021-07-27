@@ -7,6 +7,7 @@ import {
   sponsorPreApproved,
   sendAttendanceOnly,
   sendReasons,
+  sendDeleteSponsor,
 } from '../api/Fetch'
 import Grid from './Grid'
 import Form from './Form'
@@ -101,6 +102,14 @@ const Sponsor = () => {
     setShowModal(true)
   }
 
+  const deleteSponsor = (key) => {
+    if (confirm('Are you sure you want to delete this sponsor?')) {
+      sendDeleteSponsor(listing[key].id).then(() => {
+        loadList(search)
+      })
+    }
+  }
+
   const reset = () => {
     const defaultSponsor = getDefault()
     setSponsor(defaultSponsor)
@@ -147,6 +156,7 @@ const Sponsor = () => {
         <Grid
           listing={listing}
           edit={edit}
+          deleteSponsor={deleteSponsor}
           sendKiosk={updateKiosk}
           sendPreApproved={sendPreApproved}
           sendAttendance={sendAttendance}
