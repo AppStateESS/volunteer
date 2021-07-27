@@ -47,6 +47,9 @@ const PickSponsor = ({
   }
 
   const submitCheckIn = () => {
+    if (currentSponsor.id === 0) {
+      return
+    }
     if (currentSponsor.useReasons === 1) {
       loadSponsorReasons(
         currentSponsor.id,
@@ -139,7 +142,9 @@ const PickSponsor = ({
             type="button"
             onClick={submitCheckIn}
             className="btn btn-lg btn-success btn-block mt-3 py-3"
-            disabled={loading || currentSponsor === 0 || sponsors.length == 0}>
+            disabled={
+              loading || currentSponsor.id === 0 || sponsors.length == 0
+            }>
             {' '}
             <FontAwesomeIcon icon={faClock} />
             &nbsp;Clock in
@@ -147,6 +152,7 @@ const PickSponsor = ({
         </form>
       </div>
     )
+
     return <Card {...{title, subtitle, content}} />
   }
 }
