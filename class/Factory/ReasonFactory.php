@@ -67,6 +67,36 @@ class ReasonFactory extends AbstractFactory
         return $db->delete();
     }
 
+    public static function delete(int $reasonId)
+    {
+        if ($reasonId === 0) {
+            throw new \Exception('Null id received');
+        }
+        self::removePunchReasons($reasonId);
+        self::removeSponsorReasons($reasonId);
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_reason');
+        $tbl->addFieldConditional('id', $reasonId);
+        return $db->delete();
+    }
+
+    private static function removePunchReasons(int $reasonId)
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_punch');
+        $tbl->addFieldConditional('reasonId', $reasonId);
+        $tbl->addValue('reasonId', 0);
+        return $db->update();
+    }
+
+    private static function removeSponsorReasons(int $reasonId)
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_reasontosponsor');
+        $tbl->addFieldConditional('reasonId', $reasonId);
+        return $db->delete();
+    }
+
     public static function isForceAttended(int $reasonId)
     {
         $db = Database::getDB();

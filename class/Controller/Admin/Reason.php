@@ -34,6 +34,12 @@ class Reason extends SubController
         return ReasonFactory::listing(['sponsorId' => $sponsorId, 'sortById' => $sortById]) ?? [];
     }
 
+    protected function delete(Request $request)
+    {
+        ReasonFactory::delete($this->id);
+        return ['success' => true, 'id' => $this->id];
+    }
+
     protected function post(Request $request)
     {
         $reason = ReasonFactory::post($request);

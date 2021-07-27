@@ -25,6 +25,11 @@ const deletePunch = async (punchId) => {
   }
 }
 
+const sendDeleteReason = async (id) => {
+  const url = `./volunteer/Admin/Reason/${id}`
+  return sendDelete(url)
+}
+
 const deleteVolunteer = async (id) => {
   const url = `./volunteer/Admin/Volunteer/${id}`
   return sendDelete(url)
@@ -276,4 +281,5 @@ export {
   assignReasons,
   clockInReason,
   sendDeleteSponsor,
+  sendDeleteReason,
 }

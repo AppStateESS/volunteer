@@ -2,17 +2,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const Grid = ({listing, edit}) => {
+const Grid = ({listing, edit, deleteReason}) => {
   const rows = listing.map((value, key) => {
     return (
       <tr key={`reason-${value.id}`}>
-        <td>
+        <td style={{width: '10%'}}>
           <button
-            className="btn btn-sm btn-primary"
+            className="btn btn-sm btn-primary mr-2"
             onClick={() => {
               edit(key)
             }}>
             <i className="fas fa-edit"></i>
+          </button>
+          <button
+            className="btn btn-sm btn-danger"
+            onClick={() => {
+              deleteReason(key)
+            }}>
+            <i className="fas fa-trash"></i>
           </button>
         </td>
         <td>{value.title}</td>

@@ -3,7 +3,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import ReactDOM from 'react-dom'
 import Grid from './Grid'
 import Form from './Form'
-import {getList} from '../api/Fetch'
+import {getList, sendDeleteReason} from '../api/Fetch'
 import Overlay from '@essappstate/canopy-react-overlay'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
@@ -43,6 +43,18 @@ const ReasonList = () => {
     setShowModal(true)
   }
 
+  const deleteReason = (key) => {
+    if (
+      confirm(
+        'Deleting this reason will remove all punch associations.\nAre you sure you want to do this?'
+      )
+    ) {
+      sendDeleteReason(listing[key].id).then(() => {
+        loadList()
+      })
+    }
+  }
+
   const reset = () => {
     const defaultReason = getDefault()
     setReason(defaultReason)
@@ -76,7 +88,7 @@ const ReasonList = () => {
   } else {
     content = (
       <div>
-        <Grid listing={listing} edit={edit} />
+        <Grid listing={listing} edit={edit} deleteReason={deleteReason} />
       </div>
     )
   }
