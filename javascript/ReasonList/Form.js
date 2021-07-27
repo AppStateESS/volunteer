@@ -1,5 +1,5 @@
 'use strict'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import PropTypes from 'prop-types'
 import BigCheckBox from '@essappstate/canopy-react-bigcheckbox'
 import {saveReason} from '../api/Fetch'
@@ -8,12 +8,22 @@ const Form = ({reason, success, failure, reset, titleRef}) => {
   const [title, setTitle] = useState(reason.title)
   const [description, setDescription] = useState(reason.description)
   const [forceAttended, setForceAttended] = useState(reason.forceAttended)
+  const [copiedTitle, setCopiedTitle] = useState(false)
+  const descInput = useRef()
 
   useEffect(() => {
     setTitle(reason.title)
     setDescription(reason.description)
     setForceAttended(reason.forceAttended)
+    setCopiedTitle(false)
   }, [reason])
+
+  useEffect(() => {
+    if (description !== '' && description === title && !copiedTitle) {
+      descInput.current.select()
+      setCopiedTitle(true)
+    }
+  }, [description])
 
   const save = () => {
     const promise = saveReason({
@@ -55,6 +65,7 @@ const Form = ({reason, success, failure, reset, titleRef}) => {
         </div>
         <div className="col-sm-9">
           <input
+            ref={descInput}
             name="description"
             value={description}
             maxsize="255"
