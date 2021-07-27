@@ -7,7 +7,7 @@ import {faSpinner} from '@fortawesome/free-solid-svg-icons'
 import Grid from './Grid'
 
 const Unapproved = () => {
-  const [unapprovedListing, setUnapprovedListing] = useState([])
+  const [listing, setListing] = useState([])
   const [loading, setLoading] = useState(true)
 
   const loadList = (search) => {
@@ -15,7 +15,7 @@ const Unapproved = () => {
     const Promise = getList('volunteer/Admin/Punch/unapproved', {search})
     Promise.then((response) => {
       setLoading(false)
-      setUnapprovedListing(response.data)
+      setListing(response.data)
     }).catch((error) => {
       console.log(error)
     })
@@ -33,7 +33,7 @@ const Unapproved = () => {
         &nbsp;Loading...
       </div>
     )
-  } else if (unapprovedListing.length === 0) {
+  } else if (listing.length === 0) {
     content = (
       <div>
         <p>No unapproved punches found.</p>
@@ -42,7 +42,7 @@ const Unapproved = () => {
   } else {
     content = (
       <div>
-        <Grid listing={unapprovedListing} load={loadList} />
+        <Grid listing={listing} load={loadList} setListing={setListing} />
       </div>
     )
   }

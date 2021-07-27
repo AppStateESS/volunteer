@@ -6,21 +6,40 @@ import FullName from '../api/Name'
 import totalTime from '../api/Time.js'
 import {sendApproves} from '../api/Fetch'
 
-const Grid = ({listing, load}) => {
-  const [approveList, setApproveList] = useState({})
+const Grid = ({listing, load, setListing}) => {
+  const [checkAll, setCheckAll] = useState(false)
 
-  const approve = (punchId) => {
-    const copyList = Object.assign({}, approveList)
-    if (copyList[punchId]) {
-      delete copyList[punchId]
-    } else {
-      copyList[punchId] = true
+  const approve = (key) => {
+    const copyList = [...listing]
+    copyList[key].approved = copyList[key].approved === 1 ? 0 : 1
+    setListing(copyList)
+    if (checkAll) {
+      setCheckAll(false)
     }
-    setApproveList(copyList)
+  }
+
+  const toggleCheckAll = () => {
+    const valueAll = checkAll ? false : true
+    const copyList = [...listing]
+    listing.forEach((value, key) => {
+      value.approved = valueAll ? 1 : 0
+      copyList[key] = value
+    })
+    setCheckAll(valueAll)
+    setListing(copyList)
   }
 
   const postApproves = () => {
-    const promise = sendApproves(Object.keys(approveList))
+    const approveList = []
+    listing.forEach((value) => {
+      if (value.approved) {
+        approveList.push(value.id)
+      }
+    })
+    if (approveList.length === 0) {
+      return
+    }
+    const promise = sendApproves(approveList)
     promise.then((response) => {
       if (response && response.data.success) {
         load()
@@ -30,7 +49,7 @@ const Grid = ({listing, load}) => {
     })
   }
 
-  const rows = listing.map((value) => {
+  const rows = listing.map((value, key) => {
     return (
       <tr key={`row-${value.id}`}>
         <td>
@@ -38,8 +57,9 @@ const Grid = ({listing, load}) => {
             <input
               type="checkbox"
               name="approve[]"
+              checked={value.approved === 1}
               value={value.id}
-              onChange={() => approve(value.id)}
+              onChange={() => approve(key)}
             />
           ) : (
             <span></span>
@@ -61,16 +81,20 @@ const Grid = ({listing, load}) => {
   return (
     <div>
       <h2>Unapproved punches</h2>
-      <button
-        className="btn btn-primary mb-2"
-        onClick={postApproves}
-        disabled={Object.keys(approveList).length == 0}>
+      <button className="btn btn-primary mb-2" onClick={postApproves}>
         Approved checked
       </button>
       <table className="table table-striped">
         <tbody>
           <tr>
-            <th></th>
+            <th>
+              <input
+                type="checkbox"
+                name="approveAll"
+                checked={checkAll}
+                onChange={toggleCheckAll}
+              />
+            </th>
             <th>Sponsor</th>
             <th>Volunteer</th>
             <th>Day</th>
