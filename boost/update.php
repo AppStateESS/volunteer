@@ -85,6 +85,16 @@ class VolunteerDataUpdate
                 $this->content[] = 'Added attended only functionality.';
                 $this->content[] = 'Added CSV reports';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.3.0'):
+                $tableCreate->addSponsorDeleteColumn();
+                $this->content[] = '<pre>';
+                $this->content[] = '1.3.0';
+                $this->content[] = '-----------------------------';
+                $this->content[] = 'Single sponsors will not show selection.';
+                $this->content[] = 'Add check all button to approvals.';
+                $this->content[] = 'Can now delete sponsors (flagged) and reasons.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
