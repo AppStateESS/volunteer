@@ -45,11 +45,22 @@ class SponsorFactory extends AbstractFactory
         return self::save($sponsor);
     }
 
+    /**
+     * Options include:
+     * includeDeleted - get deleted sponsors if true
+     * orderBy - which column to order by, defaults to name
+     * idList - only return sponsors in this array
+     * sortById - returned array is keyed by the sponsor id
+     * @param array $options
+     * @return array
+     */
     public static function list(array $options = [])
     {
         $db = Database::getDB();
         $tbl = $db->addTable('vol_sponsor');
-        $tbl->addFieldConditional('deleted', 0);
+        if (empty($options['includeDeleted'])) {
+            $tbl->addFieldConditional('deleted', 0);
+        }
         if (empty($options['orderBy'])) {
             $options['orderBy'] = 'name';
             $options['dir'] = 1;
