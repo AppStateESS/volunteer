@@ -75,12 +75,16 @@ const VolunteerGrid = ({
           </tr>
         )
       })
+      let deleted
+      if (value.deleted) {
+        deleted = <span className="badge badge-danger">Deleted</span>
+      }
       return (
         <div key={`sponsor-group-${skey}`}>
           <h3>
             <a
               href={`./volunteer/Admin/Sponsor/${value.punches[0].sponsorId}/report`}>
-              {value.sponsor}
+              {value.sponsor} {deleted}
             </a>
           </h3>
           <table className="table table-striped">
@@ -113,7 +117,7 @@ VolunteerGrid.propTypes = {
   approve: PropTypes.func,
   edit: PropTypes.func,
   remove: PropTypes.func,
-  reasonList: PropTypes.object,
+  reasonList: PropTypes.array,
 }
 
 export default VolunteerGrid
