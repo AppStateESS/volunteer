@@ -1,6 +1,6 @@
 {
   "name": "volunteer",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Tracks volunteer hours",
   "main": "index.js",
   "scripts": {
