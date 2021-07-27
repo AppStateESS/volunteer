@@ -91,9 +91,11 @@ class PunchFactory extends AbstractFactory
 
         $sponsorIds = array_keys($rows);
 
-        $sponsorList = SponsorFactory::list(['idList' => $sponsorIds, 'sortById' => true]);
+        $sponsorList = SponsorFactory::list(['idList' => $sponsorIds, 'sortById' => true, 'includeDeleted' => true]);
         foreach ($sponsorList as $id => $sponsor) {
             $rows[$id]['sponsor'] = $sponsor['name'];
+            $rows[$id]['deleted'] = $sponsor['deleted'];
+
             if ($includeTotals) {
                 $totalHours = self::totalHours($totalTimes[$id]);
                 $totalMinutes = self::totalMinutes($totalTimes[$id]);
