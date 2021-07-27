@@ -1,5 +1,5 @@
 'use strict'
-import React, {useState} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import FullName from '../api/Name'
 
@@ -70,6 +70,10 @@ const Grid = ({listing, domain, deleteVolunteer}) => {
   )
 }
 
-Grid.propTypes = {listing: PropTypes.array, domain: PropTypes.string}
+Grid.propTypes = {
+  listing: PropTypes.array,
+  domain: PropTypes.string,
+  deleteVolunteer: PropTypes.func,
+}
 
 export default Grid
