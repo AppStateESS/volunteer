@@ -181,10 +181,16 @@ const PunchListing = ({sponsorId, volunteerId}) => {
           </a>
         )
       }
+      let deleted
+      if (sponsor.deleted) {
+        deleted = <span className="badge badge-danger">Deleted</span>
+      }
       title = (
         <div>
           <div>{printButton}</div>
-          <h2 className="mb-1">Punches for sponsor: {sponsor.name}</h2>
+          <h2 className="mb-1">
+            Punches for sponsor: {sponsor.name} {deleted}
+          </h2>
         </div>
       )
     } else {
