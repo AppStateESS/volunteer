@@ -107,7 +107,7 @@ SponsorGrid.propTypes = {
   approve: PropTypes.func,
   edit: PropTypes.func,
   remove: PropTypes.func,
-  reasonList: PropTypes.object,
+  reasonList: PropTypes.array,
 }
 
 export default SponsorGrid
