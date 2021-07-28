@@ -83,4 +83,10 @@ class Sponsor extends SubController
         return ['success' => true];
     }
 
+    protected function defaultPatch(Request $request)
+    {
+        SponsorFactory::updateDefault($this->id);
+        return ['success' => true];
+    }
+
 }
