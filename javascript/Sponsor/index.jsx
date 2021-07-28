@@ -8,6 +8,7 @@ import {
   sendAttendanceOnly,
   sendReasons,
   sendDeleteSponsor,
+  sendDefault,
 } from '../api/Fetch'
 import Grid from './Grid'
 import Form from './Form'
@@ -65,6 +66,11 @@ const Sponsor = () => {
     sponsor.preApproved = 1 - sponsor.preApproved
     sponsorPreApproved(sponsor.id, sponsor.preApproved)
     pushSponsor(key, sponsor)
+  }
+
+  const sendDefaultPatch = (key) => {
+    const sponsor = pullSponsor(key)
+    sendDefault(sponsor.id).then(() => loadList(search))
   }
 
   const loadList = (search = '') => {
@@ -160,6 +166,7 @@ const Sponsor = () => {
           sendKiosk={updateKiosk}
           sendPreApproved={sendPreApproved}
           sendAttendance={sendAttendance}
+          sendDefault={sendDefaultPatch}
           sendUseReasons={sendUseReasons}
         />
       </div>

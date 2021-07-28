@@ -86,6 +86,16 @@ const sendAttendanceOnly = async (sponsorId, attendanceOnly) => {
   }
 }
 
+const sendDefault = async (sponsorId) => {
+  const url = `volunteer/Admin/Sponsor/${sponsorId}/default`
+  try {
+    const response = await axios.patch(url, null, {headers})
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
 const sendKiosk = async (sponsorId, kioskMode) => {
   const url = `volunteer/Admin/Sponsor/${sponsorId}/kiosk`
   try {
@@ -282,4 +292,5 @@ export {
   clockInReason,
   sendDeleteSponsor,
   sendDeleteReason,
+  sendDefault,
 }

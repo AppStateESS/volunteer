@@ -21,6 +21,7 @@ use volunteer\Factory\Authenticate;
 use volunteer\Factory\MemberFactory;
 use volunteer\Factory\SponsorFactory;
 use volunteer\View\PunchView;
+use volunteer\View\KioskView;
 use volunteer\View\AdminView;
 use volunteer\Exception\StudentNotFound;
 
@@ -88,7 +89,16 @@ class Module extends \Canopy\Module implements SettingDefaults
             try {
                 if (Authenticate::isLoggedIn()) {
                     $sponsor = SponsorFactory::singleSponsor();
-                    \Layout::add(PunchView::punchButton($sponsor ?? null), 'volunteer', 'volunteer-create');
+                    if (!$sponsor) {
+                        $sponsor = SponsorFactory::defaultSponsor();
+                    }
+                    if ($sponsor && $sponsor['kioskMode']) {
+                        $content = KioskView::scriptView('Kiosk', ['sponsor' => $sponsor]);
+                    } else {
+                        $content = PunchView::punchButton($sponsor ?? null);
+                    }
+
+                    \Layout::add($content, 'volunteer', 'volunteer-create');
                 } else {
                     $content = View\VolunteerView::logInPrompt();
                     \Layout::add($content, 'volunteer', 'volunteer-create');

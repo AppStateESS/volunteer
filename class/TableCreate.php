@@ -113,6 +113,14 @@ class TableCreate
         $delete->add();
     }
 
+    public function addSponsorDefaultColumn()
+    {
+        $db = Database::getDB();
+        $sponsor = $db->addTable('vol_sponsor');
+        $default = $sponsor->addDataType('defaultFront', 'smallint');
+        $default->add();
+    }
+
     public function addUseReasonsColumnToSponsor()
     {
         $db = Database::getDB();

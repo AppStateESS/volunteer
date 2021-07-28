@@ -11,9 +11,13 @@ const Grid = ({
   sendPreApproved,
   sendAttendance,
   sendUseReasons,
+  sendDefault,
 }) => {
   const send = (key, type) => {
     switch (type) {
+      case 'default':
+        sendDefault(key)
+        break
       case 'attend':
         sendAttendance(key)
         break
@@ -62,6 +66,11 @@ const Grid = ({
           </a>
         </td>
         <td>
+          {value.defaultFront
+            ? button(key, 'default', 'Yes')
+            : button(key, 'default', 'No')}
+        </td>
+        <td>
           {value.kioskMode
             ? button(key, 'kiosk', 'Yes')
             : button(key, 'kiosk', 'No')}
@@ -93,6 +102,13 @@ const Grid = ({
         <tbody>
           <tr>
             <th colSpan="2">&nbsp;</th>
+            <th style={{width: '6%'}}>
+              <abbr
+                style={underline}
+                title="This sponsor will be the default selection for the home page">
+                Default
+              </abbr>
+            </th>
             <th style={{width: '6%'}}>
               <abbr style={underline} title="Users scan their ID to clock in">
                 Kiosk
@@ -129,6 +145,7 @@ Grid.propTypes = {
   sendPreApproved: PropTypes.func,
   sendAttendance: PropTypes.func,
   sendUseReasons: PropTypes.func,
+  sendDefault: PropTypes.func,
 }
 
 export default Grid

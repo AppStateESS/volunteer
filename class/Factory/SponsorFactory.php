@@ -38,6 +38,24 @@ class SponsorFactory extends AbstractFactory
         }
     }
 
+    /**
+     * Returns the default front page sponsor as an array of values
+     * @return array
+     */
+    public static function defaultSponsor()
+    {
+        $db = \phpws2\Database::getDB();
+        $tbl = $db->addTable('vol_sponsor');
+        $tbl->addFieldConditional('defaultFront', 1);
+        $row = $db->selectOneRow();
+
+        if (empty($row)) {
+            return;
+        } else {
+            return $row;
+        }
+    }
+
     public static function delete(int $id)
     {
         $sponsor = self::build($id);
@@ -158,6 +176,42 @@ class SponsorFactory extends AbstractFactory
             $tbl->addValue('keyword', $sponsor->searchName);
             $tbl->addFieldConditional('id', $shortcutId);
             return $db->update();
+        }
+    }
+
+    /**
+     * Removes default status from all sponsors
+     * @return int
+     */
+    private static function flushDefaults()
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_sponsor');
+        $tbl->addValue('defaultFront', 0);
+        return $db->update();
+    }
+
+    public static function updateDefault(int $sponsorId)
+    {
+        $sponsor = self::build($sponsorId);
+        if ($sponsor->id === 0) {
+            throw new ResourceNotFound();
+        }
+        $currentDefault = $sponsor->defaultFront;
+        self::flushDefaults();
+
+        /**
+         * If the default for this sponsor was true, it
+         * was reset in the above flush. We are done here.
+         */
+        if ($currentDefault) {
+            return;
+        } else {
+            /**
+             * The defaul was false, we make it true and save it.
+             */
+            $sponsor->defaultFront = true;
+            self::save($sponsor);
         }
     }
 
