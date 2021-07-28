@@ -20,6 +20,9 @@ class Punch extends SubController
 
     protected function kioskHtml(Request $request)
     {
+        if (\Current_User::allow('volunteer')) {
+            \volunteer\View\AdminView::showMenu();
+        }
         return KioskView::scriptView('Kiosk', ['sponsor' => $GLOBALS['currentSponsor']]);
     }
 
