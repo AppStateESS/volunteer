@@ -1,14 +1,9 @@
 'use strict'
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  Day,
-  TimeFormat,
-  ApproveButton,
-  TimeOut,
-  ChangeTime,
-  DeleteButton,
-} from './Time'
+import {DeleteButton, ApproveButton} from '../api/Buttons'
+import {ChangeTime} from './Time'
+import {Day, TimeFormat, TimeOut} from '../api/Time'
 
 const VolunteerGrid = ({
   listing,
@@ -117,7 +112,7 @@ VolunteerGrid.propTypes = {
   approve: PropTypes.func,
   edit: PropTypes.func,
   remove: PropTypes.func,
-  reasonList: PropTypes.array,
+  reasonList: PropTypes.object,
 }
 
 export default VolunteerGrid

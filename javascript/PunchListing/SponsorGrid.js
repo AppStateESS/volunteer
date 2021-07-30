@@ -2,14 +2,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import FullName from '../api/Name'
-import {
-  Day,
-  TimeFormat,
-  ApproveButton,
-  TimeOut,
-  ChangeTime,
-  DeleteButton,
-} from './Time'
+import {DeleteButton, ApproveButton} from '../api/Buttons'
+import {ChangeTime} from './Time'
+import {Day, TimeFormat, TimeOut} from '../api/Time'
 
 const SponsorGrid = ({
   listing,
@@ -107,7 +102,7 @@ SponsorGrid.propTypes = {
   approve: PropTypes.func,
   edit: PropTypes.func,
   remove: PropTypes.func,
-  reasonList: PropTypes.array,
+  reasonList: PropTypes.object,
 }
 
 export default SponsorGrid
