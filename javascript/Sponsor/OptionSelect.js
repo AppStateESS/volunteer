@@ -17,6 +17,9 @@ const OptionSelect = ({edit, sponsor, deleteSponsor, key}) => {
       case 'report':
         location.href = `volunteer/Admin/Sponsor/${sponsor.id}/report`
         break
+      case 'waiting':
+        location.href = `volunteer/Admin/Sponsor/${sponsor.id}/waiting`
+        break
       case 'assignReasons':
         location.href = `volunteer/Admin/Reason/assign/?sponsorId=${sponsor.id}`
         break
@@ -39,6 +42,7 @@ const OptionSelect = ({edit, sponsor, deleteSponsor, key}) => {
       <option value="edit">Edit</option>
       <option value="delete">Delete</option>
       <option value="report">Report</option>
+      <option value="waiting">Waiting</option>
       {assignReasonsOption}
       <option value="log">Log</option>
     </select>
