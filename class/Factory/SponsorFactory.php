@@ -76,6 +76,9 @@ class SponsorFactory extends AbstractFactory
     {
         $db = Database::getDB();
         $tbl = $db->addTable('vol_sponsor');
+        if (!empty($options['waitingOnly'])) {
+            $tbl->addFieldConditional('timeOut', 0);
+        }
         if (empty($options['includeDeleted'])) {
             $tbl->addFieldConditional('deleted', 0);
         }
