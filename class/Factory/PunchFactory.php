@@ -176,6 +176,10 @@ class PunchFactory extends AbstractFactory
             $tbl->addFieldConditional('timeOut', 0, '>');
         }
 
+        if (!empty($options['waitingOnly'])) {
+            $tbl->addFieldConditional('timeout', 0);
+        }
+
         if (!empty($options['approvedOnly'])) {
             $tbl->addFieldConditional('approved', 1);
         }
@@ -226,6 +230,9 @@ class PunchFactory extends AbstractFactory
                     if ($punch['timeOut']) {
                         $result[$key]['totalTime'] = self::getTotalTime($punch['timeIn'],
                                         $punch['timeOut']);
+                    } elseif (!empty($options['waitingOnly'])) {
+                        $result[$key]['totalTime'] = self::getTotalTime($punch['timeIn'],
+                                        time());
                     } else {
                         $result[$key]['totalTime'] = '(' . self::getTotalTime($punch['timeIn'],
                                         time()) . ')';
