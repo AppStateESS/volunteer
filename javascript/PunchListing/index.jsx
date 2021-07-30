@@ -19,6 +19,7 @@ import {faSpinner} from '@fortawesome/free-solid-svg-icons'
 import Overlay from '@essappstate/canopy-react-overlay'
 import Form from './Form'
 import FullName from '../api/Name'
+import './datepicker.css'
 
 const DateRange = ({searchFrom, searchTo}) => {
   return (
@@ -252,6 +253,7 @@ const PunchListing = ({sponsorId, volunteerId}) => {
             }}
             selected={searchFrom}
           />
+
           <button
             className="mx-2 btn btn-outline-dark btn-sm"
             onClick={loadList}>
