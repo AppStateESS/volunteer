@@ -59,6 +59,14 @@ class Sponsor extends SubController
                         ['volunteerId' => 0, 'sponsorId' => $this->id]);
     }
 
+    protected function waitingHtml()
+    {
+        AdminView::showMenu('sponsor');
+
+        return SponsorView::scriptView('Waiting',
+                        ['sponsorId' => (int) $this->id]);
+    }
+
     protected function kioskPatch(Request $request)
     {
         SponsorFactory::patchValue('kioskMode', $request->pullPatchBoolean('kioskMode'), $this->id);
