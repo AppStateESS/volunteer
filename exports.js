@@ -12,4 +12,5 @@ exports.entry = {
   PunchListing: exports.APP_DIR + '/PunchListing/index.jsx',
   ReasonList: exports.APP_DIR + '/ReasonList/index.jsx',
   AssignReason: exports.APP_DIR + '/AssignReason/index.jsx',
+  Waiting: exports.APP_DIR + '/Waiting/index.jsx',
 }
