@@ -1,5 +1,8 @@
 'use strict'
+import React from 'react'
+import PropTypes from 'prop-types'
 import dayjs from 'dayjs'
+
 const totalTime = (punch) => {
   if (punch.attended) {
     return 'Attended'
@@ -18,4 +21,38 @@ const totalTime = (punch) => {
   }
 }
 
-export default totalTime
+const Day = ({time}) => {
+  return <div>{dayjs(time * 1000).format('MMM D, YY')}</div>
+}
+
+Day.propTypes = {time: PropTypes.number}
+
+const TimeFormat = ({time}) => {
+  return <span>{dayjs(time * 1000).format('h:mm A')}</span>
+}
+
+TimeFormat.propTypes = {time: PropTypes.number}
+
+const TimeOut = ({punch, punchOut}) => {
+  let content
+  if (punch.timeOut) {
+    content = (
+      <div>
+        <TimeFormat time={punch.timeOut} />
+      </div>
+    )
+  } else {
+    content = (
+      <button
+        className="btn btn-danger btn-sm"
+        onClick={() => {
+          punchOut(punch.id)
+        }}>
+        Clock out
+      </button>
+    )
+  }
+  return content
+}
+
+export {totalTime, Day, TimeFormat, TimeOut}
