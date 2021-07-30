@@ -80,6 +80,14 @@ class Punch extends SubController
         return ['success' => true];
     }
 
+    protected function waitingJson(Request $request)
+    {
+        return PunchFactory::list(['waitingOnly' => true,
+                    'sponsorId' => $request->pullGetInteger('sponsorId'),
+                    'includeVolunteer' => true,
+                    'from' => mktime(0, 0, 0)]);
+    }
+
     protected function unapprovedHtml()
     {
         AdminView::showMenu('unapproved');
