@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import dayjs from 'dayjs'
 import FullName from '../api/Name'
-import totalTime from '../api/Time.js'
+import {totalTime} from '../api/Time.js'
 import {sendApproves} from '../api/Fetch'
 
 const Grid = ({listing, load, setListing}) => {
