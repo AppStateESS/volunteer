@@ -26,6 +26,11 @@ class Punch extends SubController
         return KioskView::scriptView('Kiosk', ['sponsor' => $GLOBALS['currentSponsor']]);
     }
 
+    protected function logInHtml(Request $request)
+    {
+        return \volunteer\View\VolunteerView::logInPrompt();
+    }
+
     protected function clockInReasonPost(Request $request)
     {
         $sponsorId = $request->pullPostInteger('sponsorId');
