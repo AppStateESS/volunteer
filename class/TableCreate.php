@@ -81,6 +81,24 @@ class TableCreate
         $tbl->drop(true);
     }
 
+    public function addVolunteerEmailColumn()
+    {
+        $db = Database::getDB();
+        $volunteer = $db->addTable('vol_volunteer');
+        $email = $volunteer->addDataType('email', 'varchar');
+        $email->setSize(100);
+        $email->add();
+    }
+
+    public function addUniqueToEmail()
+    {
+        $db = Database::getDB();
+        $volunteer = $db->addTable('vol_volunteer');
+        $email = $volunteer->getDataType('email');
+        $unique = new \phpws2\Database\Unique([$email]);
+        $unique->add();
+    }
+
     public function addApprovedColumnToPunch()
     {
         $db = Database::getDB();
@@ -143,6 +161,23 @@ class TableCreate
         $punch = $db->addTable('vol_punch');
         $app = $punch->addDataType('attended', 'smallint');
         $app->add();
+    }
+
+    public function addVolunteerVisitColumns()
+    {
+        $db = Database::getDB();
+        $volunteer = $db->addTable('vol_volunteer');
+        $app1 = $volunteer->addDataType('lastLog', 'int');
+        $app2 = $volunteer->addDataType('totalVisits', 'smallint');
+        $app1->add();
+        $app2->add();
+    }
+
+    public function copyEmailAddresses()
+    {
+        $domain = VOL_SHIB_DOMAIN;
+        $db = Database::getDB();
+        $db->exec("update vol_volunteer set email = concat(userName, '$domain')");
     }
 
 }
