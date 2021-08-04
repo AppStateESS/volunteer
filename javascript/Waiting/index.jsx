@@ -6,6 +6,7 @@ import Grid from './Grid'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
 import {getList, ajaxPunchOut, deletePunch} from '../api/Fetch'
+import useInterval from '../api/UseInterval'
 
 /* global sponsorId */
 
@@ -14,11 +15,20 @@ const Waiting = ({sponsorId}) => {
   const [listing, setListing] = useState([])
   const [reasonList, setReasonList] = useState([])
   const [error, setError] = useState(null)
+  const [isRunning, setIsRunning] = useState(true)
+  const delay = 60000
 
   useEffect(() => {
     loadReasons()
     loadList()
   }, [])
+
+  useInterval(
+    () => {
+      loadList()
+    },
+    isRunning ? delay : null
+  )
 
   const loadReasons = () => {
     getList('./volunteer/Admin/Reason/?sortById=true').then((response) => {
