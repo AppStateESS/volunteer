@@ -68,6 +68,44 @@ class PunchFactory extends AbstractFactory
         }
     }
 
+    /**
+     * Returns a JSON ready array of punch information based on the
+     * current volunteer's status
+     * @param Volunteer $volunteer
+     * return array
+     */
+    public static function punchReply(Volunteer $volunteer, int $sponsorId, bool $includeReasons)
+    {
+        $punch = PunchFactory::currentPunch($volunteer);
+        $sponsor = SponsorFactory::build($sponsorId);
+        if ($punch) {
+            if ((int) $punch->sponsorId !== (int) $sponsorId) {
+                return ['success' => false, 'result' => 'punchedInElsewhere'];
+            } else {
+                PunchFactory::out($punch);
+                return ['success' => true, 'result' => 'out'];
+            }
+        } else {
+            if ($sponsor->useReasons) {
+                /* Error check to prevent blank reason page */
+                if ($includeReasons) {
+                    $reasons = ReasonFactory::listing(['sponsorId' => $sponsor->id]);
+                    if (empty($reasons)) {
+                        PunchFactory::in($volunteer, $sponsorId);
+                        return ['success' => true, 'result' => 'in', 'reasons' => []];
+                    } else {
+                        return ['success' => true, 'result' => 'reason', 'reasons' => $reasons, 'volunteerId' => $volunteer->id];
+                    }
+                } else {
+                    return ['success' => true, 'result' => 'reason', 'volunteerId' => $volunteer->id];
+                }
+            } else {
+                PunchFactory::in($volunteer, $sponsorId);
+                return ['success' => true, 'result' => 'in', 'reasons' => []];
+            }
+        }
+    }
+
     public static function sortPunches(array $punches, bool $includeTotals = false)
     {
         $rows = [];
@@ -136,6 +174,7 @@ class PunchFactory extends AbstractFactory
             $punch->attended = 1;
             $punch->out();
             $punch->approved = SponsorFactory::isPreapproved($punch->sponsorId);
+            VolunteerFactory::stampVisit($volunteer->id);
         }
         return self::save($punch);
     }
@@ -151,6 +190,7 @@ class PunchFactory extends AbstractFactory
         $punch->out();
         $punch->approved = SponsorFactory::isPreapproved($punch->sponsorId);
 
+        VolunteerFactory::stampVisit($punch->volunteerId);
         return self::save($punch);
     }
 
