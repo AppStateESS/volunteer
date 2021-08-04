@@ -5,9 +5,8 @@ import {getList, deleteVolunteer} from '../api/Fetch'
 import Grid from './Grid.js'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
-/*global domain */
 
-const Volunteer = ({domain}) => {
+const Volunteer = () => {
   const track = useRef(null)
   const [loading, setLoading] = useState(true)
   const [listing, setListing] = useState([])
@@ -65,10 +64,10 @@ const Volunteer = ({domain}) => {
       <div>
         <Grid
           listing={listing}
-          domain={domain}
           deleteVolunteer={(id) => {
-            deleteVolunteer(id)
-            loadList(search)
+            deleteVolunteer(id).then(() => {
+              loadList(search)
+            })
           }}
         />
       </div>
@@ -114,7 +113,4 @@ const Volunteer = ({domain}) => {
   )
 }
 
-ReactDOM.render(
-  <Volunteer domain={domain} />,
-  document.getElementById('Volunteer')
-)
+ReactDOM.render(<Volunteer />, document.getElementById('Volunteer'))
