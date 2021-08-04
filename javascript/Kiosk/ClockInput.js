@@ -24,7 +24,7 @@ const ClockInput = ({sendSwipe, lockInput}) => {
 
   const enterId = (e) => {
     const {value} = e.target
-    if (value.length <= 9 && value.match(/^\d{1,9}$/)) {
+    if (value.length <= 9 && value.match(/^[\d\b]{0,9}$/)) {
       setBannerId(value)
     }
   }
