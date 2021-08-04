@@ -53,6 +53,19 @@ const getItem = async (role, itemName, id) => {
   }
 }
 
+const getEmail = async (options) => {
+  const url = 'volunteer/User/Volunteer/searchByEmail'
+  try {
+    const response = await axios.get(url, {
+      params: options,
+      headers,
+    })
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
 const getList = async (url, options) => {
   try {
     const response = await axios.get(url, {
@@ -126,11 +139,15 @@ const sponsorPreApproved = async (sponsorId, preApproved) => {
   }
 }
 
-const swipeVolunteer = async (studentBannerId, sponsorId) => {
+const swipeVolunteer = async (
+  studentBannerId,
+  sponsorId,
+  includeReasons = true
+) => {
   const url = 'volunteer/User/Punch/swipeIn'
   try {
     const response = await axios.get(url, {
-      params: {studentBannerId, sponsorId},
+      params: {studentBannerId, sponsorId, includeReasons},
       headers,
     })
     return response
@@ -164,6 +181,22 @@ const clockInReason = async (sponsorId, volunteerId, reasonId) => {
   const method = 'post'
   const url = 'volunteer/User/Punch/clockInReason'
   const data = {sponsorId, volunteerId, reasonId}
+  try {
+    const response = await axios({
+      method,
+      url,
+      data,
+      headers,
+    })
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
+const saveNewVisitor = async (data) => {
+  const method = 'post'
+  const url = 'volunteer/User/Volunteer/visitor'
   try {
     const response = await axios({
       method,
@@ -275,6 +308,7 @@ export {
   getItem,
   saveSponsor,
   saveReason,
+  saveNewVisitor,
   ajaxPunchOut,
   sendKiosk,
   sponsorPreApproved,
@@ -293,4 +327,5 @@ export {
   sendDeleteSponsor,
   sendDeleteReason,
   sendDefault,
+  getEmail,
 }
