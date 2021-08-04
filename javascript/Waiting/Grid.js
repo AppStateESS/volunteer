@@ -67,7 +67,7 @@ const Grid = ({listing, punchOut, remove, reasonList}) => {
           <tr>
             <td colSpan="6" className="bg-primary text-white">
               <span>
-                <strong>Total visits:</strong> {totalPunches}
+                <strong>Total visiting:</strong> {totalPunches}
               </span>
             </td>
           </tr>
