@@ -60,7 +60,18 @@ class SponsorFactory extends AbstractFactory
     {
         $sponsor = self::build($id);
         $sponsor->deleted = true;
-        return self::save($sponsor);
+        $result = self::save($sponsor);
+        self::removeShortcuts($sponsor);
+        return $result;
+    }
+
+    private static function removeShortcuts(Sponsor $sponsor)
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('access_shortcuts');
+        $tbl->addFieldConditional('url', 'volunteer:' . $sponsor->id);
+        $db->setLimit(1);
+        $db->delete();
     }
 
     /**
