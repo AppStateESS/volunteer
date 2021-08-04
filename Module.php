@@ -87,22 +87,19 @@ class Module extends \Canopy\Module implements SettingDefaults
                 AdminView::showMenu();
             }
             try {
-                if (Authenticate::isLoggedIn()) {
-                    $sponsor = SponsorFactory::singleSponsor();
-                    if (!$sponsor) {
-                        $sponsor = SponsorFactory::defaultSponsor();
-                    }
-                    if ($sponsor && $sponsor['kioskMode']) {
-                        $content = KioskView::scriptView('Kiosk', ['sponsor' => $sponsor]);
-                    } else {
-                        $content = PunchView::punchButton($sponsor ?? null);
-                    }
-
-                    \Layout::add($content, 'volunteer', 'volunteer-create');
+                $sponsor = SponsorFactory::singleSponsor();
+                if (!$sponsor) {
+                    $sponsor = SponsorFactory::defaultSponsor();
+                }
+                if ($sponsor && $sponsor['kioskMode']) {
+                    $content = KioskView::scriptView('Kiosk', ['sponsor' => $sponsor]);
+                } elseif (Authenticate::isLoggedIn()) {
+                    $content = PunchView::punchButton($sponsor ?? null);
                 } else {
                     $content = View\VolunteerView::logInPrompt();
-                    \Layout::add($content, 'volunteer', 'volunteer-create');
                 }
+
+                \Layout::add($content, 'volunteer', 'volunteer-create');
             } catch (StudentNotFound $e) {
                 if (VOLUNTEER_SYSTEM_SETTINGS['friendlyErrors'] && !$request->isAjax()) {
                     $content = View\VolunteerView::StudentNotFound();
