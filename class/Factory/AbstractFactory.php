@@ -68,8 +68,8 @@ abstract class AbstractFactory extends \phpws2\ResourceFactory
     {
         if (!empty($options['orderBy'])) {
             $orderBy = $options['orderBy'];
-            if (isset($options['dir'])) {
-                $direction = (int) $options['dir'] ? 'asc' : 'desc';
+            if (isset($options['orderByDir'])) {
+                $direction = (int) $options['orderByDir'] ? 'asc' : 'desc';
             } else {
                 $direction = 'asc';
             }
@@ -79,13 +79,17 @@ abstract class AbstractFactory extends \phpws2\ResourceFactory
         if (!empty($options['search'])) {
             self::addSearch($options['search'], $searchColumns, $db, $tbl);
         }
+
+        if (!empty($options['limit'])) {
+            $db->setLimit((int) $options['limit']);
+        }
     }
 
     public static function listingOptions(Request $request)
     {
         $options['search'] = $request->pullGetString('search', true);
-        $options['sortBy'] = $request->pullGetString('sortBy', true);
-        $options['sortByDir'] = $request->pullGetString('sortByDir', true);
+        $options['orderBy'] = $request->pullGetString('orderBy', true);
+        $options['orderByDir'] = $request->pullGetString('orderByDir', true);
         $options['limit'] = $request->pullGetString('limit', true);
         $options['offset'] = $request->pullGetString('offset', true);
         return $options;
