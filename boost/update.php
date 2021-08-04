@@ -8,6 +8,8 @@
 use phpws2\Database;
 use volunteer\TableCreate;
 
+require_once PHPWS_SOURCE_DIR . 'mod/volunteer/config/defines.php';
+
 function volunteer_update(&$content, $currentVersion)
 {
     $update = new VolunteerDataUpdate($content, $currentVersion);
@@ -94,6 +96,22 @@ class VolunteerDataUpdate
                 $this->content[] = 'Single sponsors will not show selection.';
                 $this->content[] = 'Add check all button to approvals.';
                 $this->content[] = 'Can now delete sponsors (flagged) and reasons.';
+                $this->content[] = '</pre>';
+
+            case $this->compare('1.4.0'):
+                $tableCreate->addSponsorDefaultColumn();
+                $tableCreate->addVolunteerEmailColumn();
+                $tableCreate->copyEmailAddresses();
+                $tableCreate->addUniqueToEmail();
+                $tableCreate->addVolunteerVisitColumns();
+                $this->content[] = '<pre>';
+                $this->content[] = '1.4.0';
+                $this->content[] = '-----------------------------';
+                $this->content[] = 'Admin panel added to kiosk view.';
+                $this->content[] = 'Pick default sponsor for front page.';
+                $this->content[] = 'Added waiting report.';
+                $this->content[] = 'Non-student visitors can now log in.';
+                $this->content[] = 'Volunteers last log and number of visits is tracked.';
                 $this->content[] = '</pre>';
         }
         return $this->content;
