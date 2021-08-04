@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import FullName from '../api/Name'
 
-const Grid = ({listing, domain, deleteVolunteer}) => {
+const Grid = ({listing, deleteVolunteer}) => {
   const selected = 'na'
 
   const adminOption = (option, id) => {
@@ -47,9 +47,10 @@ const Grid = ({listing, domain, deleteVolunteer}) => {
           <FullName volunteer={value} useAbbr={false} />
         </td>
         <td>
-          <a href={`mailto:${value.userName}${domain}`}>{value.userName}</a>
+          <a href={`mailto:${value.email}`}>{value.userName}</a>
         </td>
-        <td>{value.bannerId}</td>
+        <td>{value.totalVisits === 0 ? 'Never' : value.lastLog}</td>
+        <td>{value.totalVisits}</td>
       </tr>
     )
   })
@@ -60,8 +61,9 @@ const Grid = ({listing, domain, deleteVolunteer}) => {
           <tr>
             <th>&nbsp;</th>
             <th>Name</th>
-            <th>Username/Email</th>
-            <th>Banner ID</th>
+            <th>Email</th>
+            <th>Last session</th>
+            <th>Visits</th>
           </tr>
           {rows}
         </tbody>
