@@ -35,24 +35,29 @@ const ClockInput = ({sendSwipe, lockInput}) => {
     } else {
       return (
         <div>
-          <input
-            maxLength="9"
-            type="text"
-            className="form-control"
-            name="bannerId"
-            value={bannerId}
-            ref={bannerInput}
-            onChange={enterId}
-            disabled={lockInput}
-          />
-          <button
-            className="btn btn-outline-danger"
-            onClick={() => {
-              setBannerId('')
-              focusInput()
-            }}>
-            Clear
-          </button>
+          <div className="input-group mb-3">
+            <input
+              autoComplete="off"
+              maxLength="9"
+              type="text"
+              className="form-control"
+              name="bannerId"
+              value={bannerId}
+              ref={bannerInput}
+              onChange={enterId}
+              disabled={lockInput}
+            />
+            <div className="input-group-append">
+              <button
+                className="btn btn-outline-danger"
+                onClick={() => {
+                  setBannerId('')
+                  focusInput()
+                }}>
+                Clear
+              </button>
+            </div>
+          </div>
         </div>
       )
     }
