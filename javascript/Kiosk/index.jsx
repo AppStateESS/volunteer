@@ -189,6 +189,11 @@ const Kiosk = ({sponsor}) => {
             className="form-control"
             name="email"
             value={email}
+            onKeyPress={(e) => {
+              if (e.key == 'Enter') {
+                sendEmail(email)
+              }
+            }}
             onChange={checkEmail}
             disabled={lockInput}
           />
