@@ -33,7 +33,7 @@ class Volunteer extends SubController
         }
         if (empty($options['orderBy'])) {
             $options['orderBy'] = 'lastLog';
-            $options['dir'] = 'desc';
+            $options['orderByDir'] = 'desc';
         }
         return VolunteerFactory::list($options);
     }
