@@ -20,6 +20,9 @@ class Authenticate
 
     public static function getLoginUsername()
     {
+        if (!isset($_SERVER[VOL_SHIB_USERNAME_TAG])) {
+            return false;
+        }
         return str_ireplace(VOL_SHIB_DOMAIN, '', $_SERVER[VOL_SHIB_USERNAME_TAG]);
     }
 
