@@ -27,7 +27,15 @@ class Volunteer extends SubController
 
     protected function listJson(Request $request)
     {
-        return VolunteerFactory::list(VolunteerFactory::listingOptions($request));
+        $options = VolunteerFactory::listingOptions($request);
+        if (empty($options['limit'])) {
+            $options['limit'] = 50;
+        }
+        if (empty($options['orderBy'])) {
+            $options['orderBy'] = 'lastLog';
+            $options['dir'] = 'desc';
+        }
+        return VolunteerFactory::list($options);
     }
 
     protected function reportHtml(Request $request)
