@@ -115,7 +115,6 @@ const Kiosk = ({sponsor}) => {
 
   const determineResponse = (response) => {
     const {success, result} = response.data
-    console.log(success)
     if (success) {
       switch (result) {
         case 'in':
