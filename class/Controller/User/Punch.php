@@ -41,40 +41,17 @@ class Punch extends SubController
     {
         $studentBannerId = $request->pullGetString('studentBannerId');
         $sponsorId = $request->pullGetString('sponsorId');
-        $sponsor = SponsorFactory::build($sponsorId);
+        $includeReasons = $request->pullGetBoolean('includeReasons');
+
         $volunteer = VolunteerFactory::loadByBannerId($studentBannerId);
         if (!$volunteer) {
             try {
-                $volunteer = VolunteerFactory::createVolunteer($studentBannerId);
+                $volunteer = VolunteerFactory::createStudent($studentBannerId);
             } catch (\volunteer\Exception\StudentNotFound $e) {
                 return ['success' => false, 'result' => 'notfound'];
             }
         }
-
-        $punch = PunchFactory::currentPunch($volunteer);
-
-        if ($punch) {
-            if ((int) $punch->sponsorId !== (int) $sponsorId) {
-                return ['success' => false, 'result' => 'punchedInElsewhere'];
-            } else {
-                PunchFactory::out($punch);
-                return ['success' => true, 'result' => 'out'];
-            }
-        } else {
-            if ($sponsor->useReasons) {
-                /* Error check to prevent blank reason page */
-                $reasons = ReasonFactory::listing(['sponsorId' => $sponsor->id]);
-                if (empty($reasons)) {
-                    PunchFactory::in($volunteer, $sponsorId);
-                    return ['success' => true, 'result' => 'in', 'reasons' => []];
-                } else {
-                    return ['success' => true, 'result' => 'reason', 'reasons' => $reasons, 'volunteerId' => $volunteer->id];
-                }
-            } else {
-                PunchFactory::in($volunteer, $sponsorId);
-                return ['success' => true, 'result' => 'in', 'reasons' => []];
-            }
-        }
+        return PunchFactory::punchReply($volunteer, $sponsorId, $includeReasons);
     }
 
 }
