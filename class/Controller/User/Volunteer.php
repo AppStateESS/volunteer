@@ -55,18 +55,4 @@ class Volunteer extends SubController
         return PunchFactory::punchReply($volunteer, $sponsorId, $includeReasons);
     }
 
-//    private function visitorResponse(bool $includeReasons, int $sponsorId, \volunteer\Resource\Volunteer $volunteer)
-//    {
-//        if ($includeReasons) {
-//            $reasons = ReasonFactory::listing(['sponsorId' => $sponsorId]);
-//            if (empty($reasons)) {
-//                PunchFactory::in($volunteer, $sponsorId);
-//                return ['success' => true, 'result' => 'in', 'reasons' => []];
-//            } else {
-//                return ['success' => true, 'result' => 'reason', 'reasons' => $reasons, 'volunteerId' => $volunteer->id];
-//            }
-//        } else {
-//            return ['success' => true, 'result' => 'reason', 'volunteerId' => $volunteer->id];
-//        }
-//    }
 }
