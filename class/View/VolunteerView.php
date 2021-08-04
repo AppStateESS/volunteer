@@ -16,7 +16,7 @@ class VolunteerView extends AbstractView
 
     public static function list(array $options = [])
     {
-        return self::scriptView('Volunteer', ['domain' => VOL_SHIB_DOMAIN]);
+        return self::scriptView('Volunteer');
     }
 
     public static function logInPrompt()
