@@ -113,6 +113,13 @@ class VolunteerDataUpdate
                 $this->content[] = 'Non-student visitors can now log in.';
                 $this->content[] = 'Volunteers last log and number of visits is tracked.';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.4.1'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.4.1';
+                $this->content[] = '-----------------------------';
+                $this->content[] = 'Volunteer name added to kiosk output.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
