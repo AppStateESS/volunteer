@@ -22,10 +22,18 @@ class Volunteer extends AbstractResource
 
     public function __construct()
     {
+        /**
+         * Custom regexp to conform with newer standards.
+         * Canopy email also updated as a result.
+         */
+        $match = <<<EOF
+^[\w!#$%&\'"*+\/=?`{|}~^-]+(?:(\.+)[\w!#$%&\'"*+\/=?{|}~^-]+)*@(?:[a-z0-9-]+\.)+[a-z]{2,64}$
+EOF;
         parent::__construct();
         $this->userName = new \phpws2\Variable\StringVar(null, 'userName', 50);
         $this->userName->allowNull(true);
         $this->email = new \phpws2\Variable\Email(null, 'email', 100);
+        $this->email->setRegexpMatch('/' . $match . '/i');
         $this->bannerId = new \phpws2\Variable\NumberString('0', 'bannerId', 20);
         $this->bannerId->allowNull(true);
         $this->firstName = new \phpws2\Variable\TextOnly(null, 'firstName', 40);
