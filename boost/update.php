@@ -120,6 +120,13 @@ class VolunteerDataUpdate
                 $this->content[] = '-----------------------------';
                 $this->content[] = 'Volunteer name added to kiosk output.';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.4.2'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.4.2';
+                $this->content[] = '-----------------------------';
+                $this->content[] = 'Fixed email verification bug.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
