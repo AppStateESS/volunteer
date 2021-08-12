@@ -78,12 +78,14 @@ class PunchFactory extends AbstractFactory
     {
         $punch = PunchFactory::currentPunch($volunteer);
         $sponsor = SponsorFactory::build($sponsorId);
+        $volunteerName = $volunteer->getPreferred();
+        $volunteerId = $volunteer->id;
         if ($punch) {
             if ((int) $punch->sponsorId !== (int) $sponsorId) {
-                return ['success' => false, 'result' => 'punchedInElsewhere'];
+                return ['success' => false, 'result' => 'punchedInElsewhere', 'volunteerName' => $volunteerName, 'volunteerId' => $volunteerId];
             } else {
                 PunchFactory::out($punch);
-                return ['success' => true, 'result' => 'out'];
+                return ['success' => true, 'result' => 'out', 'volunteerName' => $volunteerName, 'volunteerId' => $volunteerId];
             }
         } else {
             if ($sponsor->useReasons) {
@@ -92,16 +94,16 @@ class PunchFactory extends AbstractFactory
                     $reasons = ReasonFactory::listing(['sponsorId' => $sponsor->id]);
                     if (empty($reasons)) {
                         PunchFactory::in($volunteer, $sponsorId);
-                        return ['success' => true, 'result' => 'in', 'reasons' => []];
+                        return ['success' => true, 'result' => 'in', 'reasons' => [], 'volunteerName' => $volunteerName, 'volunteerId' => $volunteerId];
                     } else {
-                        return ['success' => true, 'result' => 'reason', 'reasons' => $reasons, 'volunteerId' => $volunteer->id];
+                        return ['success' => true, 'result' => 'reason', 'reasons' => $reasons, 'volunteerName' => $volunteerName, 'volunteerId' => $volunteerId];
                     }
                 } else {
-                    return ['success' => true, 'result' => 'reason', 'volunteerId' => $volunteer->id];
+                    return ['success' => true, 'result' => 'reason', 'volunteerId' => $volunteer->id, 'volunteerName' => $volunteerName, 'volunteerId' => $volunteerId];
                 }
             } else {
                 PunchFactory::in($volunteer, $sponsorId);
-                return ['success' => true, 'result' => 'in', 'reasons' => []];
+                return ['success' => true, 'result' => 'in', 'reasons' => [], 'volunteerName' => $volunteerName, 'volunteerId' => $volunteerId];
             }
         }
     }

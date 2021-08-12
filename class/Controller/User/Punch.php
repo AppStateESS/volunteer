@@ -34,12 +34,13 @@ class Punch extends SubController
     protected function clockInReasonPost(Request $request)
     {
         $sponsorId = $request->pullPostInteger('sponsorId');
-        $volunteerId = $request->pullPOstInteger('volunteerId');
+        $volunteerId = $request->pullPostInteger('volunteerId');
         $reasonId = $request->pullPostInteger('reasonId');
         $volunteer = VolunteerFactory::build($volunteerId);
+        $volunteerName = $volunteer->getPreferred();
         $reason = ReasonFactory::build($reasonId);
         PunchFactory::in($volunteer, $sponsorId, $reasonId);
-        return ['success' => true, 'attendanceOnly' => $reason->forceAttended];
+        return ['success' => true, 'attendanceOnly' => $reason->forceAttended, 'volunteerId' => $volunteerId, 'volunteerName' => $volunteerName];
     }
 
     protected function swipeInJson(Request $request)

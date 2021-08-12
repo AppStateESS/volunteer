@@ -31,6 +31,7 @@ const Kiosk = ({sponsor}) => {
   const [showVisitorModal, setShowVisitorModal] = useState(false)
   const [volunteerId, setVolunteerId] = useState(0)
   const [email, setEmail] = useState('')
+  const [volunteerName, setVolunteerName] = useState('')
   const [goodEmail, setGoodEmail] = useState(0)
 
   useEffect(() => {
@@ -38,10 +39,12 @@ const Kiosk = ({sponsor}) => {
       clockInReason(sponsor.id, volunteerId, reasonId).then((response) => {
         if (response.data.attendanceOnly) {
           setMessage(
-            'Thank you for being here today. You do not need to clock out.'
+            `Thank you for being here today, ${response.data.volunteerName}. You do not need to clock out.`
           )
         } else {
-          setMessage('Thank you. Please clock out when you leave.')
+          setMessage(
+            `Thank you, ${response.data.volunteerName}. Please clock out when you leave.`
+          )
         }
         setShowReasonModal(false)
         pauseAndReset()
@@ -58,6 +61,7 @@ const Kiosk = ({sponsor}) => {
   const resetVisitor = () => {
     setEmail('')
     setGoodEmail(0)
+    setVolunteerName('')
     setShowVisitorModal(false)
   }
 
@@ -115,22 +119,23 @@ const Kiosk = ({sponsor}) => {
 
   const determineResponse = (response) => {
     const {success, result} = response.data
+    const responseVolName = response.data.volunteerName
     if (success) {
       switch (result) {
         case 'in':
           if (sponsor.attendanceOnly == 1) {
             setMessage(
-              'Thank you for being with us today. You do not need to clock out.'
+              `Thank you for being with us today, ${responseVolName}. You do not need to clock out.`
             )
           } else {
             setMessage(
-              'Thank you for being with us today. Remember to clock out when you leave.'
+              `Thank you for being with us today, ${responseVolName}. Remember to clock out when you leave.`
             )
           }
           pauseAndReset()
           break
         case 'out':
-          setMessage('Thank you, you have clocked out.')
+          setMessage(`Thank you ${responseVolName}, you have clocked out.`)
           pauseAndReset()
           break
         case 'reason':
@@ -142,6 +147,7 @@ const Kiosk = ({sponsor}) => {
             setReasonsLoaded(true)
             setReasons(response.data.reasons)
           }
+          setVolunteerName(responseVolName)
           setVolunteerId(response.data.volunteerId)
           setShowReasonModal(true)
           break
@@ -149,7 +155,9 @@ const Kiosk = ({sponsor}) => {
     } else {
       switch (result) {
         case 'punchedInElsewhere':
-          setError('You are currently clocked in elsewhere.')
+          setError(
+            `${responseVolName}, you are currently clocked in elsewhere.`
+          )
           pauseAndReset()
           break
         case 'notfound':
@@ -216,7 +224,7 @@ const Kiosk = ({sponsor}) => {
         <Overlay
           show={showReasonModal}
           close={() => setShowReasonModal(false)}
-          title="Reason for visit"
+          title={`Hello ${volunteerName}, what is the reason for your visit?`}
           width="80%">
           <ReasonList
             reasons={reasons}
