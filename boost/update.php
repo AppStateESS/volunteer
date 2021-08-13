@@ -127,6 +127,15 @@ class VolunteerDataUpdate
                 $this->content[] = '-----------------------------';
                 $this->content[] = 'Fixed email verification bug.';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.4.3'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.4.3';
+                $this->content[] = '-----------------------------';
+                $this->content[] = 'Fixed single day date setting.';
+                $this->content[] = 'Default report time is one week instead of one month';
+                $this->content[] = 'Added reset button';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
