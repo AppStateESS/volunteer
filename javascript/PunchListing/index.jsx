@@ -12,6 +12,7 @@ import {
   updatePunch,
   deletePunch,
 } from '../api/Fetch'
+import {dayStart, dayEnd} from '../api/Time'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -42,9 +43,9 @@ const PunchListing = ({sponsorId, volunteerId}) => {
   const [showModal, setShowModal] = useState(false)
   const [forceLoad, setForceLoad] = useState(0)
   const today = new Date()
-  const lastMonth = new Date()
-  lastMonth.setDate(today.getDate() - 30)
-  const [searchFrom, setSearchFrom] = useState(lastMonth)
+  const lastWeek = new Date()
+  lastWeek.setDate(today.getDate() - 7)
+  const [searchFrom, setSearchFrom] = useState(lastWeek)
   const [searchTo, setSearchTo] = useState(today)
   const [currentPunch, setCurrentPunch] = useState({
     id: 0,
@@ -244,38 +245,48 @@ const PunchListing = ({sponsorId, volunteerId}) => {
       </div>
       <div>
         <div className="mb-3 d-print-none d-flex">
+          <span>Search from:</span>&nbsp;
           <DatePicker
             closeOnScroll={true}
             onChange={(d) => {
+              d = dayStart(d)
               if (d.getTime() < searchTo.getTime()) {
                 setSearchFrom(d)
               }
             }}
             selected={searchFrom}
           />
-
-          <button
-            className="mx-2 btn btn-outline-dark btn-sm"
-            onClick={loadList}>
-            Search between dates
-          </button>
+          <span>&nbsp;to&nbsp;</span>
           <DatePicker
             closeOnScroll={true}
             onChange={(d) => {
+              d = dayEnd(d)
               if (searchFrom.getTime() < d.getTime()) {
                 setSearchTo(d)
               }
             }}
             selected={searchTo}
           />
+          <button className="mx-2 btn btn-primary btn-sm" onClick={loadList}>
+            Search
+          </button>
           <button
-            className="btn btn-success btn-sm ml-2"
+            className="btn btn-success btn-sm mr-2"
             onClick={() => {
               setSearchFrom(today)
               setSearchTo(today)
               setForceLoad((prev) => prev + 1)
             }}>
             Today only
+          </button>
+          <button
+            className="btn btn-info btn-sm"
+            onClick={() => {
+              setSearchFrom(lastWeek)
+              setSearchTo(today)
+              setForceLoad((prev) => prev + 1)
+            }}>
+            Reset
           </button>
         </div>
         {title}
