@@ -55,4 +55,14 @@ const TimeOut = ({punch, punchOut}) => {
   return content
 }
 
-export {totalTime, Day, TimeFormat, TimeOut}
+const dayStart = (d) => {
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+const dayEnd = (d) => {
+  d.setHours(23, 59, 59, 999)
+  return d
+}
+
+export {totalTime, Day, TimeFormat, TimeOut, dayStart, dayEnd}
