@@ -17,7 +17,12 @@ class Banner
 
         $curl = curl_init();
         curl_setopt_array($curl,
-                array(CURLOPT_RETURNTRANSFER => 1, CURLOPT_URL => $pluggedUrl, CURLOPT_FAILONERROR => 1, CURLOPT_TIMEOUT => VOLUNTEER_TIMEOUT, CURLOPT_SSL_VERIFYHOST => 0, CURLOPT_SSL_VERIFYPEER => 0));
+                array(CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_URL => $pluggedUrl,
+                    CURLOPT_FAILONERROR => 1,
+                    CURLOPT_TIMEOUT => VOLUNTEER_TIMEOUT,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0));
         $result = curl_exec($curl);
 
         if (!$result) {
