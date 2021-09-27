@@ -33,9 +33,10 @@ class CSV
                 $csvrow['sponsor'] = $listRow['sponsorName'];
             }
             $csvrow['reason'] = $reason;
-            $csvrow['timeIn'] = strftime('%c', $listRow['timeIn']);
-            $csvrow['timeOut'] = strftime('%c', $listRow['timeOut']);
+            $csvrow['timeIn'] = strftime('%Y%m%d %H:%M:%S', $listRow['timeIn']);
+            $csvrow['timeOut'] = strftime('%Y%m%d %H:%M:%S', $listRow['timeOut']);
             $csvrow['totalTime'] = $listRow['attended'] === '1' ? 'Attended' : $listRow['totalTime'];
+            $csvrow['totalMinutes'] = $listRow['attended'] === '1' ? 0 : (int) $listRow['totalMinutes'];
             $csv[] = $csvrow;
         }
         array_unshift($csv, array_keys($csvrow));
