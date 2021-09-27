@@ -115,8 +115,11 @@ class PunchFactory extends AbstractFactory
         foreach ($punches as $punch) {
             if ($punch['timeOut']) {
                 $punch['totalTime'] = self::getTotalTime($punch['timeIn'], $punch['timeOut']);
+                $totalSeconds = $punch['timeOut'] - $punch['timeIn'];
+                $punch['totalMinutes'] = (int) floor($totalSeconds / 60);
             } else {
                 $punch['totalTime'] = '(' . self::getTotalTime($punch['timeIn'], time()) . ')';
+                $punch['totalMinutes'] = 0;
             }
             $rows[$punch['sponsorId']]['punches'][] = $punch;
             if ($includeTotals) {
@@ -140,6 +143,7 @@ class PunchFactory extends AbstractFactory
                 $totalHours = self::totalHours($totalTimes[$id]);
                 $totalMinutes = self::totalMinutes($totalTimes[$id]);
                 $rows[$id]['totalTime'] = self::buildTotalTime($totalHours, $totalMinutes);
+                $rows[$id]['totalMinutes'] = (int) floor($totalTimes[$id] / 60);
             }
         }
         return array_values($rows);
@@ -269,15 +273,20 @@ class PunchFactory extends AbstractFactory
                 $result = self::sortPunches($result, !empty($options['includeTotals']));
             } else {
                 foreach ($result as $key => $punch) {
+
                     if ($punch['timeOut']) {
                         $result[$key]['totalTime'] = self::getTotalTime($punch['timeIn'],
                                         $punch['timeOut']);
+                        $totalSeconds = $punch['timeOut'] - $punch['timeIn'];
+                        $result[$key]['totalMinutes'] = floor($totalSeconds / 60);
                     } elseif (!empty($options['waitingOnly'])) {
                         $result[$key]['totalTime'] = self::getTotalTime($punch['timeIn'],
                                         time());
+                        $result[$key]['totalMinutes'] = 0;
                     } else {
                         $result[$key]['totalTime'] = '(' . self::getTotalTime($punch['timeIn'],
                                         time()) . ')';
+                        $result[$key]['totalMinutes'] = 0;
                     }
                 }
             }
