@@ -136,6 +136,13 @@ class VolunteerDataUpdate
                 $this->content[] = 'Default report time is one week instead of one month';
                 $this->content[] = 'Added reset button';
                 $this->content[] = '</pre>';
+            case $this->compare('1.4.4'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.4.4';
+                $this->content[] = '-----------------------------';
+                $this->content[] = 'Added totalMinutes to CSV report.';
+                $this->content[] = 'Better time in and out format in report.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
