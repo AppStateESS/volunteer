@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const FullName = ({volunteer, useAbbr = true}) => {
   if (volunteer.preferredName) {
@@ -7,15 +8,13 @@ const FullName = ({volunteer, useAbbr = true}) => {
         <span>
           <abbr
             style={{textDecoration: 'underline'}}
-            title={`${volunteer.firstName} (${volunteer.preferredName}) ${volunteer.lastName}`}>
+            title={`${volunteer.preferredName} ${volunteer.lastName}`}>
             {volunteer.preferredName} {volunteer.lastName}
           </abbr>
         </span>
       )
     } else {
-      return (
-        <span>{`${volunteer.firstName} (${volunteer.preferredName}) ${volunteer.lastName}`}</span>
-      )
+      return <span>{`${volunteer.preferredName} ${volunteer.lastName}`}</span>
     }
   } else {
     return (
@@ -29,3 +28,7 @@ const FullName = ({volunteer, useAbbr = true}) => {
 export default React.memo(FullName, (p, n) => {
   p.id == n.id
 })
+
+FullName.propTypes = {
+  volunteer: PropTypes.object,
+}
