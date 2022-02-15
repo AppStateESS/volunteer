@@ -18,7 +18,7 @@ const Grid = ({listing, deleteVolunteer}) => {
       case 'delete':
         if (
           prompt(
-            'Deleting this volunteer will remove all their punch information.\nType DELETE below if you wish to do so.'
+            'Deleting this volunteer will remove all their punch information.\nType DELETE in all caps below if you wish to do so.'
           ) === 'DELETE'
         ) {
           deleteVolunteer(id)
