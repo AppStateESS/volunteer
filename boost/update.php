@@ -143,6 +143,13 @@ class VolunteerDataUpdate
                 $this->content[] = 'Added totalMinutes to CSV report.';
                 $this->content[] = 'Better time in and out format in report.';
                 $this->content[] = '</pre>';
+            case $this->compare('1.5.0'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.5.0';
+                $this->content[] = '-----------------------------';
+                $this->content[] = 'Sorting added to lists';
+                $this->content[] = 'Preferred names used instead of first name.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }

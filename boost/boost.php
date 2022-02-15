@@ -5,7 +5,7 @@
  *
  */
 $proper_name = 'Volunteer Tracker';
-$version = '1.4.4';
+$version = '1.5.0';
 $register = false;
 $unregister = false;
 $import_sql = false;
