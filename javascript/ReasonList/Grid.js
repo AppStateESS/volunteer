@@ -66,7 +66,9 @@ const Grid = ({listing, edit, deleteReason, sort, setSort, reverseListing}) => {
                 }}
               />
             </th>
-            <th>Description</th>
+            <th>
+              <div className="py-2">Description</div>
+            </th>
             <th>
               <Sort
                 label="Track time"
@@ -92,6 +94,7 @@ Grid.propTypes = {
   deleteReason: PropTypes.func,
   sort: PropTypes.object,
   setSort: PropTypes.func,
+  reverseListing: PropTypes.func,
 }
 
 export default Grid
