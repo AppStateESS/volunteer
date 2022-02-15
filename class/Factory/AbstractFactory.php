@@ -64,12 +64,12 @@ abstract class AbstractFactory extends \phpws2\ResourceFactory
     }
 
     protected static function applyOptions(DB $db, Table $tbl, array $options = [],
-            array $searchColumns = [])
+        array $searchColumns = [])
     {
         if (!empty($options['orderBy'])) {
             $orderBy = $options['orderBy'];
-            if (isset($options['orderByDir'])) {
-                $direction = (int) $options['orderByDir'] ? 'asc' : 'desc';
+            if (!empty($options['orderByDir'])) {
+                $direction = $options['orderByDir'];
             } else {
                 $direction = 'asc';
             }
