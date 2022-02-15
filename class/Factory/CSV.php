@@ -12,6 +12,10 @@
 
 namespace volunteer\Factory;
 
+if (!defined('VOL_USE_PREFERRED_ON_REPORT')) {
+    define('VOL_USE_PREFERRED_ON_REPORT', true);
+}
+
 class CSV
 {
 
@@ -25,8 +29,12 @@ class CSV
                 $reason = $reasons[$listRow['reasonId']]['title'];
             }
             if ($type === 'sponsor') {
-                $csvrow['firstName'] = $listRow['firstName'];
-                $csvrow['preferredName'] = $listRow['preferredName'] ?? '';
+                if (VOL_USE_PREFERRED_ON_REPORT) {
+                    $csvrow['firstName'] = $listRow['preferredName'] ?? $listRow['firstName'];
+                } else {
+                    $csvrow['firstName'] = $listRow['firstName'];
+                    $csvrow['preferredName'] = $listRow['preferredName'] ?? '';
+                }
                 $csvrow['lastName'] = $listRow['lastName'];
                 $csvrow['bannerId'] = $listRow['bannerId'];
             } else {
