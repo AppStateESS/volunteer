@@ -2,8 +2,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import FullName from '../api/Name'
+import Sort from '../api/Sort'
 
-const Grid = ({listing, deleteVolunteer}) => {
+const Grid = ({listing, deleteVolunteer, sort, setSort, reverseListing}) => {
   const selected = 'na'
 
   const adminOption = (option, id) => {
@@ -25,6 +26,27 @@ const Grid = ({listing, deleteVolunteer}) => {
         }
         break
     }
+  }
+  const nextSort = (field) => {
+    if (field == sort.field) {
+      switch (sort.direction) {
+        case 'asc':
+          sort.direction = 'desc'
+          reverseListing()
+          return
+        case 'desc':
+          sort.field = null
+          sort.direction = 'none'
+          break
+        case 'none':
+          sort.direction = 'asc'
+          break
+      }
+    } else {
+      sort.field = field
+      sort.direction = 'asc'
+    }
+    setSort({...sort})
   }
 
   const rows = listing.map((value) => {
@@ -60,10 +82,36 @@ const Grid = ({listing, deleteVolunteer}) => {
         <tbody>
           <tr>
             <th>&nbsp;</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Last session</th>
-            <th>Visits</th>
+            <th>
+              <Sort
+                label="Name"
+                direction={sort.field === 'lastName' ? sort.direction : null}
+                handleClick={() => {
+                  nextSort('lastName')
+                }}
+              />
+            </th>
+            <th>
+              <div className="py-2">Email</div>
+            </th>
+            <th>
+              <Sort
+                label="Last logged"
+                direction={sort.field === 'lastLog' ? sort.direction : null}
+                handleClick={() => {
+                  nextSort('lastLog')
+                }}
+              />
+            </th>
+            <th>
+              <Sort
+                label="Visits"
+                direction={sort.field === 'totalVisits' ? sort.direction : null}
+                handleClick={() => {
+                  nextSort('totalVisits')
+                }}
+              />
+            </th>
           </tr>
           {rows}
         </tbody>
@@ -76,6 +124,9 @@ Grid.propTypes = {
   listing: PropTypes.array,
   domain: PropTypes.string,
   deleteVolunteer: PropTypes.func,
+  sort: PropTypes.object,
+  setSort: PropTypes.func,
+  reverseListing: PropTypes.func,
 }
 
 export default Grid

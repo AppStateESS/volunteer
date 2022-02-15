@@ -11,17 +11,7 @@ const Volunteer = () => {
   const [loading, setLoading] = useState(true)
   const [listing, setListing] = useState([])
   const [search, setSearch] = useState('')
-
-  const loadList = (search) => {
-    setLoading(true)
-    const Promise = getList('volunteer/Admin/Volunteer/', {search})
-    Promise.then((response) => {
-      setLoading(false)
-      setListing(response.data)
-    }).catch((error) => {
-      console.log(error)
-    })
-  }
+  const [sort, setSort] = useState({field: null, direction: 'none'})
 
   useEffect(() => {
     clearTimeout(track.current)
@@ -34,7 +24,27 @@ const Volunteer = () => {
       loadList()
     }
     return () => clearTimeout(track.current)
-  }, [search])
+  }, [search, sort])
+
+  const loadList = (search = '') => {
+    setLoading(true)
+    const params = {search}
+    if (sort.direction !== 'none' && sort.field) {
+      params.sortBy = sort.field
+      params.sortDir = sort.direction
+    }
+    const Promise = getList('volunteer/Admin/Volunteer/', params)
+    Promise.then((response) => {
+      setLoading(false)
+      setListing(response.data)
+    }).catch((error) => {
+      console.error(error)
+    })
+  }
+
+  const reverseListing = () => {
+    setListing([...listing.reverse()])
+  }
 
   const sendSearch = () => {
     clearTimeout(track.current)
@@ -64,6 +74,9 @@ const Volunteer = () => {
       <div>
         <Grid
           listing={listing}
+          reverseListing={reverseListing}
+          sort={sort}
+          setSort={setSort}
           deleteVolunteer={(id) => {
             deleteVolunteer(id).then(() => {
               loadList(search)
