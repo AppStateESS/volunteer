@@ -1,8 +1,31 @@
 'use strict'
 import React from 'react'
 import PropTypes from 'prop-types'
+import Sort from '../api/Sort'
 
-const Grid = ({listing, edit, deleteReason}) => {
+const Grid = ({listing, edit, deleteReason, sort, setSort, reverseListing}) => {
+  const nextSort = (field) => {
+    if (field == sort.field) {
+      switch (sort.direction) {
+        case 'asc':
+          sort.direction = 'desc'
+          reverseListing()
+          return
+        case 'desc':
+          sort.field = null
+          sort.direction = 'none'
+          break
+        case 'none':
+          sort.direction = 'asc'
+          break
+      }
+    } else {
+      sort.field = field
+      sort.direction = 'asc'
+    }
+    setSort({...sort})
+  }
+
   const rows = listing.map((value, key) => {
     return (
       <tr key={`reason-${value.id}`}>
@@ -34,9 +57,27 @@ const Grid = ({listing, edit, deleteReason}) => {
         <tbody>
           <tr>
             <th>&nbsp;</th>
-            <th>Title</th>
+            <th>
+              <Sort
+                label="Title"
+                direction={sort.field === 'title' ? sort.direction : null}
+                handleClick={() => {
+                  nextSort('title')
+                }}
+              />
+            </th>
             <th>Description</th>
-            <th>Track time</th>
+            <th>
+              <Sort
+                label="Track time"
+                direction={
+                  sort.field === 'forceAttended' ? sort.direction : null
+                }
+                handleClick={() => {
+                  nextSort('forceAttended')
+                }}
+              />
+            </th>
           </tr>
           {rows}
         </tbody>
@@ -45,6 +86,12 @@ const Grid = ({listing, edit, deleteReason}) => {
   )
 }
 
-Grid.propTypes = {listing: PropTypes.array, edit: PropTypes.func}
+Grid.propTypes = {
+  listing: PropTypes.array,
+  edit: PropTypes.func,
+  deleteReason: PropTypes.func,
+  sort: PropTypes.object,
+  setSort: PropTypes.func,
+}
 
 export default Grid

@@ -17,25 +17,35 @@ const ReasonList = () => {
   const [listing, setListing] = useState([])
   const [reason, setReason] = useState(getDefault())
   const [showModal, setShowModal] = useState(false)
+  const [sort, setSort] = useState({field: null, direction: 'none'})
   const titleRef = useRef(null)
-
-  useEffect(() => {
-    loadList()
-  }, [])
 
   useEffect(() => {
     titleRef.current.focus()
   }, [showModal])
 
+  useEffect(() => {
+    loadList()
+  }, [sort])
+
   const loadList = (search = '') => {
     setLoading(true)
-    const Promise = getList('volunteer/Admin/Reason/', {search})
+    const params = {search}
+    if (sort.direction !== 'none' && sort.field) {
+      params.sortBy = sort.field
+      params.sortDir = sort.direction
+    }
+    const Promise = getList('volunteer/Admin/Reason/', params)
     Promise.then((response) => {
       setLoading(false)
       setListing(response.data)
     }).catch((error) => {
       console.error(error)
     })
+  }
+
+  const reverseListing = () => {
+    setListing([...listing.reverse()])
   }
 
   const edit = (key) => {
@@ -88,7 +98,16 @@ const ReasonList = () => {
   } else {
     content = (
       <div>
-        <Grid listing={listing} edit={edit} deleteReason={deleteReason} />
+        <Grid
+          {...{
+            reverseListing,
+            listing,
+            edit,
+            deleteReason,
+            sort,
+            setSort,
+          }}
+        />
       </div>
     )
   }

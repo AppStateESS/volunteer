@@ -119,7 +119,11 @@ class ReasonFactory extends AbstractFactory
                 $tbl->addFieldConditional('id', $reasonIdList, 'in');
             }
         }
-        $tbl->addOrderBy('title');
+        if (!empty($options['sortBy']) && !empty($options['sortByDir'])) {
+            $tbl->addOrderBy($options['sortBy'], $options['sortByDir']);
+        } else {
+            $tbl->addOrderBy('title');
+        }
         $result = $db->select();
         if (!empty($options['sortById']) && !empty($result)) {
             foreach ($result as $row) {
