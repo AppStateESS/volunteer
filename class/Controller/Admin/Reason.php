@@ -31,9 +31,9 @@ class Reason extends SubController
     {
         $sponsorId = (int) $request->pullGetInteger('sponsorId', true);
         $sortById = (int) $request->pullGetBoolean('sortById', true);
-        $sortBy = $request->pullGetString('sortBy', true);
-        $sortByDir = $request->pullGetString('sortDir', true);
-        return ReasonFactory::listing(['sponsorId' => $sponsorId, 'sortById' => $sortById, 'sortBy' => $sortBy, 'sortByDir' => $sortByDir]) ?? [];
+        $orderBy = $request->pullGetString('sortBy', true);
+        $orderByDir = $request->pullGetString('sortDir', true);
+        return ReasonFactory::listing(['sponsorId' => $sponsorId, 'sortById' => $sortById, 'orderBy' => $orderBy, 'orderByDir' => $orderByDir]) ?? [];
     }
 
     protected function delete(Request $request)

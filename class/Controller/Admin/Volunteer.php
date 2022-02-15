@@ -31,7 +31,9 @@ class Volunteer extends SubController
         if (empty($options['limit'])) {
             $options['limit'] = 50;
         }
-        if (empty($options['orderBy'])) {
+        $orderBy = $request->pullGetString('sortBy', true);
+        $orderByDir = $request->pullGetString('sortDir', true);
+        if (empty($orderBy)) {
             $options['orderBy'] = 'lastLog';
             $options['orderByDir'] = 'desc';
         }
@@ -42,7 +44,7 @@ class Volunteer extends SubController
     {
         AdminView::showMenu('volunteer');
         return VolunteerView::scriptView('PunchListing',
-                        ['volunteerId' => $this->id, 'sponsorId' => 0]);
+                ['volunteerId' => $this->id, 'sponsorId' => 0]);
     }
 
     protected function viewJson(Request $request)
