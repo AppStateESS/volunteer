@@ -226,6 +226,9 @@ class PunchFactory extends AbstractFactory
         $tbl->addField('attended');
         $tbl->addField('reasonId');
         $tbl->addField('id');
+        $tbl4 = $db->addTable('vol_reason');
+        $reason = $tbl4->addField('title', 'reason');
+        $tbl4->addFieldConditional('id', $tbl->getField('reasonId'));
         $expForOrder = $tbl->addField($expression, 'totalSeconds');
 
         if (!empty($options['unapprovedOnly'])) {
@@ -260,11 +263,20 @@ class PunchFactory extends AbstractFactory
         if (empty($options['orderBy'])) {
             $options['orderBy'] = 'timeIn';
             $options['orderByDir'] = 'desc';
-        } elseif ($options['orderBy'] === 'totalSeconds') {
-            $options['orderBy'] = $expForOrder;
-        } elseif ($options['orderBy'] === 'lastName') {
-            $options['orderBy'] = $lastName;
+        } else {
+            switch ($options['orderBy']) {
+                case 'totalSeconds':
+                    $options['orderBy'] = $expForOrder;
+                    break;
+                case 'lastName':
+                    $options['orderBy'] = $lastName;
+                    break;
+                case 'reason':
+                    $options['orderBy'] = $reason;
+                    break;
+            }
         }
+
         parent::applyOptions($db, $tbl, $options);
 
         if (!empty($options['sponsorId'])) {
