@@ -216,6 +216,17 @@ class PunchFactory extends AbstractFactory
     {
         $db = Database::getDB();
         $tbl = $db->addTable('vol_punch');
+        $expString = '(' . $tbl->getField('timeOut') . '-' . $tbl->getField('timeIn') . ')';
+        $expression = new Database\Expression($expString, 'totalSeconds');
+        $tbl->addField('volunteerId');
+        $tbl->addField('sponsorId');
+        $tbl->addField('timeIn');
+        $tbl->addField('timeOut');
+        $tbl->addField('approved');
+        $tbl->addField('attended');
+        $tbl->addField('reasonId');
+        $tbl->addField('id');
+        $expForOrder = $tbl->addField($expression, 'totalSeconds');
 
         if (!empty($options['unapprovedOnly'])) {
             $tbl->addFieldConditional('approved', 0);
@@ -235,7 +246,7 @@ class PunchFactory extends AbstractFactory
             $cond = $db->createConditional($tbl->getField('volunteerId'), $tbl2->getField('id'), '=');
             $tbl2->addField('userName');
             $tbl2->addField('firstName');
-            $tbl2->addField('lastName');
+            $lastName = $tbl2->addField('lastName');
             $tbl2->addField('preferredName');
             $tbl2->addField('bannerId');
             $db->joinResources($tbl, $tbl2, $cond);
@@ -244,8 +255,16 @@ class PunchFactory extends AbstractFactory
         if (!empty($options['volunteerId'])) {
             $tbl->addFieldConditional('volunteerId', $options['volunteerId']);
         }
-        $options['orderBy'] = 'timeIn';
-        $options['dir'] = 'desc';
+
+        $orderByMinutes = false;
+        if (empty($options['orderBy'])) {
+            $options['orderBy'] = 'timeIn';
+            $options['orderByDir'] = 'desc';
+        } elseif ($options['orderBy'] === 'totalSeconds') {
+            $options['orderBy'] = $expForOrder;
+        } elseif ($options['orderBy'] === 'lastName') {
+            $options['orderBy'] = $lastName;
+        }
         parent::applyOptions($db, $tbl, $options);
 
         if (!empty($options['sponsorId'])) {
@@ -266,26 +285,24 @@ class PunchFactory extends AbstractFactory
                 $tbl->addFieldConditional('timeOut', $to, '<=');
             }
         }
-
         $result = $db->select();
         if (!empty($result)) {
             if (!empty($options['sortBySponsor'])) {
                 $result = self::sortPunches($result, !empty($options['includeTotals']));
             } else {
                 foreach ($result as $key => $punch) {
-
                     if ($punch['timeOut']) {
+                        $totalMinutes = floor($punch['totalSeconds'] / 60);
                         $result[$key]['totalTime'] = self::getTotalTime($punch['timeIn'],
-                                        $punch['timeOut']);
-                        $totalSeconds = $punch['timeOut'] - $punch['timeIn'];
-                        $result[$key]['totalMinutes'] = floor($totalSeconds / 60);
+                                $punch['timeOut']);
+                        $result[$key]['totalMinutes'] = $totalMinutes;
                     } elseif (!empty($options['waitingOnly'])) {
                         $result[$key]['totalTime'] = self::getTotalTime($punch['timeIn'],
-                                        time());
+                                time());
                         $result[$key]['totalMinutes'] = 0;
                     } else {
                         $result[$key]['totalTime'] = '(' . self::getTotalTime($punch['timeIn'],
-                                        time()) . ')';
+                                time()) . ')';
                         $result[$key]['totalMinutes'] = 0;
                     }
                 }

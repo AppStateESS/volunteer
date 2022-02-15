@@ -53,6 +53,7 @@ const PunchListing = ({sponsorId, volunteerId}) => {
     timeOut: 0,
   })
   const [dateRangeString, setDateRangeString] = useState('')
+  const [sort, setSort] = useState({field: null, direction: 'none'})
 
   let grid
   let title
@@ -68,13 +69,17 @@ const PunchListing = ({sponsorId, volunteerId}) => {
   const loadList = () => {
     setLoading(true)
     setDateRangeString(<DateRange {...{searchFrom, searchTo}} />)
-    const listPromise = getList(
-      `volunteer/Admin/Punch/?sponsorId=${sponsorId}&volunteerId=${volunteerId}`,
-      {
-        from: getFromTime(),
-        to: getToTime(),
-      }
-    )
+    const params = {
+      from: getFromTime(),
+      to: getToTime(),
+      sponsorId,
+      volunteerId,
+    }
+    if (sort.direction !== 'none' && sort.field) {
+      params.sortBy = sort.field
+      params.sortDir = sort.direction
+    }
+    const listPromise = getList('volunteer/Admin/Punch', params)
     listPromise
       .then((response) => {
         if (response.data) {
@@ -84,7 +89,7 @@ const PunchListing = ({sponsorId, volunteerId}) => {
         }
       })
       .catch(() => {
-        console.log('Error pulling listing.')
+        console.error('Error pulling listing.')
         setListing([])
       })
       .then(() => setLoading(false))
@@ -150,7 +155,7 @@ const PunchListing = ({sponsorId, volunteerId}) => {
         loadList()
       })
     }
-  }, [])
+  }, [sort])
 
   let printButton
 
@@ -168,7 +173,16 @@ const PunchListing = ({sponsorId, volunteerId}) => {
       } else {
         grid = (
           <SponsorGrid
-            {...{listing, punchOut, approve, edit, remove, reasonList}}
+            {...{
+              listing,
+              punchOut,
+              approve,
+              edit,
+              remove,
+              reasonList,
+              sort,
+              setSort,
+            }}
           />
         )
         printButton = (
@@ -201,7 +215,16 @@ const PunchListing = ({sponsorId, volunteerId}) => {
       } else {
         grid = (
           <VolunteerGrid
-            {...{listing, punchOut, approve, edit, remove, reasonList}}
+            {...{
+              listing,
+              punchOut,
+              approve,
+              edit,
+              remove,
+              reasonList,
+              sort,
+              setSort,
+            }}
           />
         )
         printButton = (

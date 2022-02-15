@@ -21,11 +21,16 @@ class Punch extends SubController
     {
         $sponsorId = $request->pullGetInteger('sponsorId');
         $volunteerId = $request->pullGetInteger('volunteerId');
+        $orderBy = $request->pullGetString('sortBy', true);
+        $orderByDir = $request->pullGetString('sortDir', true);
+
         if ($sponsorId) {
             $listing = PunchFactory::list(['sponsorId' => $request->pullGetInteger('sponsorId'),
-                        'includeVolunteer' => true,
-                        'to' => $request->pullGetInteger('to', true),
-                        'from' => $request->pullGetInteger('from', true)]);
+                    'includeVolunteer' => true,
+                    'orderBy' => $orderBy,
+                    'orderByDir' => $orderByDir,
+                    'to' => $request->pullGetInteger('to', true),
+                    'from' => $request->pullGetInteger('from', true)]);
             if (!empty($listing)) {
                 return PunchFactory::sortPunches($listing, true)[0];
             } else {
@@ -33,10 +38,12 @@ class Punch extends SubController
             }
         } elseif ($volunteerId) {
             return PunchFactory::list(['volunteerId' => $request->pullGetInteger('volunteerId'),
-                        'sortBySponsor' => true,
-                        'includeTotals' => true,
-                        'to' => $request->pullGetInteger('to', true),
-                        'from' => $request->pullGetInteger('from', true)]);
+                    'sortBySponsor' => true,
+                    'includeTotals' => true,
+                    'orderBy' => $orderBy,
+                    'orderByDir' => $orderByDir,
+                    'to' => $request->pullGetInteger('to', true),
+                    'from' => $request->pullGetInteger('from', true)]);
         } else {
             throw new \Exception('Missing id');
         }
@@ -45,10 +52,10 @@ class Punch extends SubController
     protected function reportJson(Request $request)
     {
         return PunchFactory::list(['volunteerId' => $request->pullGetInteger('volunteerId'),
-                    'sortBySponsor' => true,
-                    'includeTotals' => true,
-                    'to' => $request->pullGetInteger('to', true),
-                    'from' => $request->pullGetInteger('from', true)]);
+                'sortBySponsor' => true,
+                'includeTotals' => true,
+                'to' => $request->pullGetInteger('to', true),
+                'from' => $request->pullGetInteger('from', true)]);
     }
 
     protected function punchOutPut(Request $request)
@@ -83,9 +90,9 @@ class Punch extends SubController
     protected function waitingJson(Request $request)
     {
         return PunchFactory::list(['waitingOnly' => true,
-                    'sponsorId' => $request->pullGetInteger('sponsorId'),
-                    'includeVolunteer' => true,
-                    'from' => mktime(0, 0, 0)]);
+                'sponsorId' => $request->pullGetInteger('sponsorId'),
+                'includeVolunteer' => true,
+                'from' => mktime(0, 0, 0)]);
     }
 
     protected function unapprovedHtml()

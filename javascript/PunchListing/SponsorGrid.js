@@ -5,6 +5,7 @@ import FullName from '../api/Name'
 import {DeleteButton, ApproveButton} from '../api/Buttons'
 import {ChangeTime} from './Time'
 import {Day, TimeFormat, TimeOut} from '../api/Time'
+import Sort from '../api/Sort'
 
 const SponsorGrid = ({
   listing,
@@ -13,9 +14,32 @@ const SponsorGrid = ({
   edit,
   remove,
   reasonList,
+  sort,
+  setSort,
 }) => {
   let totalPunches
   let rows
+
+  const nextSort = (field) => {
+    if (field == sort.field) {
+      switch (sort.direction) {
+        case 'asc':
+          sort.direction = 'desc'
+          break
+        case 'desc':
+          sort.field = null
+          sort.direction = 'none'
+          break
+        case 'none':
+          sort.direction = 'asc'
+          break
+      }
+    } else {
+      sort.field = field
+      sort.direction = 'asc'
+    }
+    setSort({...sort})
+  }
 
   totalPunches = listing.punches.length
   rows = listing.punches.map((value) => {
@@ -37,9 +61,8 @@ const SponsorGrid = ({
           <a href={`./volunteer/Admin/Volunteer/${value.volunteerId}/report`}>
             <FullName volunteer={value} useAbbr={false} />
           </a>
-          <br />
-          <span className="small">{reason}</span>
         </td>
+        <td>{reason}</td>
         <td>
           <Day time={value.timeIn} />
         </td>
@@ -69,14 +92,46 @@ const SponsorGrid = ({
           <tr>
             <th className="d-print-none">&nbsp;</th>
             <th>
-              Volunteer/Attendee
-              <br />
-              Reason
+              <Sort
+                label="Volunteer/Attendee"
+                direction={sort.field === 'lastName' ? sort.direction : null}
+                type="alpha"
+                handleClick={() => {
+                  nextSort('lastName')
+                }}
+              />
             </th>
-            <th>Date</th>
-            <th>Clock in / out</th>
-            <th>Total time</th>
-            <th>Approved</th>
+            <th>
+              <div className="py-2">Reason</div>
+            </th>
+            <th>
+              <Sort
+                label="Date"
+                type="num"
+                direction={sort.field === 'timeIn' ? sort.direction : null}
+                handleClick={() => {
+                  nextSort('timeIn')
+                }}
+              />
+            </th>
+            <th>
+              <div className="py-2">Clock in / out</div>
+            </th>
+            <th>
+              <Sort
+                label="Total time"
+                direction={
+                  sort.field === 'totalSeconds' ? sort.direction : null
+                }
+                type="num"
+                handleClick={() => {
+                  nextSort('totalSeconds')
+                }}
+              />
+            </th>
+            <th>
+              <div className="py-2">Approved</div>
+            </th>
           </tr>
           {rows}
           <tr>
@@ -103,6 +158,8 @@ SponsorGrid.propTypes = {
   edit: PropTypes.func,
   remove: PropTypes.func,
   reasonList: PropTypes.object,
+  sort: PropTypes.object,
+  setSort: PropTypes.func,
 }
 
 export default SponsorGrid

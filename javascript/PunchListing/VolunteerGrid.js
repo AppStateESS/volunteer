@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import {DeleteButton, ApproveButton} from '../api/Buttons'
 import {ChangeTime} from './Time'
 import {Day, TimeFormat, TimeOut} from '../api/Time'
+import Sort from '../api/Sort'
 
 const VolunteerGrid = ({
   listing,
@@ -12,6 +13,8 @@ const VolunteerGrid = ({
   edit,
   remove,
   reasonList,
+  sort,
+  setSort,
 }) => {
   let rows
   let totalTime
@@ -29,6 +32,28 @@ const VolunteerGrid = ({
       </tr>
     )
   }
+
+  const nextSort = (field) => {
+    if (field == sort.field) {
+      switch (sort.direction) {
+        case 'asc':
+          sort.direction = 'desc'
+          break
+        case 'desc':
+          sort.field = null
+          sort.direction = 'none'
+          break
+        case 'none':
+          sort.direction = 'asc'
+          break
+      }
+    } else {
+      sort.field = field
+      sort.direction = 'asc'
+    }
+    setSort({...sort})
+  }
+
   if (listing.length == 0) {
     rows = <p>No rows found.</p>
   } else {
@@ -86,10 +111,34 @@ const VolunteerGrid = ({
             <tbody>
               <tr>
                 <th className="d-print-none" style={{width: '5%'}}></th>
-                <th>Reason</th>
-                <th>Day</th>
-                <th>Clock in&nbsp;/&nbsp;Clock out</th>
-                <th>Total time</th>
+                <th>
+                  <div className="py-2">Reason</div>
+                </th>
+                <th>
+                  <Sort
+                    label="Day"
+                    type="num"
+                    direction={sort.field === 'timeIn' ? sort.direction : null}
+                    handleClick={() => {
+                      nextSort('timeIn')
+                    }}
+                  />
+                </th>
+                <th>
+                  <div className="py-2">Clock in&nbsp;/&nbsp;Clock out</div>
+                </th>
+                <th>
+                  <Sort
+                    label="Total time"
+                    direction={
+                      sort.field === 'totalSeconds' ? sort.direction : null
+                    }
+                    type="num"
+                    handleClick={() => {
+                      nextSort('totalSeconds')
+                    }}
+                  />
+                </th>
                 <th>Approved</th>
               </tr>
               {punches}
@@ -113,6 +162,8 @@ VolunteerGrid.propTypes = {
   edit: PropTypes.func,
   remove: PropTypes.func,
   reasonList: PropTypes.object,
+  sort: PropTypes.object,
+  setSort: PropTypes.func,
 }
 
 export default VolunteerGrid
