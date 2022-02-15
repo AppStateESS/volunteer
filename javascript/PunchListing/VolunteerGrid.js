@@ -12,7 +12,6 @@ const VolunteerGrid = ({
   approve,
   edit,
   remove,
-  reasonList,
   sort,
   setSort,
 }) => {
@@ -59,10 +58,6 @@ const VolunteerGrid = ({
   } else {
     rows = listing.map((value, skey) => {
       const punches = value.punches.map((value) => {
-        let reason = 'N/A'
-        if (value.reasonId > 0) {
-          reason = reasonList[value.reasonId].title
-        }
         return (
           <tr key={`row-${value.id}`}>
             <td className="d-print-none" style={{width: '10%'}}>
@@ -73,7 +68,7 @@ const VolunteerGrid = ({
               )}
               <DeleteButton punch={value} remove={remove} />
             </td>
-            <td>{reason}</td>
+            <td>{value.reason}</td>
             <td>
               <Day time={value.timeIn} />
             </td>
@@ -112,7 +107,14 @@ const VolunteerGrid = ({
               <tr>
                 <th className="d-print-none" style={{width: '5%'}}></th>
                 <th>
-                  <div className="py-2">Reason</div>
+                  <Sort
+                    label="Reason"
+                    type="num"
+                    direction={sort.field === 'reason' ? sort.direction : null}
+                    handleClick={() => {
+                      nextSort('reason')
+                    }}
+                  />
                 </th>
                 <th>
                   <Sort
@@ -161,7 +163,6 @@ VolunteerGrid.propTypes = {
   approve: PropTypes.func,
   edit: PropTypes.func,
   remove: PropTypes.func,
-  reasonList: PropTypes.object,
   sort: PropTypes.object,
   setSort: PropTypes.func,
 }

@@ -13,7 +13,6 @@ const SponsorGrid = ({
   approve,
   edit,
   remove,
-  reasonList,
   sort,
   setSort,
 }) => {
@@ -43,10 +42,6 @@ const SponsorGrid = ({
 
   totalPunches = listing.punches.length
   rows = listing.punches.map((value) => {
-    let reason
-    if (value.reasonId > 0) {
-      reason = reasonList[value.reasonId].title
-    }
     return (
       <tr key={`row-${value.id}`}>
         <td className="d-print-none">
@@ -62,7 +57,7 @@ const SponsorGrid = ({
             <FullName volunteer={value} useAbbr={false} />
           </a>
         </td>
-        <td>{reason}</td>
+        <td>{value.reason}</td>
         <td>
           <Day time={value.timeIn} />
         </td>
@@ -102,7 +97,14 @@ const SponsorGrid = ({
               />
             </th>
             <th>
-              <div className="py-2">Reason</div>
+              <Sort
+                label="Reason"
+                direction={sort.field === 'reason' ? sort.direction : null}
+                type="alpha"
+                handleClick={() => {
+                  nextSort('reason')
+                }}
+              />
             </th>
             <th>
               <Sort
@@ -157,7 +159,6 @@ SponsorGrid.propTypes = {
   approve: PropTypes.func,
   edit: PropTypes.func,
   remove: PropTypes.func,
-  reasonList: PropTypes.object,
   sort: PropTypes.object,
   setSort: PropTypes.func,
 }

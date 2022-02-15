@@ -39,7 +39,6 @@ const PunchListing = ({sponsorId, volunteerId}) => {
   const [sponsor, setSponsor] = useState({})
   const [volunteer, setVolunteer] = useState({})
   const [listing, setListing] = useState([])
-  const [reasonList, setReasonList] = useState({})
   const [showModal, setShowModal] = useState(false)
   const [forceLoad, setForceLoad] = useState(0)
   const today = new Date()
@@ -134,14 +133,7 @@ const PunchListing = ({sponsorId, volunteerId}) => {
     deletePunch(punch.id).then(loadList)
   }
 
-  const loadReasons = () => {
-    getList('./volunteer/Admin/Reason/?sortById=true').then((response) => {
-      setReasonList(response.data)
-    })
-  }
-
   useEffect(() => {
-    loadReasons()
     if (sponsorId) {
       const SponsorPromise = getItem('Admin', 'Sponsor', sponsorId)
       SponsorPromise.then((response) => {
@@ -179,7 +171,6 @@ const PunchListing = ({sponsorId, volunteerId}) => {
               approve,
               edit,
               remove,
-              reasonList,
               sort,
               setSort,
             }}
@@ -221,7 +212,6 @@ const PunchListing = ({sponsorId, volunteerId}) => {
               approve,
               edit,
               remove,
-              reasonList,
               sort,
               setSort,
             }}
