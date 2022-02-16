@@ -32,8 +32,7 @@ const Grid = ({listing, deleteVolunteer, sort, setSort, reverseListing}) => {
       switch (sort.direction) {
         case 'asc':
           sort.direction = 'desc'
-          reverseListing()
-          return
+          break
         case 'desc':
           sort.field = null
           sort.direction = 'none'
@@ -116,6 +115,9 @@ const Grid = ({listing, deleteVolunteer, sort, setSort, reverseListing}) => {
           {rows}
         </tbody>
       </table>
+      <div className="text-center">
+        Limited to 50 rows. Search above if looking for a specific volunteer.
+      </div>
     </div>
   )
 }

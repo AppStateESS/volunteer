@@ -31,9 +31,9 @@ class Volunteer extends SubController
         if (empty($options['limit'])) {
             $options['limit'] = 50;
         }
-        $orderBy = $request->pullGetString('sortBy', true);
-        $orderByDir = $request->pullGetString('sortDir', true);
-        if (empty($orderBy)) {
+        $options['orderBy'] = $request->pullGetString('sortBy', true);
+        $options['orderByDir'] = $request->pullGetString('sortDir', true);
+        if (empty($options['orderBy'])) {
             $options['orderBy'] = 'lastLog';
             $options['orderByDir'] = 'desc';
         }
