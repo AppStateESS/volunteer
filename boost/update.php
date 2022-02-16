@@ -150,6 +150,12 @@ class VolunteerDataUpdate
                 $this->content[] = 'Sorting added to lists';
                 $this->content[] = 'Preferred names used instead of first name.';
                 $this->content[] = '</pre>';
+            case $this->compare('1.5.1'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.5.1';
+                $this->content[] = '-----------------------------';
+                $this->content[] = 'Fixed volunteer sorting';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
