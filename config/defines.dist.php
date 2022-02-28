@@ -27,3 +27,4 @@ define('VOL_SHIB_LOGOUT_TAG', '');
 define('VOL_SHIB_USERNAME_TAG', ''); // name of SERVER variable containing the username
 define('VOL_CONTACT_EMAIL', '');
 define('VOL_USE_PREFERRED_ON_REPORT', true);
+define('VOLUNTEER_SWIFT_OLD_VERSION', true);
