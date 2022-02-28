@@ -70,8 +70,13 @@ class Controller extends \phpws2\Http\Controller
                     $roleController = 'Student';
                     $request->setUrl('/punchIn');
                 } else {
+                    $hash = $request->pullGetString('hash', true);
                     $roleController = 'User';
-                    $request->setUrl('/logIn');
+                    if ($hash) {
+                        $request->setUrl('/quickClock');
+                    } else {
+                        $request->setUrl('/logIn');
+                    }
                 }
                 $subController = 'Punch';
                 $request->buildCommands();
