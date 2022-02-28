@@ -18,16 +18,35 @@ use phpws2\Settings;
 class SettingsFactory
 {
 
+    /**
+     * Returns all settings.
+     * @return type
+     */
     public static function getAll()
     {
-        $settings = [];
+        $settingNames = [
+            'contactEmail',
+            'contactName',
+            'quickLog',
+            'contactEmail',
+            'quickLogPreApproved',
+            'allowQuickLogWithUnapproved'];
+
+        foreach ($settingNames as $name) {
+            $settings[$name] = self::get($name);
+        }
 
         return $settings;
     }
 
-    public static function get($setting)
+    public static function get(string $setting)
     {
         return Settings::get('volunteer', $setting);
+    }
+
+    public static function set(string $name, $setting)
+    {
+        Settings::set('volunteer', $name, $setting);
     }
 
     /**
@@ -37,26 +56,18 @@ class SettingsFactory
      */
     public static function getSwiftMailReply(bool $onlyNoReply = false)
     {
-        $contact = self::getContact();
-        if ($onlyNoReply || empty($contact['email'])) {
-            $contact['email'] = 'noreply@' . \Canopy\Server::getSiteUrl(false, false, false);
+        $name = self::get('contactName') ?? \Layout::getPageTitle();
+        $email = self::get('contactEmail');
+        if ($onlyNoReply || empty($email)) {
+            $email = 'noreply@' . \Canopy\Server::getSiteUrl(false, false, false);
         }
 
-        if ($onlyNoReply || empty($contact['name'])) {
-            return [$contact['email']];
-        } else {
-            return [$contact['email'] => $contact['name']];
-        }
+        return [$email => $name];
     }
 
     public static function getEmailAddressOnly()
     {
-        $contact = self::getContact();
-        if (empty($contact['email'])) {
-            return 'noreply@' . \Canopy\Server::getSiteUrl(false, false, false);
-        } else {
-            return $contact['email'];
-        }
+        return self::get('contactName') ?? \Layout::getPageTitle();
     }
 
 }
