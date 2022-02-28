@@ -19,6 +19,17 @@ use Canopy\Request;
 class Volunteer extends SubController
 {
 
+    protected function emailHtml()
+    {
+        AdminView::showMenu('volunteer');
+        return VolunteerView::email($this->id);
+    }
+
+    protected function sendSponsorEmailsPut(Request $request)
+    {
+        VolunteerFactory::sendEmails($this->id, $request->pullPutArray('sponsorIds'));
+    }
+
     protected function listHtml(Request $request)
     {
         AdminView::showMenu('volunteer');
