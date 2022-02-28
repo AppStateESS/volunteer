@@ -156,8 +156,25 @@ class VolunteerDataUpdate
                 $this->content[] = '-----------------------------';
                 $this->content[] = 'Fixed volunteer sorting';
                 $this->content[] = '</pre>';
+            case $this->compare('1.5.2'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.5.2';
+                $this->content[] = '-----------------------------';
+                $this->v152();
+                $this->content[] = 'Added email links for volunteers.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
+    }
+
+    public function v152()
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_volunteer');
+        $dt = $tbl->addDataType('hash', 'varchar');
+        $dt->setSize(20);
+        $dt->setIsNull(true);
+        $dt->add();
     }
 
 }
