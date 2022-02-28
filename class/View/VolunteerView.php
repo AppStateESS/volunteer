@@ -10,9 +10,23 @@ namespace volunteer\View;
 use volunteer\Resource\Volunteer;
 use volunteer\Factory\PunchFactory;
 use volunteer\Factory\SponsorFactory;
+use volunteer\Factory\VolunteerFactory;
 
 class VolunteerView extends AbstractView
 {
+
+    public static function email(int $volunteerId)
+    {
+        $volunteer = VolunteerFactory::build($volunteerId);
+        $vars = [];
+        $scriptVars['volunteerId'] = $volunteerId;
+        $vars['form'] = self::scriptView('Email', $scriptVars);
+        //$vars['sponsors'] = SponsorFactory::list();
+        $vars['fullName'] = $volunteer->getFullName();
+        $template = new \phpws2\Template($vars);
+        $template->setModuleTemplate('volunteer', 'Email.html');
+        return $template->get();
+    }
 
     public static function list(array $options = [])
     {
