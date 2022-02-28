@@ -123,6 +123,50 @@ class VolunteerFactory extends AbstractFactory
         return $volunteer;
     }
 
+    public static function makeHash()
+    {
+        $sets = array([48, 57], [65, 90], [97, 122]);
+        for ($i = 0; $i < 8; $i++) {
+            $select = $sets[rand(0, 2)];
+            $char[] = chr(random_int($select[0], $select[1]));
+        }
+        return implode('', $char);
+    }
+
+    protected static function buildHash(Volunteer $volunteer)
+    {
+        if ($volunteer->isEmpty('hash')) {
+            $volunteer->hash = self::makeHash();
+            self::save($volunteer);
+        }
+        return $volunteer->hash;
+    }
+
+    public static function sendEmails(int $volunteerId, array $sponsors)
+    {
+        if (empty($sponsors)) {
+            throw new \Exception('');
+        }
+        $volunteer = VolunteerFactory::build($volunteerId);
+        VolunteerFactory::buildHash($volunteer);
+
+        $emailList[] = $volunteer->email;
+        foreach ($sponsors as $sponsorId) {
+            $sponsor = SponsorFactory::build($sponsorId);
+            $siteUrl = \Canopy\Server::getSiteUrl() . $sponsor->searchName . '?hash=' . $volunteer->hash;
+            $subject = 'Easy log in and out for ' . $sponsor->name;
+            $body = <<<EOF
+<p>We are emailing to supply you with an easy link to log in and out of
+{$sponsor->name}. When you arrive, click the link below. Click it again
+once more when you leave.</p>
+
+<div><a href="$siteUrl">Log in or out of {$sponsor->name}</a></div>
+
+EOF;
+            EmailFactory::send($subject, $body, $emailList, true);
+        }
+    }
+
     public static function stampVisit(int $volunteerId)
     {
         $volunteer = self::build($volunteerId);
