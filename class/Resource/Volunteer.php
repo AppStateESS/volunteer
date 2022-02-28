@@ -18,6 +18,7 @@ class Volunteer extends AbstractResource
     protected $lastName;
     protected $lastLog;
     protected $totalVisits;
+    protected $hash;
     protected $table = 'vol_volunteer';
 
     public function __construct()
@@ -41,6 +42,8 @@ EOF;
         $this->preferredName->allowNull(true);
         $this->lastName = new \phpws2\Variable\TextOnly(null, 'lastName', 40);
         $this->totalVisits = new \phpws2\Variable\IntegerVar(0, 'totalVisits');
+        $this->hash = new \phpws2\Variable\TextOnly(null, 'hash');
+        $this->hash->allowNull(true);
         $this->lastLog = new \phpws2\Variable\DateTime(0, 'lastLog');
         $this->lastLog->setFormat('%c');
     }
