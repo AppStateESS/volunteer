@@ -19,6 +19,7 @@ class AdminView
         $volunteerActive = null;
         $unapprovedActive = null;
         $reasonActive = null;
+        $settingsActive = null;
         switch ($active) {
             case 'sponsor':
                 $sponsorActive = 'active';
@@ -32,13 +33,19 @@ class AdminView
             case 'reason':
                 $reasonActive = 'active';
                 break;
+            case 'settings':
+                $settingsActive = 'active';
+                break;
         }
+        $auth = \Current_User::getAuthorization();
+
         $unapproved = PunchFactory::unapprovedCount();
         $activeTpl = ['logoutUrl' => \volunteer\Factory\Authenticate::logoutUrl(),
             'sponsorActive' => $sponsorActive,
             'reasonActive' => $reasonActive,
             'volunteerActive' => $volunteerActive,
             'unapprovedActive' => $unapprovedActive,
+            'settingsActive' => $settingsActive,
             'unapproved' => $unapproved];
         $template = new \phpws2\Template($activeTpl);
         $template->setModuleTemplate('volunteer', 'Menu.html');
