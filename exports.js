@@ -13,4 +13,5 @@ exports.entry = {
   ReasonList: exports.APP_DIR + '/ReasonList/index.jsx',
   AssignReason: exports.APP_DIR + '/AssignReason/index.jsx',
   Waiting: exports.APP_DIR + '/Waiting/index.jsx',
+  Email: exports.APP_DIR + '/Email/index.jsx',
 }
