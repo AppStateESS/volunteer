@@ -229,4 +229,9 @@ class SponsorFactory extends AbstractFactory
         }
     }
 
+    public static function getUrl(Sponsor $sponsor)
+    {
+        return \Canopy\Server::getSiteUrl() . $sponsor->searchName;
+    }
+
 }
