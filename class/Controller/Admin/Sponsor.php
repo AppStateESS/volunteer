@@ -52,11 +52,17 @@ class Sponsor extends SubController
         return ['success' => true, 'id' => SponsorFactory::put($request)];
     }
 
+    protected function qrCodeHtml(Request $request)
+    {
+        AdminView::showMenu('sponsor');
+        return SponsorView::qrCode($this->id);
+    }
+
     protected function reportHtml(Request $request)
     {
         AdminView::showMenu('sponsor');
         return SponsorView::scriptView('PunchListing',
-                        ['volunteerId' => 0, 'sponsorId' => $this->id]);
+                ['volunteerId' => 0, 'sponsorId' => $this->id]);
     }
 
     protected function waitingHtml()
@@ -64,7 +70,7 @@ class Sponsor extends SubController
         AdminView::showMenu('sponsor');
 
         return SponsorView::scriptView('Waiting',
-                        ['sponsorId' => (int) $this->id]);
+                ['sponsorId' => (int) $this->id]);
     }
 
     protected function kioskPatch(Request $request)
