@@ -52,7 +52,6 @@ class PunchFactory extends AbstractFactory
      */
     public static function currentPunch(Volunteer $volunteer)
     {
-
         $db = Database::getDB();
         $tbl = $db->addTable('vol_punch');
         $tbl->addFieldConditional('volunteerId', $volunteer->id);
@@ -225,10 +224,9 @@ class PunchFactory extends AbstractFactory
         $tbl->addField('approved');
         $tbl->addField('attended');
         $tbl->addField('reasonId');
-        $tbl->addField('id');
-        $tbl4 = $db->addTable('vol_reason');
-        $reason = $tbl4->addField('title', 'reason');
-        $tbl4->addFieldConditional('id', $tbl->getField('reasonId'));
+        $idField = $tbl->addField('id');
+        $db->setGroupBy($idField);
+
         $expForOrder = $tbl->addField($expression, 'totalSeconds');
 
         if (!empty($options['unapprovedOnly'])) {
@@ -252,7 +250,7 @@ class PunchFactory extends AbstractFactory
             $lastName = $tbl2->addField('lastName');
             $tbl2->addField('preferredName');
             $tbl2->addField('bannerId');
-            $db->joinResources($tbl, $tbl2, $cond);
+            $db->joinResources($tbl, $tbl2, $cond, 'left');
         }
 
         if (!empty($options['volunteerId'])) {
@@ -283,11 +281,16 @@ class PunchFactory extends AbstractFactory
             $tbl->addFieldConditional('sponsorId', $options['sponsorId']);
         }
 
+        $tbl4 = $db->addTable('vol_reason');
+        $cond4 = $db->createConditional($tbl->getField('reasonId'), $tbl4->getField('id'), '=');
+        $reason = $tbl4->addField('title', 'reason');
+        $db->joinResources($tbl, $tbl4, $cond4, 'left');
+
         if (!empty($options['includeSponsor'])) {
             $tbl3 = $db->addTable('vol_sponsor');
             $cond = $db->createConditional($tbl->getField('sponsorId'), $tbl3->getField('id'), '=');
             $tbl3->addField('name', 'sponsorName');
-            $db->joinResources($tbl, $tbl3, $cond);
+            $db->joinResources($tbl, $tbl3, $cond, 'left');
         }
         if (!empty($options['from'])) {
             $from = self::dayStart($options['from']);
@@ -297,6 +300,7 @@ class PunchFactory extends AbstractFactory
                 $tbl->addFieldConditional('timeOut', $to, '<=');
             }
         }
+
         $result = $db->select();
         if (!empty($result)) {
             if (!empty($options['sortBySponsor'])) {
