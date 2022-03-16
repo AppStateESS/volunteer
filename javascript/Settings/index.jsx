@@ -2,7 +2,9 @@
 import React, {useState} from 'react'
 import ReactDOM from 'react-dom'
 import BigCheckBox from '@essappstate/canopy-react-bigcheckbox'
+import InputGroup from './InputGroup'
 import {updateSetting} from '../api/Fetch'
+import PropTypes from 'prop-types'
 
 /* global currentSettings */
 const Settings = ({currentSettings}) => {
@@ -15,31 +17,31 @@ const Settings = ({currentSettings}) => {
     updateSetting(name, value)
   }
 
-  const setApprovalRequired = () => {
-    setValue('approvalRequired', !settings.approvalRequired)
-  }
-
   return (
     <div>
       <h2>Settings</h2>
-      <div className="row">
-        <div className="col-md-8 col-sm-10 mx-auto">
-          <table className="table">
-            <tbody>
-              <tr>
-                <th>Punch approval is required</th>
-                <td>
-                  <BigCheckBox
-                    label="Approval required"
-                    checked={settings.approvalRequired}
-                    handle={setApprovalRequired}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <table className="table">
+        <tbody>
+          <tr>
+            <td>Contact name</td>
+            <td>
+              <InputGroup
+                name="contactName"
+                initialValue={currentSettings.contactName}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Contact email</td>
+            <td>
+              <InputGroup
+                name="contactEmail"
+                initialValue={currentSettings.contactEmail}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   )
 }
@@ -48,3 +50,6 @@ ReactDOM.render(
   <Settings currentSettings={currentSettings} />,
   document.getElementById('Settings')
 )
+Settings.propTypes = {
+  currentSettings: PropTypes.object,
+}
