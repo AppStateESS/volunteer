@@ -27,6 +27,12 @@ class Sponsor extends AbstractResource
     protected $kioskMode;
 
     /**
+     *
+     * @var \phpws2\Variable\Boolean
+     */
+    protected $quickLog;
+
+    /**
      * @var \phpws2\Variable\Boolean
      */
     protected $preApproved;
@@ -58,6 +64,7 @@ class Sponsor extends AbstractResource
         $this->name = new \phpws2\Variable\TextOnly(null, 'name', 50);
         $this->searchName = new \phpws2\Variable\TextOnly(null, 'searchName', 50);
         $this->kioskMode = new \phpws2\Variable\BooleanVar(false, 'kioskMode');
+        $this->quickLog = new \phpws2\Variable\BooleanVar(false, 'quickLog');
         $this->preApproved = new \phpws2\Variable\BooleanVar(false, 'preApproved');
         $this->attendanceOnly = new \phpws2\Variable\BooleanVar(false, 'attendanceOnly');
         $this->useReasons = new \phpws2\Variable\BooleanVar(false, 'useReasons');
@@ -74,7 +81,7 @@ class Sponsor extends AbstractResource
     private function buildSearchName()
     {
         $this->searchName->set(preg_replace('/[^\w\-]/', '',
-                        strtolower(preg_replace('/\s+/', '-', $this->name->get()))));
+                strtolower(preg_replace('/\s+/', '-', $this->name->get()))));
     }
 
 }
