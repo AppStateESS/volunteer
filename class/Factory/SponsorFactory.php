@@ -87,23 +87,27 @@ class SponsorFactory extends AbstractFactory
     {
         $db = Database::getDB();
         $tbl = $db->addTable('vol_sponsor');
+
         if (!empty($options['waitingOnly'])) {
             $tbl->addFieldConditional('timeOut', 0);
         }
+
         if (empty($options['includeDeleted'])) {
             $tbl->addFieldConditional('deleted', 0);
         }
-        if (empty($options['orderBy'])) {
-            $options['orderBy'] = 'name';
-            $options['dir'] = 1;
-        }
+
         if (!empty($options['idList'])) {
             $tbl->addFieldConditional('id', $options['idList'], 'in');
         }
-        self::applyOptions($db, $tbl, $options, ['name']);
+
+        if (!empty($options['quickLogOnly'])) {
+            $tbl->addFieldConditional('quickLog', 1);
+        }
+
         if (!empty($options['noKiosk'])) {
             $tbl->addFieldConditional('kioskMode', 0);
         }
+        self::applyOptions($db, $tbl, $options, ['name']);
         $result = $db->select();
         if (empty($result)) {
             return [];
@@ -125,6 +129,17 @@ class SponsorFactory extends AbstractFactory
         $tbl->addFieldConditional('id', $sponsorId);
         $tbl->addField('preApproved');
         return (bool) $db->selectColumn();
+    }
+
+    public static function listingOptions(Request $request)
+    {
+        $options = parent::listingOptions($request);
+        $options['waitingOnly'] = $request->pullGetInteger('waitingOnly', true);
+        $options['includeDeleted'] = $request->pullGetInteger('includeDeleted', true);
+        $options['idList'] = $request->pullGetInteger('idList', true);
+        $options['quickLogOnly'] = $request->pullGetInteger('quickLogOnly', true);
+        $options['noKiosk'] = $request->pullGetInteger('noKiosk', true);
+        return $options;
     }
 
     public static function post(Request $request)
