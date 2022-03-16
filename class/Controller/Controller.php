@@ -63,20 +63,19 @@ class Controller extends \phpws2\Http\Controller
         } elseif (!in_array($roleController, ['Student', 'User'])) {
             $sponsor = SponsorFactory::pullByName($roleController);
             if ($sponsor) {
-                if ($sponsor->kioskMode) {
+                $hash = $request->pullGetString('hash', true);
+                if ($hash) {
+                    $roleController = 'User';
+                    $request->setUrl('/quick');
+                } elseif ($sponsor->kioskMode) {
                     $roleController = 'User';
                     $request->setUrl('/kiosk');
                 } elseif (Authenticate::isLoggedIn()) {
                     $roleController = 'Student';
                     $request->setUrl('/punchIn');
                 } else {
-                    $hash = $request->pullGetString('hash', true);
                     $roleController = 'User';
-                    if ($hash) {
-                        $request->setUrl('/quickClock');
-                    } else {
-                        $request->setUrl('/logIn');
-                    }
+                    $request->setUrl('/logIn');
                 }
                 $subController = 'Punch';
                 $request->buildCommands();
