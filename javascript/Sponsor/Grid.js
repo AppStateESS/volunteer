@@ -1,5 +1,5 @@
 'use strict'
-import React from 'react'
+import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import OptionSelect from './OptionSelect'
 
@@ -12,7 +12,10 @@ const Grid = ({
   sendAttendance,
   sendUseReasons,
   sendDefault,
+  sendQuick,
 }) => {
+  const [warning, setWarning] = useState(false)
+
   const send = (key, type) => {
     switch (type) {
       case 'default':
@@ -29,6 +32,9 @@ const Grid = ({
         break
       case 'reason':
         sendUseReasons(key)
+        break
+      case 'quick':
+        sendQuick(key)
         break
     }
   }
@@ -50,6 +56,9 @@ const Grid = ({
   }
 
   const rows = listing.map((value, key) => {
+    if (warning === false && (value.quickLog === 1 || value.kioskMode === 1)) {
+      setWarning(true)
+    }
     return (
       <tr key={`row-${value.id}`}>
         <td style={{width: '20%'}}>
@@ -61,8 +70,11 @@ const Grid = ({
         </td>
         <td>
           {value.name}{' '}
-          <a href={`./${value.searchName}`}>
+          <a href={`./${value.searchName}`} className="mr-1">
             <i className="fas fa-link"></i>
+          </a>
+          <a href={`./volunteer/Admin/Sponsor/${value.id}/qrCode`}>
+            <i className="fas fa-qrcode"></i>
           </a>
         </td>
         <td>
@@ -74,6 +86,11 @@ const Grid = ({
           {value.kioskMode
             ? button(key, 'kiosk', 'Yes')
             : button(key, 'kiosk', 'No')}
+        </td>
+        <td>
+          {value.quickLog
+            ? button(key, 'quick', 'Yes')
+            : button(key, 'quick', 'No')}
         </td>
         <td>
           {value.preApproved
@@ -98,6 +115,12 @@ const Grid = ({
 
   return (
     <div>
+      {warning && (
+        <div className="badge badge-danger">
+          Enabling Kiosk mode or Quick Login allows volunteers to skip
+          authentication.
+        </div>
+      )}
       <table className="table table-striped">
         <tbody>
           <tr>
@@ -115,12 +138,19 @@ const Grid = ({
               </abbr>
             </th>
             <th style={{width: '6%'}}>
+              <abbr
+                style={underline}
+                title="Users can use a Quick Log link to clock in">
+                Quick
+              </abbr>
+            </th>
+            <th style={{width: '6%'}}>
               <abbr style={underline} title="All clock ins are preapproved">
                 Preapp.
               </abbr>
             </th>
             <th style={{width: '6%'}}>
-              <abbr style={underline} title="Track the time of a visit">
+              <abbr style={underline} title="Track the duration of a visit">
                 Track
               </abbr>
             </th>
@@ -146,6 +176,7 @@ Grid.propTypes = {
   sendAttendance: PropTypes.func,
   sendUseReasons: PropTypes.func,
   sendDefault: PropTypes.func,
+  sendQuick: PropTypes.func,
 }
 
 export default Grid
