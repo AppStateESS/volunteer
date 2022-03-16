@@ -1,3 +1,5 @@
+<div class="float-right"><a href="./controlpanel"><i class="fas fa-cog"></i></a> | <a href="<?=$logoutUrl?>"><i
+      class="fas fa-sign-out-alt"></i></a></div>
 <ul class="nav nav-tabs mb-4 d-print-none bg-white">
   <li class="nav-item">
     <a class="nav-link <?=$sponsorActive?>" href="./volunteer/Admin/Sponsor">Sponsors</a>
@@ -9,9 +11,11 @@
     <a class="nav-link <?=$reasonActive?>" href="./volunteer/Admin/Reason">Reasons</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link <?=$unapprovedActive?>" href="./volunteer/Admin/Punch/unapproved">Unapproved (<?=$unapproved?>)</a>
+    <a class="nav-link <?=$unapprovedActive?>" href="./volunteer/Admin/Punch/unapproved">Unapproved
+      (<?=$unapproved?>)</a>
   </li>
   <li class="nav-item">
-      <a class="nav-link text-danger" href="<?=$logoutUrl?>">Log out</a>
+    <a class="nav-link <?=$settingsActive?>" href="./volunteer/Admin/Settings">Settings</a>
   </li>
+
 </ul>
