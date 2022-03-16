@@ -156,25 +156,36 @@ class VolunteerDataUpdate
                 $this->content[] = '-----------------------------';
                 $this->content[] = 'Fixed volunteer sorting';
                 $this->content[] = '</pre>';
-            case $this->compare('1.5.2'):
+            case $this->compare('1.6.0'):
                 $this->content[] = '<pre>';
-                $this->content[] = '1.5.2';
+                $this->content[] = '1.6.0';
                 $this->content[] = '-----------------------------';
-                $this->v152();
-                $this->content[] = 'Added email links for volunteers.';
+                $this->v160();
+                $this->content[] = 'Added quick log email links for volunteers.';
+                $this->content[] = 'Add quick log option for sponsors.';
                 $this->content[] = '</pre>';
         }
         return $this->content;
     }
 
-    public function v152()
+    public function v160()
     {
         $db = Database::getDB();
         $tbl = $db->addTable('vol_volunteer');
-        $dt = $tbl->addDataType('hash', 'varchar');
-        $dt->setSize(20);
-        $dt->setIsNull(true);
-        $dt->add();
+        if (!$tbl->columnExists('hash')) {
+            $dt = $tbl->addDataType('hash', 'varchar');
+            $dt->setSize(20);
+            $dt->setIsNull(true);
+            $dt->add();
+        }
+
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_sponsor');
+        if (!$tbl->columnExists('quickLog')) {
+            $dt = $tbl->addDataType('quickLog', 'smallint');
+            $dt->setDefault(0);
+            $dt->add();
+        }
     }
 
 }
