@@ -18,6 +18,13 @@ use chillerlan\QRCode\QROptions;
 class SponsorView extends AbstractView
 {
 
+    public static function badSponsorError()
+    {
+        $template = new Template;
+        $template->setModuleTemplate('volunteer', 'Error/BadSponsor.html');
+        return $template->get();
+    }
+
     public static function qrCode($sponsorId)
     {
         $sponsor = SponsorFactory::build($sponsorId);
