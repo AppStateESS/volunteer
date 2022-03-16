@@ -28,9 +28,7 @@ class SettingsFactory
             'contactEmail',
             'contactName',
             'quickLog',
-            'contactEmail',
-            'quickLogPreApproved',
-            'allowQuickLogWithUnapproved'];
+            'contactEmail'];
 
         foreach ($settingNames as $name) {
             $settings[$name] = self::get($name);
