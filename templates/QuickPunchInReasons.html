@@ -1,0 +1,21 @@
+<div class="row d-flex justify-content-center">
+  <div class="col-md-8 col-sm-10">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="m-0">
+          Hello <?=$preferredName?></h3>
+      </div>
+      <div class="card-body">
+        <p class="card-text lead">Why are you visiting <?=$sponsorName?>?</p>
+        <form method="post" action="./volunteer/User/Punch/quick">
+          <input type="hidden" name="hash" value="<?=$hash?>" />
+          <input type="hidden" name="sponsorId" value="<?=$sponsorId?>" />
+          <?php foreach ($reasons as $reason):?>
+          <button class="btn btn-primary m-1" type="submit" name="reasonId"
+            value="<?=$reason['id']?>"><?=$reason['description']?></button>
+          <?php endforeach;?>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
