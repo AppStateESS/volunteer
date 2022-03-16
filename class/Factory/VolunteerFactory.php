@@ -32,6 +32,21 @@ class VolunteerFactory extends AbstractFactory
         return $db->delete();
     }
 
+    public static function getByHash(string $hash)
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_volunteer');
+        $tbl->addFieldConditional('hash', $hash);
+        $volunteerArray = $db->selectOneRow();
+        if (empty($volunteerArray)) {
+            return false;
+        } else {
+            $volunteer = self::build();
+            $volunteer->setVars($volunteerArray);
+            return $volunteer;
+        }
+    }
+
     /**
      *
      * @param type $createIfNotFound
