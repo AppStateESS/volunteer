@@ -9,6 +9,7 @@ import {
   sendReasons,
   sendDeleteSponsor,
   sendDefault,
+  sendQuickLog,
 } from '../api/Fetch'
 import Grid from './Grid'
 import Form from './Form'
@@ -65,6 +66,13 @@ const Sponsor = () => {
     const sponsor = pullSponsor(key)
     sponsor.preApproved = 1 - sponsor.preApproved
     sponsorPreApproved(sponsor.id, sponsor.preApproved)
+    pushSponsor(key, sponsor)
+  }
+
+  const sendQuick = (key) => {
+    const sponsor = pullSponsor(key)
+    sponsor.quickLog = 1 - sponsor.quickLog
+    sendQuickLog(sponsor.id, sponsor.quickLog)
     pushSponsor(key, sponsor)
   }
 
@@ -164,6 +172,7 @@ const Sponsor = () => {
           edit={edit}
           deleteSponsor={deleteSponsor}
           sendKiosk={updateKiosk}
+          sendQuick={sendQuick}
           sendPreApproved={sendPreApproved}
           sendAttendance={sendAttendance}
           sendDefault={sendDefaultPatch}
