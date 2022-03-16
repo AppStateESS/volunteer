@@ -97,6 +97,12 @@ class Sponsor extends SubController
         return ['success' => true];
     }
 
+    protected function quickLogPatch(Request $request)
+    {
+        SponsorFactory::patchValue('quickLog', $request->pullPatchBoolean('quickLog'), $this->id);
+        return ['success' => true];
+    }
+
     protected function defaultPatch(Request $request)
     {
         SponsorFactory::updateDefault($this->id);
