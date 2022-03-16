@@ -47,6 +47,15 @@ class VolunteerFactory extends AbstractFactory
         }
     }
 
+    private static function hashExists(string $hash)
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('vol_volunteer');
+        $tbl->addField('id');
+        $tbl->addFieldConditional('hash', $hash);
+        return (bool) $db->selectOneRow();
+    }
+
     /**
      *
      * @param type $createIfNotFound
@@ -138,6 +147,10 @@ class VolunteerFactory extends AbstractFactory
         return $volunteer;
     }
 
+    /**
+     * Makes a short, random, hash of numbers and letters.
+     * @return string
+     */
     public static function makeHash()
     {
         $sets = array([48, 57], [65, 90], [97, 122]);
@@ -150,8 +163,19 @@ class VolunteerFactory extends AbstractFactory
 
     protected static function buildHash(Volunteer $volunteer)
     {
+        $count = 0;
         if ($volunteer->isEmpty('hash')) {
-            $volunteer->hash = self::makeHash();
+            $hash = null;
+            while (is_null($hash) || self::hashExists($hash)) {
+                $hash = self::makeHash();
+                $count++;
+                /// Juuuuust in case
+                if ($count > 50) {
+                    throw new \Exception('Build hash overflow');
+                }
+            }
+
+            $volunteer->hash = $hash;
             self::save($volunteer);
         }
         return $volunteer->hash;
