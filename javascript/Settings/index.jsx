@@ -1,22 +1,11 @@
 'use strict'
-import React, {useState} from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
-import BigCheckBox from '@essappstate/canopy-react-bigcheckbox'
 import InputGroup from './InputGroup'
-import {updateSetting} from '../api/Fetch'
 import PropTypes from 'prop-types'
 
 /* global currentSettings */
 const Settings = ({currentSettings}) => {
-  const [settings, setSettings] = useState(currentSettings)
-
-  const setValue = (name, value) => {
-    const copy = Object.assign({}, settings)
-    copy[name] = value
-    setSettings(copy)
-    updateSetting(name, value)
-  }
-
   return (
     <div>
       <h2>Settings</h2>
