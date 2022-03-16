@@ -63,6 +63,15 @@ abstract class AbstractFactory extends \phpws2\ResourceFactory
         $db->addConditional($prevCond);
     }
 
+    /**
+     * Handles order, search, and limit options that are universal among
+     * factory list functions.
+     *
+     * @param DB $db
+     * @param Table $tbl
+     * @param array $options
+     * @param array $searchColumns
+     */
     protected static function applyOptions(DB $db, Table $tbl, array $options = [],
         array $searchColumns = [])
     {
