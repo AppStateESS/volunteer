@@ -42,10 +42,6 @@ const Volunteer = () => {
     })
   }
 
-  const reverseListing = () => {
-    setListing([...listing.reverse()])
-  }
-
   const sendSearch = () => {
     clearTimeout(track.current)
     loadList(search)
