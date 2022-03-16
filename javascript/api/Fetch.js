@@ -109,6 +109,16 @@ const sendDefault = async (sponsorId) => {
   }
 }
 
+const sendQuickLog = async (sponsorId, quickLog) => {
+  const url = `volunteer/Admin/Sponsor/${sponsorId}/quickLog`
+  try {
+    const response = await axios.patch(url, {quickLog}, {headers})
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
 const sendKiosk = async (sponsorId, kioskMode) => {
   const url = `volunteer/Admin/Sponsor/${sponsorId}/kiosk`
   try {
@@ -117,6 +127,11 @@ const sendKiosk = async (sponsorId, kioskMode) => {
   } catch (error) {
     return false
   }
+}
+
+const sendSponsorEmails = async (sponsorIds, volunteerId) => {
+  const url = `volunteer/Admin/Volunteer/${volunteerId}/sendSponsorEmails`
+  return await axios.put(url, {sponsorIds}, {headers})
 }
 
 const sendReasons = async (sponsorId, useReasons) => {
@@ -328,4 +343,6 @@ export {
   sendDeleteReason,
   sendDefault,
   getEmail,
+  sendSponsorEmails,
+  sendQuickLog,
 }
