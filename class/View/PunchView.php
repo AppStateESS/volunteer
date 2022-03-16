@@ -10,6 +10,8 @@ namespace volunteer\View;
 use volunteer\Factory\PunchFactory;
 use volunteer\Factory\VolunteerFactory;
 use volunteer\Factory\SponsorFactory;
+use volunteer\Factory\SettingsFactory;
+use volunteer\Factory\ReasonFactory;
 use volunteer\Resource\Punch;
 use volunteer\Resource\Volunteer;
 use phpws2\Template;
@@ -28,13 +30,27 @@ class PunchView extends AbstractView
         }
     }
 
-    private static function punchIn(Volunteer $volunteer, array $sponsor = null)
+    public static function noMatchingHash(array $sponsor)
     {
-        return self::scriptView('PunchIn',
-                        ['volunteerName' => $volunteer->getPreferred(), 'defaultSponsor' => $sponsor, 'contactEmail' => VOL_CONTACT_EMAIL]);
+        $template = new Template($sponsor);
+        $template->setModuleTemplate('volunteer', 'Error/HashMismatch.html');
+        return $template->get();
     }
 
-    private static function punchOut(Punch $punch)
+    public static function noQuickLog(array $sponsor)
+    {
+        $template = new Template($sponsor);
+        $template->setModuleTemplate('volunteer', 'Error/NoQuickLog.html');
+        return $template->get();
+    }
+
+    public static function punchIn(Volunteer $volunteer, array $sponsor = null)
+    {
+        return self::scriptView('PunchIn',
+                ['volunteerName' => $volunteer->getPreferred(), 'defaultSponsor' => $sponsor, 'contactEmail' => SettingsFactory::getEmailAddressOnly()]);
+    }
+
+    public static function punchOut(Punch $punch)
     {
         $currentVolunteer = VolunteerFactory::loadCurrent();
         $vars['volunteer'] = $currentVolunteer->getStringVars();
@@ -44,6 +60,41 @@ class PunchView extends AbstractView
         $vars['totalTime'] = PunchFactory::getTotalTime($punch->timeIn, time(), false);
         $template = new Template($vars);
         $template->setModuleTemplate('volunteer', 'PunchOut.html');
+        return $template->get();
+    }
+
+    public static function quickPunchIn(string $hash, Volunteer $volunteer, int $sponsorId)
+    {
+        $sponsor = SponsorFactory::build($sponsorId);
+        $templateFile = 'QuickPunchIn.html';
+        if ($sponsor->useReasons) {
+            $reasons = ReasonFactory::listing(['sponsorId' => $sponsorId]);
+            if (!empty($reasons)) {
+                $vars['reasons'] = $reasons;
+                $templateFile = 'QuickPunchInReasons.html';
+            }
+        }
+
+        $vars['sponsorId'] = $sponsor->id;
+        $vars['sponsorName'] = $sponsor->name;
+        $vars['preferredName'] = $volunteer->getPreferred();
+        $vars['hash'] = $hash;
+        $template = new Template($vars);
+        $template->setModuleTemplate('volunteer', $templateFile);
+        return $template->get();
+    }
+
+    public static function quickPunchOut(string $hash, Volunteer $volunteer, Punch $punch)
+    {
+        $sponsor = SponsorFactory::build($punch->sponsorId);
+        $vars['preferredName'] = $volunteer->getPreferred();
+        $vars['sponsorName'] = $sponsor->name;
+        $vars['sponsorId'] = $sponsor->id;
+        $vars['hash'] = $hash;
+        $vars['punchId'] = $punch->id;
+
+        $template = new Template($vars);
+        $template->setModuleTemplate('volunteer', 'QuickPunchOut.html');
         return $template->get();
     }
 
@@ -60,6 +111,14 @@ class PunchView extends AbstractView
     {
         $template = new Template(['logoutUrl' => \volunteer\Factory\Authenticate::logoutUrl()]);
         $template->setModuleTemplate('volunteer', 'AfterPunchOut.html');
+        return $template->get();
+    }
+
+    public static function afterQuickPunch(string $hash, string $searchName)
+    {
+        $volunteer = VolunteerFactory::getByHash($hash);
+        $template = new Template(['hash' => $hash, 'searchName' => $searchName, 'preferredName' => $volunteer->getPreferred()]);
+        $template->setModuleTemplate('volunteer', 'AfterQuickPunch.html');
         return $template->get();
     }
 
