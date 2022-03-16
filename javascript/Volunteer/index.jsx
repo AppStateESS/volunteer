@@ -74,7 +74,6 @@ const Volunteer = () => {
       <div>
         <Grid
           listing={listing}
-          reverseListing={reverseListing}
           sort={sort}
           setSort={setSort}
           deleteVolunteer={(id) => {
