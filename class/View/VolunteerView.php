@@ -19,10 +19,10 @@ class VolunteerView extends AbstractView
     {
         $volunteer = VolunteerFactory::build($volunteerId);
         $vars = [];
+        $vars['fullName'] = $volunteer->getFullName();
         $scriptVars['volunteerId'] = $volunteerId;
         $vars['form'] = self::scriptView('Email', $scriptVars);
-        //$vars['sponsors'] = SponsorFactory::list();
-        $vars['fullName'] = $volunteer->getFullName();
+
         $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('volunteer', 'Email.html');
         return $template->get();
@@ -43,7 +43,7 @@ class VolunteerView extends AbstractView
     public static function StudentNotFound()
     {
         $template = new \phpws2\Template();
-        $template->setModuleTemplate('volunteer', 'StudentNotFound.html');
+        $template->setModuleTemplate('volunteer', 'Error/StudentNotFound.html');
         return $template->get();
     }
 
