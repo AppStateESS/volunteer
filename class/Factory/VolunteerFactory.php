@@ -193,13 +193,12 @@ class VolunteerFactory extends AbstractFactory
         foreach ($sponsors as $sponsorId) {
             $sponsor = SponsorFactory::build($sponsorId);
             $siteUrl = \Canopy\Server::getSiteUrl() . $sponsor->searchName . '?hash=' . $volunteer->hash;
-            $subject = 'Easy log in and out for ' . $sponsor->name;
+            $subject = 'Faster log in and out for ' . $sponsor->name;
             $body = <<<EOF
-<p>We are emailing to supply you with an easy link to log in and out of
-{$sponsor->name}. When you arrive, click the link below. Click it again
-once more when you leave.</p>
-
-<div><a href="$siteUrl">Log in or out of {$sponsor->name}</a></div>
+<p>We are emailing to supply you with a faster method to log in and out of
+{$sponsor->name}. When you arrive, skip the log in process by clicking the link below.</p>
+<p><a href="$siteUrl">Log in or out of {$sponsor->name}</a></p>
+<p>Please do not share this link.</p>
 
 EOF;
             EmailFactory::send($subject, $body, $emailList, true);
