@@ -77,8 +77,7 @@ class Module extends \Canopy\Module implements SettingDefaults
             'contactName' => '',
             'quickLog' => false,
             'contactEmail' => '',
-            'quickLogPreApproved' => false,
-            'allowQuickLogWithUnapproved' => false];
+            'quickLogPreApproved' => false];
         return $settings;
     }
 
