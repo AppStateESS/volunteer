@@ -163,6 +163,14 @@ class VolunteerDataUpdate
                 $this->v160();
                 $this->content[] = 'Added quick log email links for volunteers.';
                 $this->content[] = 'Add quick log option for sponsors.';
+                $this->content[] = 'Added QR code to sponsors.';
+                $this->content[] = '</pre>';
+            case $this->compare('1.6.1'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.6.1';
+                $this->content[] = '-----------------------------';
+                $this->content[] = 'Adds refresh option in Volunteer screen';
+                $this->content[] = 'Allows searching by Banner ID';
                 $this->content[] = '</pre>';
         }
         return $this->content;
