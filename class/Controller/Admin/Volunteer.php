@@ -51,6 +51,12 @@ class Volunteer extends SubController
         return VolunteerFactory::list($options);
     }
 
+    protected function refreshPatch()
+    {
+        VolunteerFactory::refresh($this->id);
+        return ['success' => true];
+    }
+
     protected function reportHtml(Request $request)
     {
         AdminView::showMenu('volunteer');
