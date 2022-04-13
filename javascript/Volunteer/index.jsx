@@ -1,7 +1,7 @@
 'use strict'
 import React, {useState, useEffect, useRef} from 'react'
 import ReactDOM from 'react-dom'
-import {getList, deleteVolunteer} from '../api/Fetch'
+import {getList, deleteVolunteer, refreshVolunteer} from '../api/Fetch'
 import Grid from './Grid.js'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
@@ -42,6 +42,12 @@ const Volunteer = () => {
     })
   }
 
+  const refresh = (id) => {
+    refreshVolunteer(id).then(() => {
+      loadList()
+    })
+  }
+
   const sendSearch = () => {
     clearTimeout(track.current)
     loadList(search)
@@ -69,9 +75,7 @@ const Volunteer = () => {
     content = (
       <div>
         <Grid
-          listing={listing}
-          sort={sort}
-          setSort={setSort}
+          {...{listing, refresh, sort, setSort}}
           deleteVolunteer={(id) => {
             deleteVolunteer(id).then(() => {
               loadList(search)

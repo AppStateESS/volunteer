@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import FullName from '../api/Name'
 import Sort from '../api/Sort'
 
-const Grid = ({listing, deleteVolunteer, sort, setSort}) => {
+const Grid = ({listing, deleteVolunteer, sort, setSort, refresh}) => {
   const selected = 'na'
 
   const adminOption = (option, id) => {
@@ -15,11 +15,12 @@ const Grid = ({listing, deleteVolunteer, sort, setSort}) => {
       case 'log':
         location.href = `./volunteer/Admin/Log/?volunteerId=${id}`
         break
-
       case 'email':
         location.href = `./volunteer/Admin/Volunteer/${id}/email`
         break
-
+      case 'refresh':
+        refresh(id)
+        break
       case 'delete':
         if (
           prompt(
@@ -66,6 +67,7 @@ const Grid = ({listing, deleteVolunteer, sort, setSort}) => {
             <option value="report">Report</option>
             <option value="email">Email login</option>
             <option value="log">Log</option>
+            <option value="refresh">Refresh</option>
             <option value="delete">Delete</option>
           </select>
         </td>
@@ -134,6 +136,7 @@ Grid.propTypes = {
   sort: PropTypes.object,
   setSort: PropTypes.func,
   reverseListing: PropTypes.func,
+  refresh: PropTypes.func,
 }
 
 export default Grid
