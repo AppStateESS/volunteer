@@ -99,6 +99,16 @@ const sendAttendanceOnly = async (sponsorId, attendanceOnly) => {
   }
 }
 
+const refreshVolunteer = async (id) => {
+  const url = `./volunteer/Admin/Volunteer/${id}/refresh`
+  try {
+    const response = await axios.patch(url, null, {headers})
+    return response
+  } catch (error) {
+    return false
+  }
+}
+
 const sendDefault = async (sponsorId) => {
   const url = `volunteer/Admin/Sponsor/${sponsorId}/default`
   try {
@@ -345,4 +355,5 @@ export {
   getEmail,
   sendSponsorEmails,
   sendQuickLog,
+  refreshVolunteer,
 }
