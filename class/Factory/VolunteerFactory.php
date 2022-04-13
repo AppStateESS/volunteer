@@ -181,13 +181,38 @@ class VolunteerFactory extends AbstractFactory
         return $volunteer->hash;
     }
 
+    /**
+     * Pulls the volunteer from the local db and updates its
+     * information from Banner/Data warehouse
+     * @param int $volunteerId
+     * @return boolean
+     * @throws \Exception
+     */
+    public static function refresh(int $volunteerId)
+    {
+        $volunteer = self::build($volunteerId);
+        $result = Banner::queryServer($volunteer->bannerId);
+        if ($result) {
+            $student = $result['student'];
+            $volunteer->userName = $student->userName;
+            $volunteer->email = $student->userName . VOL_SHIB_DOMAIN;
+            $volunteer->firstName = $student->firstName;
+            $volunteer->lastName = $student->lastName;
+            $volunteer->preferredName = $student->preferredName ?? null;
+            self::save($volunteer);
+            return true;
+        } else {
+            throw new \Exception('Volunteer not found in Banner');
+        }
+    }
+
     public static function sendEmails(int $volunteerId, array $sponsors)
     {
         if (empty($sponsors)) {
             throw new \Exception('');
         }
-        $volunteer = VolunteerFactory::build($volunteerId);
-        VolunteerFactory::buildHash($volunteer);
+        $volunteer = self::build($volunteerId);
+        self::buildHash($volunteer);
 
         $emailList[] = $volunteer->email;
         foreach ($sponsors as $sponsorId) {
@@ -285,7 +310,7 @@ EOF;
         $lastLog = $tbl->getField('lastLog');
         $exp = new Database\Expression('FROM_UNIXTIME(' . $lastLog . ', "%Y/%m/%d %e %l:%i %p")', 'lastLog');
         $tbl->addField($exp);
-        parent::applyOptions($db, $tbl, $options, ['firstName', 'lastName', 'preferredName']);
+        parent::applyOptions($db, $tbl, $options, ['firstName', 'lastName', 'preferredName', 'bannerId']);
         return $db->select();
     }
 
