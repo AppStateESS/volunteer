@@ -1,5 +1,5 @@
 'use strict'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, Fragment} from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import Card from '../api/Card'
@@ -7,6 +7,8 @@ import ClockInput from './ClockInput'
 import NewVisitor from './NewVisitor'
 import ReasonList from '../api/ReasonList'
 import Overlay from '@essappstate/canopy-react-overlay'
+import NameCorrectButton from '../api/NameCorrectButton.js'
+
 import {
   swipeVolunteer,
   clockInReason,
@@ -23,7 +25,7 @@ const emailFormatCorrect = (email) => {
 const Kiosk = ({sponsor}) => {
   const [error, setError] = useState('')
   const [reasonsLoaded, setReasonsLoaded] = useState(false)
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState()
   const [reasons, setReasons] = useState([])
   const [reasonId, setReasonId] = useState(0)
   const [lockInput, setLockInput] = useState(false)
@@ -39,11 +41,21 @@ const Kiosk = ({sponsor}) => {
       clockInReason(sponsor.id, volunteerId, reasonId).then((response) => {
         if (response.data.attendanceOnly) {
           setMessage(
-            `Thank you for being here today, ${response.data.volunteerName}. You do not need to clock out.`
+            <Fragment>
+              <div>
+                Thank you for being here today, {response.data.volunteerName}.
+                You do not need to clock out.
+              </div>
+            </Fragment>
           )
         } else {
           setMessage(
-            `Thank you, ${response.data.volunteerName}. Please clock out when you leave.`
+            <Fragment>
+              <div>
+                Thank you, ${response.data.volunteerName}. Please clock out when
+                you leave.
+              </div>
+            </Fragment>
           )
         }
         setShowReasonModal(false)
@@ -88,7 +100,7 @@ const Kiosk = ({sponsor}) => {
       setEmail('')
       setGoodEmail(0)
       setError('')
-      setMessage('')
+      setMessage(null)
       setShowVisitorModal(false)
       setShowReasonModal(false)
       clearTimeout(reset)
@@ -125,17 +137,29 @@ const Kiosk = ({sponsor}) => {
         case 'in':
           if (sponsor.attendanceOnly == 1) {
             setMessage(
-              `Thank you for being with us today, ${responseVolName}. You do not need to clock out.`
+              <Fragment>
+                <div>
+                  Thank you for being with us today, {responseVolName}. You do
+                  not need to clock out.
+                </div>
+              </Fragment>
             )
           } else {
             setMessage(
-              `Thank you for being with us today, ${responseVolName}. Remember to clock out when you leave.`
+              <Fragment>
+                <div>
+                  Thank you for being with us today, {responseVolName}. Remember
+                  to clock out when you leave.
+                </div>
+              </Fragment>
             )
           }
           pauseAndReset()
           break
         case 'out':
-          setMessage(`Thank you ${responseVolName}, you have clocked out.`)
+          setMessage(
+            <div>Thank you {responseVolName}, you have clocked out.</div>
+          )
           pauseAndReset()
           break
         case 'reason':
@@ -179,7 +203,7 @@ const Kiosk = ({sponsor}) => {
 
   if (error.length > 0) {
     return <div className="alert alert-warning lead text-center">{error}</div>
-  } else if (message.length > 0) {
+  } else if (message) {
     return <div className="alert alert-success lead text-center">{message}</div>
   } else {
     let message
@@ -219,6 +243,7 @@ const Kiosk = ({sponsor}) => {
         {message}
       </div>
     )
+
     return (
       <div>
         <Overlay
@@ -226,12 +251,20 @@ const Kiosk = ({sponsor}) => {
           close={() => setShowReasonModal(false)}
           title={`Hello ${volunteerName}, what is the reason for your visit?`}
           width="80%">
-          <ReasonList
-            reasons={reasons}
-            pick={(reasonId) => {
-              setReasonId(reasonId)
-            }}
-          />
+          <Fragment>
+            <div className="mb-2">
+              <NameCorrectButton
+                updateName={setVolunteerName}
+                volunteerId={volunteerId}
+              />
+            </div>
+            <ReasonList
+              reasons={reasons}
+              pick={(reasonId) => {
+                setReasonId(reasonId)
+              }}
+            />
+          </Fragment>
         </Overlay>
         <Overlay
           show={showVisitorModal}
@@ -250,7 +283,7 @@ const Kiosk = ({sponsor}) => {
               type your Banner ID number below.
             </div>
           }
-          content={<ClockInput sendSwipe={sendSwipe} lockInput={lockInput} />}
+          content={<ClockInput {...{sendSwipe, lockInput}} />}
         />
         <Card
           headerColor="success"

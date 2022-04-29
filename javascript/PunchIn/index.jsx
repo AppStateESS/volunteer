@@ -6,9 +6,14 @@ import PickSponsor from './PickSponsor'
 import SponsorPunchIn from './SponsorPunchIn'
 import {getSponsorReasons} from '../api/Fetch'
 
-/* global volunteerName, defaultSponsor, contactEmail */
+/* global volunteerName, defaultSponsor, contactEmail, volunteerId */
 
-const PunchIn = ({volunteerName, defaultSponsor, contactEmail}) => {
+const PunchIn = ({
+  volunteerName,
+  defaultSponsor,
+  contactEmail,
+  volunteerId,
+}) => {
   const [reasons, setReasons] = useState([])
   const [reasonId, setReasonId] = useState(0)
   const formRef = useRef()
@@ -35,6 +40,7 @@ const PunchIn = ({volunteerName, defaultSponsor, contactEmail}) => {
       <SponsorPunchIn
         {...{
           formRef,
+          volunteerId,
           volunteerName,
           reasons,
           setReasonId,
@@ -49,6 +55,7 @@ const PunchIn = ({volunteerName, defaultSponsor, contactEmail}) => {
       <PickSponsor
         {...{
           formRef,
+          volunteerId,
           volunteerName,
           reasons,
           setReasonId,
@@ -65,11 +72,13 @@ PunchIn.propTypes = {
   volunteerName: PropTypes.string,
   defaultSponsor: PropTypes.object,
   contactEmail: PropTypes.string,
+  volunteerId: PropTypes.number,
 }
 
 ReactDOM.render(
   <PunchIn
     volunteerName={volunteerName}
+    volunteerId={volunteerId}
     defaultSponsor={defaultSponsor}
     contactEmail={contactEmail}
   />,

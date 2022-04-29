@@ -100,7 +100,7 @@ const sendAttendanceOnly = async (sponsorId, attendanceOnly) => {
 }
 
 const refreshVolunteer = async (id) => {
-  const url = `./volunteer/Admin/Volunteer/${id}/refresh`
+  const url = `./volunteer/User/Volunteer/${id}/refresh`
   try {
     const response = await axios.patch(url, null, {headers})
     return response
