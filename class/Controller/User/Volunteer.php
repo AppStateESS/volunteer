@@ -44,6 +44,12 @@ class Volunteer extends SubController
         }
     }
 
+    protected function refreshPatch()
+    {
+        $volunteer = VolunteerFactory::refresh($this->id);
+        return ['success' => true, 'name' => $volunteer->getPreferred()];
+    }
+
     protected function visitorPost(Request $request)
     {
         $firstName = $request->pullPostString('firstName');
