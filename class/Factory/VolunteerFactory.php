@@ -185,7 +185,7 @@ class VolunteerFactory extends AbstractFactory
      * Pulls the volunteer from the local db and updates its
      * information from Banner/Data warehouse
      * @param int $volunteerId
-     * @return boolean
+     * @return Volunteer
      * @throws \Exception
      */
     public static function refresh(int $volunteerId)
@@ -200,7 +200,7 @@ class VolunteerFactory extends AbstractFactory
             $volunteer->lastName = $student->lastName;
             $volunteer->preferredName = $student->preferredName ?? null;
             self::save($volunteer);
-            return true;
+            return $volunteer;
         } else {
             throw new \Exception('Volunteer not found in Banner');
         }
